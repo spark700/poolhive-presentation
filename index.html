@@ -148,13 +148,13 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 .how-wrap{display:flex;align-items:flex-start;gap:clamp(40px,5vw,80px);width:100%;max-width:1100px;padding-left:clamp(0px, calc(25vw - 260px), 320px)}
 .how-left{flex:1;max-width:580px}
 .how-right{flex:0 0 50%} /* phone canvas occupies right half */
-/* Steps — fixed height slot, content scales visually without layout shift */
-.step{--step-t:0;min-height:150px;display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid var(--w15);transform:translateX(calc(-8px * (1 - var(--step-t))));will-change:opacity,transform;color:#fff;text-shadow:0 0 12px rgba(255,255,255,.05);padding:12px 0}
-.step__head{display:flex;align-items:baseline;gap:calc(10px + 16px * var(--step-t));margin-bottom:calc(4px + 14px * var(--step-t))}
-.step__n{font-family:var(--fd);font-size:calc(.7rem + .85rem * var(--step-t));font-weight:800;color:var(--gold);min-width:calc(18px + 22px * var(--step-t))}
-.step__t{font-family:var(--fd);font-size:calc(.75rem + 1.85rem * var(--step-t));font-weight:600;letter-spacing:-.01em;line-height:1.15;color:#fff}
-.step__d{font-size:calc(.7rem + .8rem * var(--step-t));font-weight:400;color:rgba(255,255,255,.95);line-height:1.5;padding-left:calc(28px + 38px * var(--step-t))}
-.step__screen{display:block;font-size:calc(.55rem + .45rem * var(--step-t));font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);opacity:0;padding-left:calc(28px + 38px * var(--step-t));margin-top:calc(3px + 10px * var(--step-t))}
+/* Steps — fixed height, content scales HORIZONTALLY from left (no vertical motion) */
+.step{--step-t:0;min-height:150px;display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid var(--w15);will-change:opacity;color:#fff;padding:12px 0;text-shadow:0 0 12px rgba(255,255,255,.05);overflow:hidden}
+.step__head{display:flex;align-items:baseline;gap:18px;margin-bottom:12px;transform-origin:left center;transform:scale(calc(.45 + .55 * var(--step-t)))}
+.step__n{font-family:var(--fd);font-size:1.3rem;font-weight:800;color:var(--gold);min-width:32px}
+.step__t{font-family:var(--fd);font-size:2rem;font-weight:600;letter-spacing:-.01em;line-height:1.15;color:#fff;white-space:nowrap}
+.step__d{font-size:1.15rem;font-weight:400;color:rgba(255,255,255,.95);line-height:1.5;padding-left:50px;transform-origin:left center;transform:scale(calc(.5 + .5 * var(--step-t)))}
+.step__screen{display:block;font-size:.85rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);opacity:0;padding-left:50px;margin-top:8px;transform-origin:left center;transform:scale(calc(.5 + .5 * var(--step-t)))}
 .step.on .step__screen{opacity:1}
 .step .step__screen{display:block;opacity:0;transition:none}
 .step.on .step__screen{opacity:1}
@@ -815,8 +815,8 @@ ScrollTrigger.create({trigger:'#usp',start:'top 55%',
   onEnter:function(){gsap.from('#usp .tl',{y:16,opacity:0,duration:.4});gsap.from('.usp',{y:40,opacity:0,duration:1.1,ease:'power3.out',delay:.15});setTimeout(function(){document.getElementById('usp-u').classList.add('on')},700)},
   onLeaveBack:function(){document.getElementById('usp-u').classList.remove('on')}});
 
-/* HOW — whole block slides in from left */
-gsap.from('.how-left',{scrollTrigger:{trigger:'#how',start:'top 80%',toggleActions:'play none none reverse'},x:-120,opacity:0,filter:'blur(8px)',duration:1.1,ease:'power3.out'});
+/* HOW — scroll-linked horizontal slide: block moves left→right as user scrolls into section */
+gsap.fromTo('.how-left',{x:-200,opacity:0},{x:0,opacity:1,ease:'none',scrollTrigger:{trigger:'#how',start:'top bottom',end:'top 40%',scrub:1}});
 gsap.from('#how-label',{scrollTrigger:{trigger:'#how',start:'top 70%',toggleActions:'play none none reverse'},x:-24,opacity:0,duration:.5,delay:.1});
 
 var stepEls=document.querySelectorAll('.step');
