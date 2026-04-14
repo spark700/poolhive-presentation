@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <title>PoolHive &mdash; Endless Possibilities</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -243,23 +243,100 @@ html:has(body.cursor-idle){cursor:none!important}
 .ap-playing,.ap-playing *{cursor:none!important}
 .cursor-idle,.cursor-idle *{cursor:none!important}
 
+/* ═══════════════ MOBILE ═══════════════ */
 @media(max-width:900px){
-  .ui-tl,.ui-br{display:none}
-  .ui-tr{top:16px;right:16px}
-  .ui-tr span{font-size:9px;padding:6px 16px}
-  .ui-bl{bottom:16px;left:16px;opacity:.5}
-  .ui-bl span{font-size:10px}
+  :root{--safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px)}
+
+  /* UI overlays — hide heavy desktop ones, simplify */
+  .ui-tl{display:none}
+  .ui-tr{top:calc(14px + var(--safe-t));right:14px}
+  .ui-tr span{font-size:9px;padding:7px 16px}
+  .ui-bl{bottom:calc(14px + var(--safe-b));left:14px;opacity:.5}
+  .ui-bl span{font-size:10px;letter-spacing:.05em}
   .ui-bl img{width:22px;height:22px}
-  #phoneCanvas{opacity:0!important;pointer-events:none;transition:none!important}
-  #phoneCanvas.visible{opacity:.15!important}
-  .s__in{margin-left:auto!important;margin-right:auto!important;text-align:center!important}
+  /* Hide QR overlay on mobile — main QR shows in CTA section */
+  .ui-br{display:none}
   .scroll-hint{display:none}
-  .pills{justify-content:center}
-  .step__d{padding-left:0}
-  .how-wrap{flex-direction:column;gap:24px}
+
+  /* Hide 3D phone entirely — heavy for mobile GPU */
+  #phoneCanvas{display:none!important}
+
+  /* Sections — use svh (avoids iOS URL-bar jumps), tighter padding */
+  .s{min-height:100svh;padding:80px 20px}
+  .s__in{margin-left:auto!important;margin-right:auto!important;text-align:center!important;max-width:100%!important;padding-left:0!important}
+
+  /* Typography — step down sizes */
+  .th{font-size:clamp(1.8rem,7vw,2.6rem)!important;line-height:1.2!important}
+  .td{font-size:clamp(2.8rem,13vw,4.5rem)!important;line-height:.95!important}
+  .tm{font-size:clamp(1.3rem,4.5vw,1.9rem)!important;line-height:1.3!important}
+  .tb{font-size:.9rem;line-height:1.65}
+
+  /* Hero */
+  .hero-h1{font-size:clamp(2rem,8vw,3rem)!important;line-height:1.15!important}
+  .hero-h2{font-size:clamp(1.05rem,4vw,1.4rem)!important;margin-top:clamp(36px,7vh,56px)!important;line-height:1.4!important}
+
+  /* Reveal — tighter composition */
+  .reveal-patch{width:clamp(95px,22vw,140px)!important;margin:clamp(16px,2.5vh,24px) 0 clamp(20px,3vh,30px)!important}
+  .reveal-wordmark{font-size:clamp(2.6rem,14vw,4.5rem)!important;line-height:.92!important}
+  .reveal-line{width:clamp(120px,40vw,200px)!important;margin:clamp(16px,2.2vh,22px) auto clamp(8px,1vh,12px)!important}
+  .reveal-tagline{font-size:clamp(.7rem,2.6vw,.88rem)!important;letter-spacing:.35em!important}
+  .reveal-stamp{font-size:.58rem;margin-top:18px}
+
+  /* Pills — wrap nicely, tap-sized */
+  .pills{justify-content:center;gap:10px}
+  .pill{padding:12px 22px;font-size:.75rem;min-height:40px}
+
+  /* USP */
+  .usp{font-size:clamp(1.9rem,7.5vw,2.8rem)!important;line-height:1.2!important}
+
+  /* How — fully vertical, no sticky, steps flow naturally */
+  #how{min-height:auto!important;padding:60px 20px!important}
+  .how-wrap{flex-direction:column;gap:24px;position:static!important;padding-left:0!important;min-height:0!important}
   .how-left{position:relative;top:auto;transform:none;max-width:100%}
   .how-right{display:none}
+  .step{padding:20px 0;opacity:1!important;transform:none!important;will-change:auto}
+  .step__head{gap:12px}
+  .step__t{font-size:1.05rem}
+  .step__d{padding-left:38px;font-size:.85rem}
   .step__screen{display:none!important}
+
+  /* Close — tighter */
+  #close .s__in{margin-left:auto!important;margin-right:auto!important;text-align:center!important;padding:0 20px}
+  #close .th{font-size:clamp(1.8rem,7vw,2.6rem)!important;line-height:1.25!important}
+
+  /* CTA — mobile-first layout */
+  #cta{padding:60px 20px calc(60px + var(--safe-b))}
+  .cta-hero{padding:0}
+  .cta-hero .tl{font-size:10px;letter-spacing:.35em}
+  .logo-row{gap:16px!important}
+  .logo-row .td{font-size:clamp(2.5rem,11vw,4.5rem)!important}
+  .logo-row img{width:clamp(38px,8vw,60px)!important}
+  .cta-tagline{font-size:clamp(1.4rem,5.5vw,2rem)!important;margin-top:clamp(32px,5vh,44px)!important}
+  .cta-scan{flex-direction:column;gap:20px;margin-top:clamp(36px,5vh,52px)!important}
+  .cta-scan-txt{text-align:center;align-items:center}
+  .cta-scan-txt .k{font-size:10px;letter-spacing:.22em}
+  .cta-scan-txt .v{font-size:1.1rem}
+  .cta-qr-frame{padding:14px}
+  .cta-qr-frame img{width:140px!important;height:140px!important}
+
+  /* Autoplay button — hide on mobile, autoplay disabled anyway */
+  .ap-btn{display:none}
+
+  /* Safe-area for fixed UI */
+  body::after{background-size:200px}
+
+  /* Cursor stays native on mobile */
+  .ap-playing,.ap-playing *,.cursor-idle,.cursor-idle *{cursor:auto!important}
+  html:has(body.ap-playing),html:has(body.cursor-idle){cursor:auto!important}
+}
+
+/* Small phones / portrait */
+@media(max-width:480px){
+  .hero-h1{font-size:clamp(1.75rem,7.5vw,2.4rem)!important}
+  .hero-h2{font-size:1rem!important}
+  .reveal-wordmark{font-size:clamp(2.2rem,12vw,3.6rem)!important}
+  .usp{font-size:clamp(1.6rem,7vw,2.3rem)!important}
+  .logo-row .td{font-size:clamp(2.2rem,10vw,3.8rem)!important}
 }
 </style>
 </head>
@@ -512,6 +589,10 @@ html:has(body.cursor-idle){cursor:none!important}
 (function(){
 "use strict";
 gsap.registerPlugin(ScrollTrigger,ScrollToPlugin);
+
+/* Mobile detection — disable 3D phone and heavy per-frame work */
+var IS_MOBILE=window.matchMedia('(max-width:900px)').matches;
+if(IS_MOBILE){document.body.classList.add('is-mobile');}
 
 /* ═══ SCROLL / GLOW ═══ */
 gsap.to('#prog',{width:'100%',ease:'none',scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:.3}});
@@ -785,7 +866,8 @@ var cH = window.innerHeight;
 
 /* WebGL support check */
 var glCtx=canvas.getContext('webgl2')||canvas.getContext('webgl')||canvas.getContext('experimental-webgl');
-if(!glCtx){canvas.style.display='none';/* fallback: phone just hidden, text-only presentation */}
+if(!glCtx){canvas.style.display='none';}
+if(IS_MOBILE){canvas.style.display='none';}
 
 var renderer = new THREE.WebGLRenderer({canvas:canvas, alpha:true, antialias:true});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -2273,8 +2355,8 @@ window.addEventListener('resize',function(){
   }
 
   btn.addEventListener('click',startAutoplay);
-  /* Auto-start autoplay if URL has ?autoplay=1 (for video rendering) */
-  if(location.search.indexOf('autoplay=1')>=0){setTimeout(startAutoplay,400);}
+  /* Auto-start autoplay if URL has ?autoplay=1 — desktop only (for video rendering) */
+  if(location.search.indexOf('autoplay=1')>=0&&!IS_MOBILE){setTimeout(startAutoplay,400);}
 
   /* Click/scroll during autoplay stops it */
   window.addEventListener('wheel',function(){if(playing)stopAutoplay();},{passive:true});
