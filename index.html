@@ -815,7 +815,9 @@ ScrollTrigger.create({trigger:'#usp',start:'top 55%',
   onEnter:function(){gsap.from('#usp .tl',{y:16,opacity:0,duration:.4});gsap.from('.usp',{y:40,opacity:0,duration:1.1,ease:'power3.out',delay:.15});setTimeout(function(){document.getElementById('usp-u').classList.add('on')},700)},
   onLeaveBack:function(){document.getElementById('usp-u').classList.remove('on')}});
 
-gsap.from('#how-label',{scrollTrigger:{trigger:'#how',start:'top 70%',toggleActions:'play none none reverse'},y:16,opacity:0,duration:.4});
+/* HOW — whole block slides in from left */
+gsap.from('.how-left',{scrollTrigger:{trigger:'#how',start:'top 80%',toggleActions:'play none none reverse'},x:-120,opacity:0,filter:'blur(8px)',duration:1.1,ease:'power3.out'});
+gsap.from('#how-label',{scrollTrigger:{trigger:'#how',start:'top 70%',toggleActions:'play none none reverse'},x:-24,opacity:0,duration:.5,delay:.1});
 
 var stepEls=document.querySelectorAll('.step');
 var screenStep=0, screenTime=1;
