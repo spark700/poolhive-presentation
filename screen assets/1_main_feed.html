@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PoolHive — Feed</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: transparent;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* ── Phone ── */
+  .phone {
+    position: relative;
+    width: 375px;
+    height: 812px;
+    border-radius: 36px;
+    border: 3px solid #333;
+    background: #000;
+    box-shadow: 0 0 0 2px #1a1a1a, 0 30px 100px rgba(0,0,0,0.8);
+    overflow: hidden;
+  }
+  .phone-notch {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 150px; height: 28px;
+    background: #000;
+    border-radius: 0 0 20px 20px;
+    z-index: 30;
+  }
+  .phone-screen {
+    position: absolute;
+    inset: 0;
+    border-radius: 33px;
+    overflow: hidden;
+    background: #000;
+  }
+
+  /* ── Video bg — Figma image: y:-44, 398x768 → ends at y:724 ── */
+  .video-bg {
+    position: absolute;
+    left: 0; right: 0;
+    top: -44px;
+    height: 768px;
+    z-index: 1;
+  }
+  .video-bg video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.48);
+  }
+
+  /* ── Black bar below video (nav area) ── */
+  .black-bar {
+    position: absolute;
+    left: 0; right: 0;
+    top: 718px;
+    bottom: 0;
+    background: #000;
+    z-index: 2;
+  }
+
+  /* ── Gradient overlays for readability ── */
+  .gradient-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 130px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+    z-index: 3;
+  }
+  .gradient-bottom {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 88px;
+    height: 250px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 40%, transparent 100%);
+    z-index: 3;
+  }
+
+  /* ── Lines from Figma ── */
+  /* Line 2 — top separator y:73 */
+  .line-top {
+    position: absolute;
+    left: 0; right: 0; top: 73px;
+    height: 0.75px;
+    background: #E1E1E1;
+    z-index: 5;
+  }
+  /* Line 4 — below tabs y:117 */
+  .line-tabs {
+    position: absolute;
+    left: 0; right: 0; top: 117px;
+    height: 1px;
+    background: rgba(225,225,225,0.3);
+    z-index: 5;
+  }
+  /* Line 3 — above bottom nav y:724 */
+  .line-bottom {
+    position: absolute;
+    left: 0; right: 0; top: 724px;
+    height: 1px;
+    background: #E1E1E1;
+    z-index: 5;
+  }
+
+  /* ── "Hi, Zack" — id:1:71 ── */
+  .greeting {
+    position: absolute;
+    left: 23px; top: 31px;
+    width: 182px; height: 28px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 1.333em;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    z-index: 10;
+  }
+
+  /* ── Filter btn — id:1:89, pos (317,27) 48x40 ── */
+  .btn-filter {
+    position: absolute;
+    right: 10px; top: 27px;
+    width: 48px; height: 40px;
+    z-index: 10;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
+  }
+
+  /* ── Tabs row y:86 ── */
+  .tabs {
+    position: absolute;
+    top: 86px; left: 0; right: 0;
+    z-index: 10;
+  }
+  /* "business" at x:79, Poppins 600 */
+  .tab-business {
+    position: absolute;
+    left: 79px; top: 0;
+    width: 70px; height: 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.067em;
+    text-align: center;
+    color: #fff;
+  }
+  /* "social" at x:217, Poppins 500 */
+  .tab-social {
+    position: absolute;
+    left: 217px; top: 0;
+    width: 70px; height: 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.067em;
+    text-align: center;
+    color: #fff;
+  }
+  /* Search icon at (332,80) 27x27 */
+  .search-icon {
+    position: absolute;
+    left: 332px; top: 80px;
+    width: 27px; height: 27px;
+    z-index: 10;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
+  }
+  /* Active tab indicator — Line 7: x:242, y:106, w:20 */
+  .tab-indicator {
+    position: absolute;
+    left: 242px; top: 106px;
+    width: 20px; height: 1px;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+    z-index: 10;
+  }
+
+  /* ── Side icons (right column) ── */
+  /* Share (heart shape!) at (336.5, 419) 21x19 — with drop shadow */
+  .side-icon-share {
+    position: absolute;
+    left: 333px; top: 415px;
+    width: 27px; height: 25px;
+    z-index: 10;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
+    opacity: 0;
+    transform: translateX(15px);
+  }
+  .side-icon-heart {
+    position: absolute;
+    left: 333px; top: 463px;
+    width: 26px; height: 25px;
+    z-index: 10;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
+    opacity: 0;
+    transform: translateX(15px);
+  }
+  .side-icon-bookmark {
+    position: absolute;
+    left: 335px; top: 514px;
+    width: 24px; height: 25px;
+    z-index: 10;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
+    opacity: 0;
+    transform: translateX(15px);
+  }
+  .side-icon-grid {
+    position: absolute;
+    left: 335px; top: 565px;
+    width: 22px; height: 24px;
+    z-index: 10;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
+    opacity: 0;
+    transform: translateX(15px);
+  }
+  .side-icon-share.show,
+  .side-icon-heart.show,
+  .side-icon-bookmark.show,
+  .side-icon-grid.show {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  /* ── Project info area (bottom) ── */
+  /* Avatar at (18,611) 30x25, borderRadius 4 */
+  .project-avatar {
+    position: absolute;
+    left: 18px; top: 611px;
+    width: 30px; height: 25px;
+    border-radius: 4px;
+    border: 1px solid #fff;
+    object-fit: cover;
+    z-index: 10;
+    opacity: 0;
+  }
+  .project-avatar.show {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  }
+
+  /* "Social App" at (57,615) Poppins 500 15px */
+  .project-name {
+    position: absolute;
+    left: 57px; top: 615px;
+    width: 168px; height: 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.067em;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .project-name.show {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  /* "229,000/350,000 $" at (193,615) Poppins 400 15px, right-aligned */
+  .funding-text {
+    position: absolute;
+    left: 193px; top: 615px;
+    width: 168px; height: 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 1.067em;
+    text-align: right;
+    color: #fff;
+    font-weight: 500;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    z-index: 10;
+    opacity: 0;
+  }
+  .funding-text.show {
+    opacity: 1;
+    transition: opacity 0.5s ease 0.2s;
+  }
+
+  /* Progress track — Line 5: full 344px at (18,646), #E1E1E1 1px */
+  .progress-track {
+    position: absolute;
+    left: 18px; top: 645px;
+    width: 344px; height: 1px;
+    background: #E1E1E1;
+    z-index: 10;
+    opacity: 0;
+  }
+  .progress-track.show {
+    opacity: 1;
+    transition: opacity 0.3s ease 0.3s;
+  }
+
+  /* Progress fill — Line 6: 215px at (18,646), #FFA717 2px */
+  .progress-fill {
+    position: absolute;
+    left: 18px; top: 644px;
+    width: 0px; height: 2px;
+    background: #FFA717;
+    z-index: 11;
+  }
+  .progress-fill.animate {
+    width: 215px;
+    transition: width 1.8s ease-in-out 0.5s;
+  }
+
+  /* ── Donate button — (18,658) 344x54, stroke rgba(255,255,255,0.77), borderRadius 10 ── */
+  .donate-btn {
+    position: absolute;
+    left: 18px; top: 658px;
+    width: 344px; height: 54px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(255,255,255,0.9);
+    background: transparent;
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .donate-btn.show {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.4s ease 0.3s, transform 0.4s ease 0.3s;
+  }
+  /* "Donate" text at (47,677) Poppins 500 15px center */
+  .donate-label {
+    position: absolute;
+    left: 47px; top: 677px;
+    width: 286px; height: 16px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.067em;
+    text-align: center;
+    color: #fff;
+    z-index: 11;
+    opacity: 0;
+  }
+  .donate-label.show {
+    opacity: 1;
+    transition: opacity 0.4s ease 0.3s;
+  }
+
+  /* ── Bottom nav area y:724+ ── */
+  /* Orange progress line at bottom — Line 8: (−12,724) 131px, #FFA717 1.5px */
+  .bottom-progress {
+    position: absolute;
+    left: 0; top: 724px;
+    width: 131px; height: 1.5px;
+    background: #FFA717;
+    z-index: 12;
+  }
+
+  /* Nav icons */
+  .nav-icon {
+    position: absolute;
+    z-index: 10;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
+  }
+  /* Frame 12 (left) at (31,747) 24x24 */
+  .nav-1 { left: 31px; top: 747px; width: 24px; height: 24px; }
+  /* Frame (home) at (95,747) 24x24 */
+  .nav-2 { left: 95px; top: 747px; width: 24px; height: 24px; }
+  /* Frame 13 (center hex) at (159,735) 58x49 */
+  .nav-center { left: 159px; top: 735px; width: 58px; height: 49px; }
+  /* Frame (chat) at (257,747) 24x24 */
+  .nav-4 { left: 257px; top: 747px; width: 24px; height: 24px; }
+  /* Frame (menu) at (321,747) 24x24 */
+  .nav-5 { left: 321px; top: 747px; width: 24px; height: 24px; }
+
+  /* Badge "7" — Rectangle at (274,741) 14x12, fill #FFA717, borderRadius 2 */
+  .nav-badge-bg {
+    position: absolute;
+    left: 274px; top: 741px;
+    width: 14px; height: 12px;
+    border-radius: 2px;
+    background: #FFA717;
+    z-index: 12;
+  }
+  /* "7" text at (278,741) Montserrat 500 9px */
+  .nav-badge-text {
+    position: absolute;
+    left: 274px; top: 741px;
+    width: 14px; height: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 9px;
+    line-height: 12px;
+    text-align: center;
+    color: #fff;
+    z-index: 13;
+  }
+
+  /* Home indicator */
+  .home-indicator {
+    position: absolute;
+    bottom: 4px;
+    left: 123px;
+    width: 130px;
+    height: 4px;
+    background: #fff;
+    border-radius: 2px;
+    opacity: 0.2;
+    z-index: 20;
+  }
+
+  /* ── Likes count under heart icon ── */
+  .likes-count {
+    position: absolute;
+    left: 327px; top: 490px;
+    width: 38px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    text-align: center;
+    color: #fff;
+    z-index: 10;
+    opacity: 0;
+  }
+  .likes-count.show {
+    opacity: 1;
+    transition: opacity 0.4s ease;
+  }
+
+  /* ── Floating +amount ── */
+  .float-amount {
+    position: absolute;
+    right: 30px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #FFC34A;
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0;
+    text-shadow: 0 1px 6px rgba(255,167,23,0.5);
+    animation: floatUp 2s ease-out forwards;
+  }
+  @keyframes floatUp {
+    0% { opacity: 0; transform: translateY(0) scale(0.7); }
+    15% { opacity: 1; transform: translateY(-8px) scale(1); }
+    70% { opacity: 0.8; transform: translateY(-40px) scale(1); }
+    100% { opacity: 0; transform: translateY(-65px) scale(0.9); }
+  }
+
+  /* ── Counter anim ── */
+  .counter { display: inline; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="phone-notch"></div>
+  <div class="phone-screen">
+
+    <!-- Video -->
+    <div class="video-bg">
+      <video autoplay muted loop playsinline>
+        <source src="main_video.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Black bar + gradients -->
+    <div class="black-bar"></div>
+    <div class="gradient-top"></div>
+    <div class="gradient-bottom"></div>
+
+    <!-- Lines -->
+    <div class="line-top"></div>
+    <div class="line-tabs"></div>
+    <div class="line-bottom"></div>
+
+    <!-- Greeting -->
+    <div class="greeting">Hi, Zack</div>
+
+    <!-- Filter button -->
+    <img class="btn-filter" src="btn_filter.svg" alt="">
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <span class="tab-business">business</span>
+      <span class="tab-social">social</span>
+    </div>
+    <img class="search-icon" src="icon_search.svg" alt="">
+    <div class="tab-indicator"></div>
+
+    <!-- Side icons -->
+    <img class="side-icon-share" id="si-share" src="icon_share.svg" alt="">
+    <img class="side-icon-heart" id="si-heart" src="icon_heart.svg" alt="">
+    <div class="likes-count" id="likes-count">2.4k</div>
+    <img class="side-icon-bookmark" id="si-bookmark" src="icon_bookmark.svg" alt="">
+    <img class="side-icon-grid" id="si-grid" src="icon_grid.svg" alt="">
+
+    <!-- Project info -->
+    <img class="project-avatar" id="proj-avatar" src="project_avatar.png" alt="">
+    <div class="project-name" id="proj-name">Social App</div>
+    <div class="funding-text" id="funding-text"><span class="counter" id="raised">0</span>/350,000 $</div>
+
+    <!-- Progress bar -->
+    <div class="progress-track" id="prog-track"></div>
+    <div class="progress-fill" id="prog-fill"></div>
+
+    <!-- Donate button -->
+    <div class="donate-btn" id="donate-btn"></div>
+    <div class="donate-label" id="donate-label">Donate</div>
+
+    <!-- Bottom nav -->
+    <div class="bottom-progress"></div>
+    <img class="nav-icon nav-1" src="nav_left.svg" alt="">
+    <img class="nav-icon nav-2" src="nav_home.svg" alt="">
+    <img class="nav-icon nav-center" src="nav_center.svg" alt="">
+    <img class="nav-icon nav-4" src="nav_right2.svg" alt="">
+    <div class="nav-badge-bg"></div>
+    <div class="nav-badge-text">7</div>
+    <img class="nav-icon nav-5" src="nav_right.svg" alt="">
+
+    <div class="home-indicator"></div>
+  </div>
+</div>
+
+<script>
+// Drip counter with floating +amount
+function dripCounter(el, startVal) {
+  let current = startVal;
+  function fmt(n) { return n.toLocaleString('en-US'); }
+  el.textContent = fmt(current);
+
+  function addDrip() {
+    const amounts = [50, 100, 150, 200, 250, 350, 500, 560, 750, 1000];
+    const add = amounts[Math.floor(Math.random() * amounts.length)];
+    current += add;
+    el.textContent = fmt(current);
+
+    // Spawn floating +amount
+    const floater = document.createElement('div');
+    floater.className = 'float-amount';
+    floater.textContent = '+' + fmt(add) + ' $';
+    floater.style.top = (600 + Math.random() * 10) + 'px';
+    floater.style.right = (20 + Math.random() * 60) + 'px';
+    document.querySelector('.phone-screen').appendChild(floater);
+    setTimeout(() => floater.remove(), 2200);
+
+    setTimeout(addDrip, 3000 + Math.random() * 5000);
+  }
+  setTimeout(addDrip, 2000 + Math.random() * 3000);
+}
+
+// Likes counter — slowly increments one by one
+function likesCounter(el, startVal) {
+  let current = startVal;
+  function fmt(n) {
+    if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
+    return String(n);
+  }
+  el.textContent = fmt(current);
+  setInterval(() => {
+    current += Math.floor(Math.random() * 3) + 1;
+    el.textContent = fmt(current);
+  }, 2000 + Math.random() * 3000);
+}
+
+// Entrance sequence
+function run() {
+  // Side icons stagger
+  const sides = ['si-share','si-heart','si-bookmark','si-grid'];
+  sides.forEach((id, i) => {
+    setTimeout(() => {
+      document.getElementById(id).classList.add('show');
+      if (id === 'si-heart') {
+        setTimeout(() => document.getElementById('likes-count').classList.add('show'), 200);
+      }
+    }, 400 + i * 180);
+  });
+
+  // Project info
+  setTimeout(() => document.getElementById('proj-avatar').classList.add('show'), 600);
+  setTimeout(() => document.getElementById('proj-name').classList.add('show'), 700);
+  setTimeout(() => {
+    document.getElementById('funding-text').classList.add('show');
+    dripCounter(document.getElementById('raised'), 229000);
+  }, 900);
+
+  // Progress bar — continuously grows
+  setTimeout(() => {
+    document.getElementById('prog-track').classList.add('show');
+    document.getElementById('prog-fill').classList.add('animate');
+  }, 1000);
+
+  // Donate
+  setTimeout(() => {
+    document.getElementById('donate-btn').classList.add('show');
+    document.getElementById('donate-label').classList.add('show');
+  }, 1200);
+
+  // Likes — starts counting after icons appear
+  setTimeout(() => {
+    likesCounter(document.getElementById('likes-count'), 2400);
+  }, 1500);
+}
+
+setTimeout(run, 500);
+</script>
+</body>
+</html>

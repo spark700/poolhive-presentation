@@ -1,0 +1,2288 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>PoolHive &mdash; Endless Possibilities</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080810;--bg-deep:#050508;--bg-light:#0e0e1a;
+  --gold:#DEA752;--gold-l:#F0C96A;--gold-dim:rgba(222,167,82,.12);
+  --w:#fff;--w70:rgba(255,255,255,.7);--w50:rgba(255,255,255,.5);
+  --w15:rgba(255,255,255,.15);--w08:rgba(255,255,255,.08);
+  --fd:'Manrope',sans-serif;--fb:'Inter',sans-serif;--ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:var(--fb);font-weight:300;background:var(--bg);color:var(--w);overflow-x:hidden;
+  font-feature-settings:"kern" 1;text-rendering:optimizeLegibility;scrollbar-width:none;-ms-overflow-style:none}
+body::-webkit-scrollbar,html::-webkit-scrollbar{display:none;width:0;height:0}
+html{scrollbar-width:none;-ms-overflow-style:none}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}}
+::selection{background:var(--gold);color:#050505}
+body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.06;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:150px}
+#prog{display:none}
+.bg{display:none}
+.glow{display:none}
+
+/* persistent UI */
+.ui{position:fixed;z-index:1000;pointer-events:none}
+.ui-tl{top:36px;left:44px;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;line-height:1.8;opacity:.65}
+.ui-tr{top:32px;right:44px}
+.ui-tr span{background:var(--gold);color:#0a0a0a;font-size:10px;font-weight:700;letter-spacing:.08em;padding:8px 22px;border-radius:100px;box-shadow:0 0 20px rgba(222,167,82,.25)}
+.ui-bl{bottom:36px;left:44px;display:flex;align-items:center;gap:14px;opacity:.6}
+.ui-bl span{font-size:14px}
+.ui-bl img{width:33px;height:33px}
+.ui-br{bottom:28px;right:36px}
+.ui-br img{width:106px;height:106px;border-radius:12px;opacity:.85;box-shadow:0 0 20px rgba(255,255,255,.06)}
+
+/* sections */
+.s{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px clamp(24px,5vw,60px)}
+.s__in{width:100%;max-width:1100px;position:relative;z-index:5}
+
+/* typography */
+.th{font-family:var(--fd);font-size:clamp(2.6rem,5vw,4.6rem);font-weight:400;line-height:1.15;letter-spacing:-.03em}
+.th b{font-weight:800}
+.td{font-family:var(--fd);font-size:clamp(4rem,11vw,10rem);font-weight:800;letter-spacing:-.04em;line-height:.95}
+.tm{font-family:var(--fd);font-size:clamp(2rem,4vw,3.2rem);font-weight:400;line-height:1.3;letter-spacing:-.02em}
+.tl{font-family:var(--fb);font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:block}
+.tb{font-size:1rem;font-weight:300;line-height:1.7;color:var(--w70);max-width:52ch}
+.gold{color:var(--gold)}.dim{color:var(--w50)}
+
+.logo-row{display:flex;align-items:center;gap:clamp(16px,3vw,44px)}
+.logo-row img{width:clamp(50px,7vw,100px)}
+.logo-line{height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),var(--w15),var(--gold-dim),transparent);margin:24px 0}
+.logo-sub{font-family:var(--fb);font-size:clamp(.75rem,1.2vw,1rem);font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--w50)}
+
+/* Reveal slide — centered hero composition with Fibonacci rhythm */
+.reveal-wrap{text-align:center;display:flex;flex-direction:column;align-items:center;position:relative}
+.reveal-wrap .tl{opacity:.45;font-size:.72rem;letter-spacing:.42em;margin-bottom:0}
+/* Patch container — quieter ambient, no rotating ring */
+.reveal-patch{position:relative;width:clamp(110px,13vw,170px);aspect-ratio:1;display:flex;align-items:center;justify-content:center;margin:clamp(20px,3vh,34px) 0 clamp(24px,3.8vh,42px)}
+.reveal-patch::before{content:'';position:absolute;inset:-40%;border-radius:50%;background:radial-gradient(circle,rgba(222,167,82,.22),transparent 60%);animation:revealGlow 4.5s ease-in-out infinite;filter:blur(12px)}
+.reveal-patch::after{content:'';position:absolute;inset:-80%;border-radius:50%;background:radial-gradient(circle,rgba(222,167,82,.0),transparent 50%);filter:blur(24px);transition:all 2s cubic-bezier(.16,1,.3,1)}
+.reveal-patch img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 36px rgba(222,167,82,.4));position:relative;z-index:1;transition:filter 1.2s ease}
+@keyframes revealGlow{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.95;transform:scale(1.12)}}
+/* Charging state — logo absorbs energy: shrinks, trembles, aura intensifies */
+.reveal-wrap.charging .reveal-patch::after{background:radial-gradient(circle,rgba(222,167,82,.55),rgba(222,167,82,.2) 25%,transparent 55%);animation:chargePulse 1.8s ease-in-out infinite alternate;inset:-100%}
+.reveal-wrap.charging .reveal-patch img{animation:chargeTremble .14s infinite;filter:drop-shadow(0 0 70px rgba(222,167,82,.85)) drop-shadow(0 0 24px rgba(255,210,130,.6))}
+.reveal-wrap.charging .reveal-patch{animation:chargeShrink 1.8s ease-in-out infinite alternate}
+@keyframes chargePulse{0%{transform:scale(.7);opacity:.3}100%{transform:scale(1.25);opacity:1}}
+@keyframes chargeShrink{0%{transform:scale(1)}100%{transform:scale(.92)}}
+@keyframes chargeTremble{
+  0%,100%{transform:translate(0,0)}
+  20%{transform:translate(.6px,-.4px)}
+  40%{transform:translate(-.5px,.5px)}
+  60%{transform:translate(.4px,.3px)}
+  80%{transform:translate(-.3px,-.5px)}
+}
+/* Fireflies — absorbed into the patch */
+.firefly{position:fixed;width:4px;height:4px;border-radius:50%;background:radial-gradient(circle,#FFD27A 25%,rgba(222,167,82,.7) 55%,transparent 75%);box-shadow:0 0 10px rgba(255,210,130,.95),0 0 20px rgba(222,167,82,.4);pointer-events:none;z-index:4;opacity:0;will-change:transform,opacity;animation:flyToPatch var(--d,1.5s) cubic-bezier(.42,0,.28,1) forwards;mix-blend-mode:screen}
+@keyframes flyToPatch{
+  0%{transform:translate(0,0) scale(.4);opacity:0}
+  15%{opacity:1;transform:translate(calc(var(--tx)*.08),calc(var(--ty)*.08)) scale(1)}
+  70%{opacity:1;transform:translate(calc(var(--tx)*.75),calc(var(--ty)*.75)) scale(.8)}
+  100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}
+}
+/* Wordmark — warm gradient, weight 700, tight-but-breathing tracking */
+.reveal-wordmark{font-family:var(--fd);font-size:clamp(2.8rem,10vw,7.5rem);font-weight:700;letter-spacing:-.035em;line-height:.88;display:flex;justify-content:center;gap:0;font-feature-settings:"kern" 1,"liga" 1}
+.reveal-wordmark span{display:inline-block;will-change:transform,opacity,filter;background:linear-gradient(180deg,#fff 0%,#f2e2c2 60%,#dea752 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+/* Gold line — draws from center via clip-path */
+.reveal-line{height:1px;width:clamp(140px,22vw,280px);background:linear-gradient(90deg,transparent,var(--gold) 30%,var(--gold-l) 50%,var(--gold) 70%,transparent);margin:clamp(22px,3vh,32px) auto clamp(10px,1.4vh,16px);box-shadow:0 0 14px rgba(222,167,82,.5);clip-path:inset(0 100% 0 0);transition:box-shadow .3s}
+/* Center dot on line */
+.reveal-line-wrap{position:relative;display:flex;justify-content:center;align-items:center;width:100%}
+.reveal-line-wrap::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);opacity:0;transition:opacity .4s;pointer-events:none;margin-top:-1px}
+.reveal-wrap.lineOn .reveal-line-wrap::after{opacity:.9}
+/* Tagline — quieter, widely tracked */
+.reveal-tagline{font-family:var(--fb);font-size:clamp(.78rem,1.15vw,.95rem);font-weight:400;letter-spacing:.42em;text-transform:uppercase;color:var(--w50);display:block}
+/* Edition stamp — micro-detail */
+.reveal-stamp{margin-top:clamp(18px,2.2vh,28px);font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:.62rem;letter-spacing:.22em;color:rgba(222,167,82,.35);text-transform:uppercase}
+.reveal-stamp span{margin:0 6px;color:rgba(222,167,82,.55)}
+
+/* ═══ HERO SLIDE — cinematic opening ═══ */
+.hero-wrap{text-align:center;position:relative}
+.hero-kicker{display:inline-flex;align-items:center;gap:14px;font-family:var(--fb);font-weight:500;font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:rgba(222,167,82,.42);margin-bottom:34px;will-change:transform,opacity}
+.hero-kicker-rule{width:56px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);transform-origin:left;transform:scaleX(0)}
+.hero-h1{font-family:var(--fd);font-weight:400;font-size:clamp(2.8rem,5.4vw,5rem);line-height:1.05;letter-spacing:-.035em;color:rgba(255,255,255,.9)}
+.hero-h1 .hero-block{display:inline;will-change:transform,opacity,filter}
+.hero-gold{display:inline-block;font-weight:700;font-style:normal;position:relative;color:var(--gold);padding:0 .04em;letter-spacing:-.02em}
+.hero-gold span{display:inline-block;will-change:transform,opacity,filter;color:var(--gold);transition:opacity .8s ease}
+.hero-h2{margin-top:89px;font-family:var(--fd);font-weight:300;font-size:clamp(1.5rem,2.6vw,2.1rem);line-height:1.38;letter-spacing:-.01em;color:rgba(255,255,255,.42);will-change:transform,opacity,filter}
+.hero-h2 em{font-style:normal;font-weight:500;color:var(--gold);position:relative}
+.hero-h2 em::after{content:'';position:absolute;left:0;bottom:-2px;width:100%;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .9s cubic-bezier(.16,1,.3,1)}
+.hero-h2 em.on::after{transform:scaleX(1)}
+.hero-vignette{display:none}
+/* Ember sparks drifting up from gold words */
+.hero-ember{position:fixed;width:3px;height:3px;border-radius:50%;background:radial-gradient(circle,#ffe6a8 30%,rgba(222,167,82,.6) 60%,transparent);box-shadow:0 0 8px rgba(255,210,130,.9);pointer-events:none;z-index:4;opacity:0;will-change:transform,opacity;animation:emberDrift 3.2s cubic-bezier(.4,0,.6,1) forwards;mix-blend-mode:screen}
+@keyframes emberDrift{
+  0%{transform:translate(-50%,0) scale(.3);opacity:0}
+  20%{opacity:.9;transform:translate(calc(-50% + var(--dx,0px)),-20px) scale(1)}
+  100%{transform:translate(calc(-50% + var(--dx,0px) + var(--fx,0px)),-80px) scale(.3);opacity:0;filter:blur(2px)}
+}
+/* Soft energy wave — very subtle, barely visible */
+.energy-ripple{position:fixed;width:240px;height:240px;border-radius:50%;pointer-events:none;z-index:4;transform:translate3d(-50%,-50%,0) scale(.12);will-change:transform,opacity;
+  background:radial-gradient(circle,
+    rgba(255,210,130,0) 0%,
+    rgba(255,210,130,.02) 30%,
+    rgba(255,210,130,.07) 45%,
+    rgba(222,167,82,.12) 55%,
+    rgba(222,167,82,.07) 68%,
+    rgba(222,167,82,.02) 82%,
+    transparent 100%);
+  opacity:0;mix-blend-mode:screen;contain:layout paint;backface-visibility:hidden}
+.energy-ripple.go{animation:softWaveOut 4s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes softWaveOut{
+  0%{transform:translate3d(-50%,-50%,0) scale(.12);opacity:0}
+  12%{opacity:.55}
+  100%{transform:translate3d(-50%,-50%,0) scale(14);opacity:0}
+}
+
+.pills{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
+.pill{padding:10px 26px;border:1px solid rgba(222,167,82,.3);border-radius:100px;font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--gold-dim);transition:border-color .3s,box-shadow .3s}
+.pill:hover{border-color:rgba(222,167,82,.6);box-shadow:0 0 16px rgba(222,167,82,.1)}
+
+/* steps */
+.how-wrap{display:flex;align-items:flex-start;gap:clamp(40px,5vw,80px);width:100%;max-width:1100px;padding-left:clamp(0px, calc(25vw - 260px), 320px)}
+.how-left{flex:1;max-width:480px}
+.how-right{flex:0 0 50%} /* phone canvas occupies right half */
+.step{padding:28px 0;border-bottom:1px solid var(--w15);opacity:.15;transform:translateX(-8px);will-change:opacity,transform}
+.step__head{display:flex;align-items:baseline;gap:16px;margin-bottom:10px}
+.step__n{font-family:var(--fd);font-size:.85rem;font-weight:800;color:var(--gold);min-width:24px}
+.step__t{font-family:var(--fd);font-size:1.15rem;font-weight:600}
+.step__d{font-size:.85rem;font-weight:300;color:var(--w50);line-height:1.7;padding-left:40px}
+.step__screen{display:none;font-size:.7rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);opacity:.5;padding-left:40px;margin-top:6px}
+.step .step__screen{display:block;opacity:0;transition:none}
+.step.on .step__screen{opacity:1}
+
+/* usp */
+.usp{font-family:var(--fd);font-size:clamp(2.4rem,5.5vw,5rem);font-weight:300;line-height:1.15;letter-spacing:-.03em;text-align:center}
+.usp b{font-weight:800;position:relative}
+.usp b::after{content:'';position:absolute;left:0;bottom:-4px;width:100%;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-l));transform:scaleX(0);transform-origin:left;transition:transform 1.2s var(--ease);will-change:transform;border-radius:2px;box-shadow:0 0 12px rgba(222,167,82,.3)}
+.usp b.on::after{transform:scaleX(1)}
+
+/* close section — centered vignette behind text, phone shows through edges */
+#close{overflow:hidden}
+#close .s__in{position:relative;z-index:5}
+#close::before{content:'';position:absolute;inset:0;z-index:3;
+  background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(5,5,8,.34) 0%,rgba(5,5,8,.2) 55%,transparent 100%);
+  pointer-events:none}
+
+.cta-hero{text-align:center}
+.cta-tagline{font-family:var(--fd);font-size:clamp(2rem,4.5vw,3.8rem);font-weight:300;line-height:1.1;letter-spacing:-.02em;margin-top:clamp(40px,6vh,80px)}
+.cta-tagline b{font-weight:700;color:var(--gold);position:relative}
+.cta-tagline b::after{content:'';position:absolute;left:0;bottom:-4px;width:100%;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-l));border-radius:1px;box-shadow:0 0 12px rgba(222,167,82,.4)}
+.cta-dots{display:flex;justify-content:center;gap:8px;margin-top:clamp(24px,3vh,40px)}
+.cta-dots i{width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:.3;animation:ctaDot 1.8s ease-in-out infinite}
+.cta-dots i:nth-child(2){animation-delay:.2s}
+.cta-dots i:nth-child(3){animation-delay:.4s}
+@keyframes ctaDot{0%,100%{opacity:.2;transform:scale(.85)}50%{opacity:1;transform:scale(1.15)}}
+.cta-scan{margin-top:clamp(40px,6vh,70px);display:inline-flex;align-items:center;gap:clamp(20px,3vw,36px)}
+.cta-scan-txt{text-align:right;display:flex;flex-direction:column;gap:6px}
+.cta-scan-txt .k{font-family:var(--fb);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--w50)}
+.cta-scan-txt .v{font-family:var(--fd);font-size:clamp(1.1rem,2vw,1.6rem);font-weight:600;color:var(--w);letter-spacing:-.01em}
+.cta-qr-frame{position:relative;padding:18px;border-radius:16px;background:rgba(222,167,82,.05);transition:transform .4s var(--ease);animation:qrPulse 2.8s ease-in-out infinite}
+.cta-qr-frame::before,.cta-qr-frame::after{content:'';position:absolute;width:24px;height:24px;border:2px solid var(--gold)}
+.cta-qr-frame::before{top:-1px;left:-1px;border-right:none;border-bottom:none;border-top-left-radius:10px}
+.cta-qr-frame::after{bottom:-1px;right:-1px;border-left:none;border-top:none;border-bottom-right-radius:10px}
+.cta-qr-frame .c-br{position:absolute;width:24px;height:24px;border:2px solid var(--gold)}
+.cta-qr-frame .c-br.tr{top:-1px;right:-1px;border-left:none;border-bottom:none;border-top-right-radius:10px}
+.cta-qr-frame .c-br.bl{bottom:-1px;left:-1px;border-right:none;border-top:none;border-bottom-left-radius:10px}
+.cta-qr-frame img{width:clamp(150px,17vw,210px);height:clamp(150px,17vw,210px);display:block;border-radius:4px;position:relative;z-index:1}
+.cta-qr-frame:hover{transform:scale(1.04)}
+@keyframes qrPulse{0%,100%{transform:scale(1);filter:drop-shadow(0 0 8px rgba(222,167,82,.15))}50%{transform:scale(1.025);filter:drop-shadow(0 0 18px rgba(222,167,82,.35))}}
+/* Soft square ripples from QR — barely visible, slow, rare */
+.cta-qr-frame .qr-ripple{position:absolute;inset:0;border-radius:16px;pointer-events:none;opacity:0;will-change:transform,opacity;
+  background:transparent;box-shadow:0 0 0 1px rgba(222,167,82,.22);filter:blur(3px);mix-blend-mode:screen}
+.cta-qr-frame .qr-ripple.a{animation:qrRipple 6s ease-out infinite}
+.cta-qr-frame .qr-ripple.b{animation:qrRipple 6s ease-out infinite;animation-delay:3s}
+.cta-qr-frame .qr-ripple.c{display:none}
+@keyframes qrRipple{0%{transform:scale(1);opacity:0}20%{opacity:.22}100%{transform:scale(1.8);opacity:0}}
+@media(max-width:700px){
+  .cta-scan{flex-direction:column;gap:20px}
+  .cta-scan-txt{text-align:center}
+}
+
+/* phone canvas — right half of screen */
+#phoneCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none;opacity:0;will-change:opacity,transform}
+#phoneCanvas.visible{opacity:1;transition:opacity .35s ease}
+
+/* scroll hint */
+.scroll-hint{position:fixed;bottom:36px;left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:hintIn 1s 1.5s forwards}
+.scroll-hint span{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--w50)}
+.scroll-hint i{width:20px;height:32px;border:2px solid var(--w15);border-radius:10px;position:relative}
+.scroll-hint i::after{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:3px;height:8px;background:var(--gold);border-radius:2px;animation:scrollDot 1.8s infinite}
+@keyframes scrollDot{0%,100%{opacity:1;transform:translateX(-50%) translateY(0)}50%{opacity:.3;transform:translateX(-50%) translateY(10px)}}
+@keyframes hintIn{to{opacity:1}}
+.scroll-hint.hidden{opacity:0!important;transition:opacity .4s}
+
+/* logo glow effect */
+.logo-glow{position:relative}
+.logo-glow::after{content:'';position:absolute;inset:-30px;background:radial-gradient(circle,rgba(222,167,82,.15) 0%,transparent 65%);border-radius:50%;z-index:-1;opacity:0;transition:opacity 1s;pointer-events:none}
+.logo-glow.active::after{opacity:1}
+
+
+/* autoplay */
+.ap-btn{position:fixed;bottom:36px;left:50%;transform:translateX(-50%);z-index:2000;
+  background:rgba(222,167,82,.12);border:1px solid rgba(222,167,82,.35);color:var(--gold);
+  font-family:var(--fb);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  padding:10px 28px 10px 24px;border-radius:100px;cursor:pointer;
+  display:flex;align-items:center;gap:10px;transition:all .3s;backdrop-filter:blur(12px)}
+.ap-btn:hover{background:rgba(222,167,82,.2);border-color:rgba(222,167,82,.5)}
+.ap-btn svg{width:14px;height:14px;fill:var(--gold)}
+.ap-btn.hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(16px)}
+.ap-overlay{position:fixed;inset:0;z-index:9998;background:#050505;opacity:0;pointer-events:none;transition:opacity 1.2s ease}
+.ap-overlay.active{opacity:1}
+.ap-playing .scroll-hint{display:none!important}
+.ap-playing .ap-btn{opacity:0;pointer-events:none}
+/* Hide cursor in autoplay and when idle */
+html:has(body.ap-playing){cursor:none!important}
+html:has(body.cursor-idle){cursor:none!important}
+.ap-playing,.ap-playing *{cursor:none!important}
+.cursor-idle,.cursor-idle *{cursor:none!important}
+
+@media(max-width:900px){
+  .ui-tl,.ui-br{display:none}
+  .ui-tr{top:16px;right:16px}
+  .ui-tr span{font-size:9px;padding:6px 16px}
+  .ui-bl{bottom:16px;left:16px;opacity:.5}
+  .ui-bl span{font-size:10px}
+  .ui-bl img{width:22px;height:22px}
+  #phoneCanvas{opacity:0!important;pointer-events:none;transition:none!important}
+  #phoneCanvas.visible{opacity:.15!important}
+  .s__in{margin-left:auto!important;margin-right:auto!important;text-align:center!important}
+  .scroll-hint{display:none}
+  .pills{justify-content:center}
+  .step__d{padding-left:0}
+  .how-wrap{flex-direction:column;gap:24px}
+  .how-left{position:relative;top:auto;transform:none;max-width:100%}
+  .how-right{display:none}
+  .step__screen{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+<div class="bg"></div>
+<div class="glow"></div>
+<canvas id="bgGlow" style="position:fixed;inset:0;z-index:-9;pointer-events:none;width:100%;height:100%;filter:blur(80px)"></canvas>
+
+<div class="ui ui-tl">KILLHOUSE FILM<br>CONTRIBUTER</div>
+<div class="ui ui-tr"><span>COMING SOON…</span></div>
+<div class="ui ui-bl"><span>www.poolhiveapp.com</span><img src="ЛОГО_ПАТЧ_без_кола_Монтажна_область_1.png" alt="PH"></div>
+<div class="ui ui-br"><img src="qr_code_poolhive.svg" alt="QR" width="80" height="80"></div>
+
+<canvas id="phoneCanvas"></canvas>
+
+<div class="scroll-hint" id="scrollHint"><span>Scroll</span><i></i></div>
+<div class="ap-overlay" id="apOverlay"></div>
+<button class="ap-btn" id="apBtn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>Autoplay</button>
+
+<!-- S1 HERO -->
+<section class="s" id="hero">
+  <div class="s__in hero-wrap">
+    <p class="hero-h1" id="h1">
+      <span class="hero-block">Щодня, мільйони людей</span><br>
+      <em class="hero-gold" id="hw1"><span>м</span><span>р</span><span>і</span><span>ю</span><span>т</span><span>ь</span></em><span class="hero-block"> про щось </span><em class="hero-gold" id="hw2"><span>в</span><span>е</span><span>л</span><span>и</span><span>к</span><span>е</span></em>
+    </p>
+    <p class="hero-h2" id="h2">
+      Але не всі мають <em id="he1">можливість</em><br>
+      втілити це в <em id="he2">життя</em>
+    </p>
+    <div class="hero-vignette" id="h-vig"></div>
+  </div>
+</section>
+
+<!-- S2 REVEAL -->
+<section class="s" id="reveal">
+  <div class="s__in reveal-wrap" id="reveal-wrap">
+    <span class="tl" id="r0">Представляємо вам</span>
+    <div class="reveal-patch" id="r-patch">
+      <img src="ЛОГО_ПАТЧ_без_кола_Монтажна_область_1.png" alt="PoolHive">
+    </div>
+    <span class="reveal-wordmark" id="r1"><span>P</span><span>O</span><span>O</span><span>L</span><span>H</span><span>I</span><span>V</span><span>E</span></span>
+    <div class="reveal-line-wrap"><div class="reveal-line" id="r2"></div></div>
+    <span class="reveal-tagline" id="r3">Endless Possibilities</span>
+    <div class="reveal-stamp" id="r-stamp">EST. 2026<span>·</span>ED. 01</div>
+  </div>
+</section>
+
+<!-- S3 WHAT — phone enters, placeholder on screen -->
+<section class="s" id="what" style="min-height:110vh">
+  <div class="s__in" style="max-width:520px;margin-right:auto;margin-left:clamp(40px, calc(25vw - 260px), 320px)">
+    <div id="what-t">
+      <span class="tl">Одна платформа</span>
+      <p class="tm"><span class="gold" style="font-weight:600">Платформа</span> що об'єднала все в одному місці</p>
+      <div class="pills">
+        <span class="pill">Краудфандинг</span>
+        <span class="pill">Благодійність</span>
+        <span class="pill">Освітній контент</span>
+      </div>
+      <p class="tb" style="margin-top:24px">У <b style="color:var(--gold);font-weight:500">відео форматі</b>, як знайома тобі мережа. Але тільки про <b style="color:var(--gold);font-weight:600">круті</b> ідеї.</p>
+    </div>
+  </div>
+</section>
+
+<!-- S4 USP — phone recedes -->
+<section class="s" id="usp">
+  <div class="s__in">
+    <span class="tl" style="text-align:center;display:block">Головна перевага</span>
+    <p class="usp">Ми платформа яка<br><b class="gold" id="usp-u">не бере комісій</b></p>
+  </div>
+</section>
+
+<!-- S5 HOW IT WORKS — steps left (sticky), phone right -->
+<section id="how" style="position:relative;min-height:200vh;padding:0 clamp(24px,5vw,60px)">
+  <div class="how-wrap" style="position:sticky;top:0;min-height:100vh;display:flex;align-items:center">
+    <div class="how-left">
+      <span class="tl" id="how-label">Як це працює</span>
+      <div style="height:8px"></div>
+      <div id="steps-list">
+        <div class="step on" data-step="0">
+          <div class="step__head"><span class="step__n">01</span><span class="step__t"><span class="gold">Завантаж</span> своє відео</span></div>
+          <div class="step__d">Зніми коротке відео про свою ідею, проєкт або збір коштів</div>
+          <div class="step__screen">Екран: завантаження файлу →</div>
+        </div>
+        <div class="step" data-step="1">
+          <div class="step__head"><span class="step__n">02</span><span class="step__t"><span class="gold">Заповни</span> опис</span></div>
+          <div class="step__d">Розкажи деталі: мета, терміни, команда, що вже зроблено</div>
+          <div class="step__screen">Екран: форма опису →</div>
+        </div>
+        <div class="step" data-step="2">
+          <div class="step__head"><span class="step__n">03</span><span class="step__t"><span class="gold">Встанови</span> фінансову ціль</span></div>
+          <div class="step__d">Вкажи суму, яка потрібна для реалізації твоєї ідеї</div>
+          <div class="step__screen">Екран: вибір суми →</div>
+        </div>
+        <div class="step" data-step="3">
+          <div class="step__head"><span class="step__n">04</span><span class="step__t"><span class="gold">Опублікуй</span> своє відео</span></div>
+          <div class="step__d">Натисни «Опублікувати» і спільнота тебе знайде</div>
+          <div class="step__screen">Екран: публікація ✓</div>
+        </div>
+      </div>
+    </div>
+    <div class="how-right"></div>
+  </div>
+</section>
+
+<!-- S6 CLOSE -->
+<section class="s" id="close">
+  <div class="s__in" style="text-align:left;max-width:520px;margin-left:calc(25vw - 260px);margin-right:auto">
+    <p class="th" id="close-t">І вже <b class="gold">скоро</b>, твою ідею<br><b class="gold">підтримають</b></p>
+  </div>
+</section>
+
+<!-- S7 CTA -->
+<section class="s" id="cta">
+  <div class="s__in cta-hero" id="fc">
+    <span class="tl">Endless Possibilities</span>
+    <div class="logo-row logo-glow active" style="justify-content:center">
+      <span class="td">POOLHIVE</span>
+      <img src="ЛОГО_ПАТЧ_без_кола_Монтажна_область_1.png" alt="PH">
+    </div>
+    <div class="logo-line"></div>
+    <p class="cta-tagline"><b>Скоро</b> у твоєму смартфоні</p>
+    <div class="cta-dots"><i></i><i></i><i></i></div>
+    <div class="cta-scan">
+      <div class="cta-scan-txt">
+        <span class="k">Відскануй, щоб дізнатися більше</span>
+        <span class="v">poolhiveapp.com</span>
+      </div>
+      <div class="cta-qr-frame">
+        <span class="c-br tr"></span><span class="c-br bl"></span>
+        <span class="qr-ripple a"></span><span class="qr-ripple b"></span><span class="qr-ripple c"></span>
+        <img src="qr_code_poolhive.svg" alt="QR — poolhiveapp.com">
+      </div>
+    </div>
+  </div>
+</section>
+<div style="height:10vh"></div>
+
+<!-- CDN scripts — NO ES modules, works from file:// -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+<script>
+/* ═══ BACKGROUND — dithered gradient + breathing orbs ═══ */
+(function(){
+  var c=document.getElementById('bgGlow');
+  var ctx=c.getContext('2d',{alpha:false});
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  var w,h;
+  var bgCache=null; /* pre-rendered dithered gradient */
+
+  function buildBg(){
+    /* Pure black base — all color comes from animated blobs */
+    var oc=document.createElement('canvas');
+    oc.width=w*dpr;oc.height=h*dpr;
+    var ox=oc.getContext('2d');
+    ox.fillStyle='#020203';
+    ox.fillRect(0,0,oc.width,oc.height);
+    /* Dither to prevent any banding */
+    var img=ox.getImageData(0,0,oc.width,oc.height);
+    var d=img.data;
+    for(var i=0;i<d.length;i+=4){
+      var n=(Math.random()-0.5)*4;
+      d[i]=Math.max(0,Math.min(255,d[i]+n));
+      d[i+1]=Math.max(0,Math.min(255,d[i+1]+n));
+      d[i+2]=Math.max(0,Math.min(255,d[i+2]+n));
+    }
+    ox.putImageData(img,0,0);
+    bgCache=oc;
+  }
+
+  function resize(){
+    w=window.innerWidth;h=window.innerHeight;
+    c.width=w*dpr;c.height=h*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    buildBg();
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  var scrollY=0;
+  window.addEventListener('scroll',function(){scrollY=window.scrollY||0;},{passive:true});
+
+  /* Lava blobs — large slow dark masses + small bright gold sparks */
+  var blobs=[
+    /* Deep lava masses — fast breathing, strong parallax for depth */
+    {bx:0.2,by:0.3, r:600,cr:15,cg:16,cb:40,  peak:0.85,ox:0,   oy:0,   spd:0.15,amp:0.3, prl:0.6},
+    {bx:0.8,by:0.5, r:650,cr:12,cg:14,cb:35,  peak:0.8, ox:1.5, oy:2.2, spd:0.12,amp:0.35,prl:0.45},
+    {bx:0.5,by:0.8, r:580,cr:18,cg:14,cb:38,  peak:0.75,ox:3.1, oy:0.7, spd:0.13,amp:0.25,prl:0.7},
+    {bx:0.9,by:0.15,r:520,cr:10,cg:12,cb:30,  peak:0.7, ox:4.5, oy:3.5, spd:0.16,amp:0.28,prl:0.35},
+    {bx:0.1,by:0.6, r:560,cr:14,cg:10,cb:36,  peak:0.75,ox:2.3, oy:5.1, spd:0.14,amp:0.32,prl:0.55},
+    {bx:0.5,by:0.2, r:500,cr:16,cg:15,cb:42,  peak:0.65,ox:5.8, oy:1.4, spd:0.17,amp:0.2, prl:0.5},
+    /* Extra blue blobs — fill gaps, faster pulse */
+    {bx:0.4,by:0.5, r:550,cr:13,cg:15,cb:38,  peak:0.7, ox:6.2, oy:3.0, spd:0.18,amp:0.28,prl:0.65},
+    {bx:0.7,by:0.8, r:480,cr:11,cg:13,cb:33,  peak:0.65,ox:0.8, oy:4.6, spd:0.2, amp:0.3, prl:0.4},
+    {bx:0.3,by:0.7, r:520,cr:16,cg:12,cb:36,  peak:0.6, ox:3.7, oy:1.9, spd:0.15,amp:0.25,prl:0.55},
+    {bx:0.65,by:0.15,r:490,cr:14,cg:16,cb:42,  peak:0.7, ox:2.0, oy:5.5, spd:0.19,amp:0.22,prl:0.5},
+    /* Gold pulses — warm flashes drifting through */
+    {bx:0.35,by:0.2, r:250,cr:222,cg:167,cb:82, peak:0.12,ox:0.5, oy:1.8, spd:0.25,amp:0.25,prl:0.5},
+    {bx:0.7,by:0.4, r:220,cr:222,cg:167,cb:82, peak:0.1, ox:3.2, oy:0.3, spd:0.3, amp:0.22,prl:0.4},
+    {bx:0.5,by:0.65,r:200,cr:200,cg:150,cb:60, peak:0.09,ox:5.5, oy:4.1, spd:0.28,amp:0.28,prl:0.6},
+    {bx:0.15,by:0.45,r:180,cr:222,cg:180,cb:100,peak:0.08,ox:1.1, oy:2.9, spd:0.32,amp:0.2, prl:0.45},
+    {bx:0.6,by:0.85,r:190,cr:200,cg:160,cb:70, peak:0.07,ox:4.0, oy:2.5, spd:0.28,amp:0.18,prl:0.55},
+  ];
+
+  function drawBlob(o,t){
+    var st=t*o.spd;
+    var cx=o.bx*w+Math.sin(st*2.1+o.ox)*w*o.amp+Math.cos(st*1.3+o.oy*1.7)*w*o.amp*0.4;
+    var rawY=o.by*h+Math.cos(st*1.7+o.oy)*h*o.amp*0.8+Math.sin(st*1.1+o.ox*1.3)*h*o.amp*0.3-scrollY*o.prl;
+    /* Wrap vertically — orbs cycle back from bottom when they leave top */
+    var span=h*1.8;
+    var cy=((rawY%span)+span)%span-h*0.4;
+    /* Breathing — never fully off */
+    var breath=0.3+0.7*((Math.sin(st*3.5+o.ox*1.1)+1)*0.5)*((Math.cos(st*2.1+o.oy*0.8)+1)*0.5);
+    var alpha=o.peak*breath;
+    if(alpha<0.002)return;
+    /* Pulsing radius */
+    var r=o.r*(0.85+0.3*Math.sin(st*2.5+o.oy));
+    var grad=ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+    var steps=128;
+    for(var i=0;i<=steps;i++){
+      var frac=i/steps;
+      var curve=frac*Math.sqrt(frac);
+      var a=alpha*(1-curve)*(1-curve);
+      a+=(Math.random()-0.5)*0.008;
+      grad.addColorStop(frac,'rgba('+o.cr+','+o.cg+','+o.cb+','+Math.max(0,a).toFixed(5)+')');
+    }
+    ctx.fillStyle=grad;
+    ctx.fillRect(cx-r,cy-r,r*2,r*2);
+  }
+
+  var t0=performance.now()/1000;
+  function tick(){
+    requestAnimationFrame(tick);
+    var t=performance.now()/1000-t0;
+    /* Black base */
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.drawImage(bgCache,0,0);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    /* Lava blobs */
+    for(var i=0;i<blobs.length;i++)drawBlob(blobs[i],t);
+  }
+  tick();
+})();
+</script>
+<script>
+(function(){
+"use strict";
+gsap.registerPlugin(ScrollTrigger,ScrollToPlugin);
+
+/* ═══ SCROLL / GLOW ═══ */
+gsap.to('#prog',{width:'100%',ease:'none',scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:.3}});
+gsap.to('.glow',{y:-300,scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:1}});
+
+/* ═══ SCROLL HINT ═══ */
+var scrollHintEl=document.getElementById('scrollHint');
+ScrollTrigger.create({trigger:'#hero',start:'top top',end:'bottom 80%',
+  onLeave:function(){scrollHintEl.classList.add('hidden')},
+  onEnterBack:function(){scrollHintEl.classList.remove('hidden')}});
+
+/* ═══ HERO — cinematic reveal ═══ */
+var hw1Chars=document.querySelectorAll('#hw1 span');
+var hw2Chars=document.querySelectorAll('#hw2 span');
+var heroBlocks=document.querySelectorAll('#h1 .hero-block');
+
+gsap.set(heroBlocks,{opacity:0,y:22,filter:'blur(8px)'});
+gsap.set([hw1Chars,hw2Chars],{opacity:0,yPercent:60,filter:'blur(14px)'});
+gsap.set('#h2',{opacity:0,y:26,filter:'blur(8px)'});
+
+var heroTL=gsap.timeline({scrollTrigger:{trigger:'#hero',start:'top 95%'},defaults:{ease:'expo.out'}});
+heroTL
+  /* Block 1: "Щодня, мільйони людей" */
+  .to(heroBlocks[0],{opacity:1,y:0,filter:'blur(0px)',duration:1.4},0.2)
+  /* Dream word letters */
+  .to(hw1Chars,{opacity:1,yPercent:0,filter:'blur(0px)',duration:1.4,stagger:{each:.028,from:'start'}},0.55)
+  /* Block 2: "про щось" */
+  .to(heroBlocks[1],{opacity:1,y:0,filter:'blur(0px)',duration:1.2},0.95)
+  /* Big word letters */
+  .to(hw2Chars,{opacity:1,yPercent:0,filter:'blur(0px)',duration:1.4,stagger:{each:.028,from:'start'}},1.25)
+  /* h2 exhale */
+  .to('#h2',{opacity:1,y:0,filter:'blur(0px)',duration:1.4},1.9)
+  /* Gold underlines stagger */
+  .call(function(){document.getElementById('he1').classList.add('on');},null,2.5)
+  .call(function(){document.getElementById('he2').classList.add('on');},null,2.8);
+
+/* Ember sparks drift up from gold words */
+var heroEmberInt=null;
+function spawnEmber(wordId){
+  var w=document.getElementById(wordId);if(!w)return;
+  var r=w.getBoundingClientRect();
+  if(r.bottom<0||r.top>window.innerHeight)return; /* skip if off-screen */
+  var e=document.createElement('div');
+  e.className='hero-ember';
+  var x=r.left+Math.random()*r.width;
+  var y=r.top+r.height*0.3+Math.random()*r.height*0.5;
+  e.style.left=x+'px';e.style.top=y+'px';
+  e.style.setProperty('--dx',((Math.random()-0.5)*14)+'px');
+  e.style.setProperty('--fx',((Math.random()-0.5)*30)+'px');
+  document.body.appendChild(e);
+  setTimeout(function(){e.remove();},3400);
+}
+function startHeroEmbers(){
+  if(heroEmberInt)return;
+  heroEmberInt=setInterval(function(){
+    var hero=document.getElementById('hero').getBoundingClientRect();
+    if(hero.bottom<0||hero.top>window.innerHeight)return; /* pause off-screen */
+    if(Math.random()<0.7)spawnEmber('hw1');
+    if(Math.random()<0.7)spawnEmber('hw2');
+  },1400);
+}
+
+/* Reveal — ceremonial sequence: letters stagger from center, line draws via clip-path */
+var revealChars=document.querySelectorAll('#r1 span');
+var revealTL=gsap.timeline({scrollTrigger:{trigger:'#reveal',start:'top 55%',toggleActions:'play none none reverse'},defaults:{ease:'power3.out'}});
+revealTL
+  /* 0.0s — kicker whisper */
+  .from('#r0',{y:14,opacity:0,filter:'blur(6px)',duration:.7},0)
+  /* 0.3s — patch fades in from behind, soft */
+  .from('#r-patch',{scale:.82,opacity:0,y:8,filter:'blur(8px)',duration:1.1},0.3)
+  /* 0.55s — wordmark letters stagger from center with blur */
+  .from(revealChars,{yPercent:55,opacity:0,filter:'blur(14px)',scale:.94,duration:1.0,ease:'power4.out',stagger:{each:.04,from:'center'}},0.55)
+  /* 0.95s — gold line draws from center out */
+  .to('#r2',{clipPath:'inset(0 0% 0 0%)',duration:.85,ease:'power4.inOut'},0.95)
+  /* 1.05s — center dot appears */
+  .call(function(){document.getElementById('reveal-wrap').classList.add('lineOn');},null,1.15)
+  /* 1.3s — tagline with letter-spacing tighten */
+  .from('#r3',{y:10,opacity:0,filter:'blur(5px)',letterSpacing:'0.55em',duration:.85,ease:'power3.out'},1.3)
+  /* 1.6s — edition stamp micro-fade */
+  .from('#r-stamp',{y:6,opacity:0,duration:.6},1.6)
+  /* After reveal — ambient loops + enter charging state */
+  .call(function(){
+    gsap.to('#r1',{y:'+=3',duration:4.5,ease:'sine.inOut',yoyo:true,repeat:-1});
+    gsap.to('#r2',{boxShadow:'0 0 24px rgba(222,167,82,.75)',duration:2.2,ease:'sine.inOut',yoyo:true,repeat:-1});
+    /* Only enter CHARGING state if we're not bursted (could be after autoplay reset) */
+    if(typeof revealState==='undefined'||revealState==='IDLE'){
+      document.getElementById('reveal-wrap').classList.add('charging');
+    }
+  });
+
+/* ═══ Fireflies — strict state machine, max count, visibility guard ═══ */
+var FF_MAX=24;
+var fireflyCount=0;
+var fireflyInterval=null;
+function getPatchCenter(){
+  var p=document.getElementById('r-patch');var r=p.getBoundingClientRect();
+  return{x:r.left+r.width/2,y:r.top+r.height/2,visible:r.bottom>0&&r.top<window.innerHeight};
+}
+function spawnFirefly(){
+  if(fireflyCount>=FF_MAX)return;
+  var c=getPatchCenter();
+  if(!c.visible)return;
+  var angle=Math.random()*Math.PI*2;
+  var dist=140+Math.random()*220;
+  var sx=Math.cos(angle)*dist,sy=Math.sin(angle)*dist;
+  var f=document.createElement('div');
+  f.className='firefly';
+  f.style.left=(c.x+sx)+'px';f.style.top=(c.y+sy)+'px';
+  f.style.setProperty('--tx',(-sx)+'px');
+  f.style.setProperty('--ty',(-sy)+'px');
+  f.style.setProperty('--d',(1.1+Math.random()*.9)+'s');
+  document.body.appendChild(f);
+  fireflyCount++;
+  setTimeout(function(){f.remove();fireflyCount--;},2200);
+}
+function startFireflies(){
+  if(fireflyInterval)return;
+  fireflyInterval=setInterval(function(){
+    if(revealState!=='CHARGING')return;
+    var c=getPatchCenter();if(!c.visible)return;
+    spawnFirefly();
+  },220);
+}
+function stopFireflies(){
+  if(fireflyInterval){clearInterval(fireflyInterval);fireflyInterval=null;}
+}
+
+/* ═══ State machine: IDLE → CHARGING → BURSTED → (back to IDLE via full reset) ═══ */
+var revealState='IDLE'; /* IDLE | CHARGING | BURSTED */
+var _rippleActive=false;
+
+function enterCharging(){
+  if(revealState==='CHARGING')return;
+  revealState='CHARGING';
+  document.getElementById('reveal-wrap').classList.add('charging');
+  startFireflies();
+}
+function emitEnergyBurst(){
+  if(revealState!=='CHARGING'||_rippleActive)return;
+  revealState='BURSTED';_rippleActive=true;
+  document.getElementById('reveal-wrap').classList.remove('charging');
+  stopFireflies();
+  var c=getPatchCenter();
+  var w=document.createElement('div');
+  w.className='energy-ripple';
+  w.style.left=c.x+'px';w.style.top=c.y+'px';
+  document.body.appendChild(w);
+  requestAnimationFrame(function(){w.classList.add('go');});
+  setTimeout(function(){w.remove();_rippleActive=false;},3800);
+  gsap.timeline()
+    .to('#r-patch',{scale:1.18,duration:.35,ease:'power2.out'})
+    .to('#r-patch',{scale:1,duration:.7,ease:'power3.out'});
+}
+function resetRevealToIdle(){
+  /* Full reset: clean everything, ready to charge again */
+  revealState='IDLE';
+  document.getElementById('reveal-wrap').classList.remove('charging');
+  stopFireflies();
+}
+
+/* Start in CHARGING after reveal animation completes */
+var chargingWatch=setInterval(function(){
+  if(document.getElementById('reveal-wrap').classList.contains('charging')){
+    enterCharging();clearInterval(chargingWatch);
+  }
+},300);
+
+/* Single scroll handler, heavily guarded */
+var _lastScrollY=window.scrollY||0;
+function checkBurstOnScroll(){
+  var y=window.scrollY||0;
+  var dy=y-_lastScrollY;_lastScrollY=y;
+  var rev=document.getElementById('reveal');
+  var revTop=rev.getBoundingClientRect().top;
+  var revBot=rev.getBoundingClientRect().bottom;
+  var vh=window.innerHeight;
+
+  /* Burst trigger: state=CHARGING, scrolling down meaningfully, reveal still visible */
+  if(revealState==='CHARGING'&&dy>3&&revBot>vh*0.2){
+    emitEnergyBurst();
+    return;
+  }
+  /* Reset trigger: state=BURSTED, reveal scrolled fully back into view (top near 0 or page reset) */
+  if(revealState==='BURSTED'&&revTop>vh*0.5){
+    resetRevealToIdle();
+    /* Wait for reveal animation to re-add charging — avoid immediate re-charge */
+    setTimeout(function(){
+      if(document.getElementById('reveal-wrap').classList.contains('charging')){
+        enterCharging();
+      }
+    },400);
+  }
+}
+window.addEventListener('scroll',checkBurstOnScroll,{passive:true});
+
+/* ═══ Hide cursor when idle (1s without movement) ═══ */
+(function(){
+  var idleT=null;
+  var body=document.body;
+  function onMove(){
+    body.classList.remove('cursor-idle');
+    if(idleT)clearTimeout(idleT);
+    idleT=setTimeout(function(){body.classList.add('cursor-idle');},1000);
+  }
+  window.addEventListener('mousemove',onMove,{passive:true});
+  window.addEventListener('mousedown',onMove,{passive:true});
+  /* Start in idle after 1s */
+  idleT=setTimeout(function(){body.classList.add('cursor-idle');},1000);
+})();
+
+gsap.timeline({scrollTrigger:{trigger:'#what',start:'top 50%',toggleActions:'play none none reverse'}})
+  .from('#what-t .tl',{y:20,opacity:0,duration:.4})
+  .from('#what-t .tm',{y:30,opacity:0,duration:.7,ease:'power3.out'},'-=.15')
+  .from('.pill',{y:16,opacity:0,stagger:.1,duration:.4},'-=.2')
+  .from('#what-t .tb',{y:16,opacity:0,duration:.5},'-=.1');
+
+ScrollTrigger.create({trigger:'#usp',start:'top 55%',
+  onEnter:function(){gsap.from('#usp .tl',{y:16,opacity:0,duration:.4});gsap.from('.usp',{y:40,opacity:0,duration:1.1,ease:'power3.out',delay:.15});setTimeout(function(){document.getElementById('usp-u').classList.add('on')},700)},
+  onLeaveBack:function(){document.getElementById('usp-u').classList.remove('on')}});
+
+gsap.from('#how-label',{scrollTrigger:{trigger:'#how',start:'top 70%',toggleActions:'play none none reverse'},y:16,opacity:0,duration:.4});
+
+var stepEls=document.querySelectorAll('.step');
+var screenStep=0, screenTime=1;
+function setStep(n){if(n!==screenStep){screenStep=n;screenTime=0;}}
+
+/* Steps — continuous interpolation, no dead zones.
+   Each step fades in as scroll approaches its center, fades out as scroll leaves.
+   At any scroll position something is always changing. */
+ScrollTrigger.create({
+  trigger:'#how',
+  start:'top top',
+  end:'bottom bottom',
+  onUpdate:function(self){
+    var p=self.progress*4; // 0..4 continuous
+    /* Default to nearest step by progress — prevents resetting to step 0 at edges */
+    var activeIdx=Math.min(3,Math.max(0,Math.floor(p)));
+    for(var i=0;i<4;i++){
+      var center=i+0.5; // center of each step zone
+      var dist=Math.abs(p-center);
+      /* Smooth bell curve: 1 at center, 0.15 at edges */
+      var t=Math.max(0,1-dist*1.2);
+      t=t*t*(3-2*t); // smoothstep
+      var opacity=0.15+0.85*t;
+      var tx=-8*(1-t);
+      stepEls[i].style.opacity=opacity;
+      stepEls[i].style.transform='translateX('+tx+'px)';
+      /* Track which step is most active */
+      if(t>0.5){
+        activeIdx=i;
+        if(!stepEls[i].classList.contains('on'))stepEls[i].classList.add('on');
+      }else{
+        stepEls[i].classList.remove('on');
+      }
+    }
+    setStep(activeIdx);
+  }
+});
+
+gsap.from('#close-t',{scrollTrigger:{trigger:'#close',start:'top 55%',toggleActions:'play none none reverse'},y:50,opacity:0,duration:1.2,ease:'power3.out'});
+/* Fade out bottom-right QR when close section phone enlarges */
+gsap.to('.ui-br',{opacity:0,duration:1.2,ease:'power2.inOut',scrollTrigger:{trigger:'#close',start:'top 70%',end:'top 20%',scrub:true}});
+gsap.from('#fc',{scrollTrigger:{trigger:'#cta',start:'top 60%',toggleActions:'play none none reverse'},y:50,opacity:0,scale:.96,duration:1.1,ease:'power3.out'});
+
+/* ═══════════════════════════════════════════
+   THREE.JS — iPHONE (r128, script tag)
+   ═══════════════════════════════════════════ */
+var canvas = document.getElementById('phoneCanvas');
+var cW = window.innerWidth;
+var cH = window.innerHeight;
+
+/* WebGL support check */
+var glCtx=canvas.getContext('webgl2')||canvas.getContext('webgl')||canvas.getContext('experimental-webgl');
+if(!glCtx){canvas.style.display='none';/* fallback: phone just hidden, text-only presentation */}
+
+var renderer = new THREE.WebGLRenderer({canvas:canvas, alpha:true, antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(cW, cH);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.3;
+renderer.outputEncoding = THREE.sRGBEncoding;
+
+var scene = new THREE.Scene();
+var cam = new THREE.PerspectiveCamera(28, cW / cH, 0.1, 100);
+cam.position.set(0, 0, 5.5);
+
+/* ── lights ── */
+scene.add(new THREE.AmbientLight(0x404050, 1.0));
+
+var keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
+keyLight.position.set(3, 5, 6); scene.add(keyLight);
+
+var fillLight = new THREE.DirectionalLight(0x8899aa, 0.5);
+fillLight.position.set(-5, 2, 4); scene.add(fillLight);
+
+var rimLight = new THREE.PointLight(0xDEA752, 1.5, 15);
+rimLight.position.set(-3, -1, -3); scene.add(rimLight);
+
+var topLight = new THREE.DirectionalLight(0xffffff, 0.25);
+topLight.position.set(0, 8, 2); scene.add(topLight);
+
+/* ── env cubemap from canvas ── */
+function makeCubeMap(){
+  var sz=128, faces=[];
+  for(var f=0;f<6;f++){
+    var c=document.createElement('canvas');c.width=sz;c.height=sz;
+    var cx=c.getContext('2d');
+    var g=cx.createRadialGradient(sz*.6,sz*.3,0,sz*.5,sz*.5,sz);
+    g.addColorStop(0,'#2a2a38');g.addColorStop(.5,'#141418');g.addColorStop(1,'#0a0a10');
+    cx.fillStyle=g;cx.fillRect(0,0,sz,sz);
+    cx.fillStyle='rgba(222,167,82,.12)';
+    cx.beginPath();cx.arc(sz*.7,sz*.25,sz*.3,0,Math.PI*2);cx.fill();
+    faces.push(c);
+  }
+  var t=new THREE.CubeTexture(faces);t.needsUpdate=true;return t;
+}
+var envMap=makeCubeMap();
+
+/* ── phone group ── */
+var ph = new THREE.Group();
+scene.add(ph);
+
+/* rounded rect shape */
+function rrShape(w,h,r){
+  var s=new THREE.Shape(), hw=w/2, hh=h/2;
+  s.moveTo(-hw+r,-hh);
+  s.lineTo(hw-r,-hh);
+  s.quadraticCurveTo(hw,-hh,hw,-hh+r);
+  s.lineTo(hw,hh-r);
+  s.quadraticCurveTo(hw,hh,hw-r,hh);
+  s.lineTo(-hw+r,hh);
+  s.quadraticCurveTo(-hw,hh,-hw,hh-r);
+  s.lineTo(-hw,-hh+r);
+  s.quadraticCurveTo(-hw,-hh,-hw+r,-hh);
+  return s;
+}
+
+// iPhone proportions matched to 375x812 screen (1:2.165)
+var PW=1.05, PH=1.05*(812/375), PD=0.04, PR=0.16;
+var BEVEL=0.012;
+
+/* ── BODY ── */
+var bodyGeom = new THREE.ExtrudeGeometry(rrShape(PW,PH,PR), {
+  depth:PD, bevelEnabled:true, bevelThickness:BEVEL, bevelSize:BEVEL, bevelSegments:10,
+  curveSegments:32
+});
+bodyGeom.center();
+var bodyMat = new THREE.MeshPhysicalMaterial({
+  color:0x2a2a32, metalness:0.3, roughness:0.3,
+  clearcoat:0.7, clearcoatRoughness:0.1,
+  envMap:envMap, envMapIntensity:0.8,
+});
+ph.add(new THREE.Mesh(bodyGeom, bodyMat));
+
+/* ── TITANIUM FRAME ── */
+var frameOuter = rrShape(PW+0.01, PH+0.01, PR+0.005);
+var frameInner = rrShape(PW-0.01, PH-0.01, PR-0.005);
+frameOuter.holes.push(frameInner);
+var frameGeom = new THREE.ExtrudeGeometry(frameOuter, {
+  depth:PD+0.016, bevelEnabled:true, bevelThickness:0.002, bevelSize:0.002, bevelSegments:3,
+  curveSegments:32
+});
+frameGeom.center();
+var frameMat = new THREE.MeshPhysicalMaterial({
+  color:0xc0c0c8, metalness:0.95, roughness:0.06,
+  clearcoat:1.0, clearcoatRoughness:0.02,
+  envMap:envMap, envMapIntensity:3.0,
+});
+ph.add(new THREE.Mesh(frameGeom, frameMat));
+
+/* ── SCREEN ── */
+var SW=PW-0.06, SH=PH-0.06;
+/* ── Load feed photo ── */
+var feedImg=new Image();feedImg.src='feed_photo.png';
+var feedImgReady=false;
+feedImg.onload=function(){feedImgReady=true;};
+
+var uploadImg=new Image();uploadImg.src='upload_zone.png';
+var uploadImgReady=false;
+uploadImg.onload=function(){uploadImgReady=true;};
+
+/* ── Feed video for phone screen ── */
+var feedVideo=document.createElement('video');
+feedVideo.src='screen assets/main_video.mp4';
+feedVideo.muted=true;feedVideo.loop=true;feedVideo.playsInline=true;feedVideo.preload='auto';
+var feedVideoReady=false;
+feedVideo.addEventListener('canplay',function(){feedVideoReady=true;feedVideo.play();});
+
+/* ── Feed UI assets — all SVGs + images from screen assets ── */
+var SA='screen assets/';
+var feedAssets={};
+var feedAssetList=['project_avatar.png','btn_filter.svg','icon_search.svg','icon_share.svg','icon_heart.svg','icon_bookmark.svg','icon_grid.svg','nav_left.svg','nav_home.svg','nav_center.svg','nav_right.svg','nav_right2.svg'];
+feedAssetList.forEach(function(f){var img=new Image();img.src=SA+f;feedAssets[f]=img;});
+var showFeed=false;
+var feedOpacity=0; /* 0..1 smooth fade for feed screen */
+var tutorialOpacity=0; /* 0..1 smooth fade for tutorial steps */
+var helenOpacity=0; /* 0..1 smooth fade for Helen feed */
+var tutFade=1; /* 1=tutorial visible, 0=black (fading to Helen) */
+
+/* ── Feed drip counter state ── */
+var feedDrip={
+  raised:229000,
+  nextDrip:0.8+Math.random()*1,
+  amounts:[50,100,150,200,250,350,500,560,750,1000],
+  floaters:[], /* {text,x,y,birth} */
+  likes:2400,
+  nextLike:1.5+Math.random()*3,
+  progWidth:0,
+  started:false,
+  startTime:0
+};
+function feedFmt(n){return n.toLocaleString('en-US');}
+function feedLikesFmt(n){return n>=1000?(n/1000).toFixed(1)+'k':String(n);}
+
+var sCanvas = document.createElement('canvas');
+var SDPR=5; /* screen texture resolution multiplier — 5x for max sharpness */
+sCanvas.width=375*SDPR; sCanvas.height=812*SDPR;
+var sx = sCanvas.getContext('2d');
+sx.setTransform(SDPR,0,0,SDPR,0,0);
+
+// roundRect polyfill
+if(!sx.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,radii){
+    var r=typeof radii==='number'?radii:(radii&&radii[0])||0;
+    this.moveTo(x+r,y);this.lineTo(x+w-r,y);this.quadraticCurveTo(x+w,y,x+w,y+r);
+    this.lineTo(x+w,y+h-r);this.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    this.lineTo(x+r,y+h);this.quadraticCurveTo(x,y+h,x,y+h-r);
+    this.lineTo(x,y+r);this.quadraticCurveTo(x,y,x+r,y);this.closePath();return this;
+  };
+}
+
+var GC='#DEA752';
+var isPlaceholder=true;
+
+/* ══ ICON HELPERS ══ */
+function drawHeart(cx,cy,s,fill){sx.save();sx.translate(cx,cy);sx.scale(s,s);sx.beginPath();
+  sx.moveTo(0,-6);sx.bezierCurveTo(-7,-14,-16,-4,-8,4);sx.lineTo(0,10);sx.lineTo(8,4);sx.bezierCurveTo(16,-4,7,-14,0,-6);
+  sx.closePath();if(fill){sx.fill();}else{sx.lineWidth=1.5/s;sx.stroke();}sx.restore();}
+function drawChat(cx,cy,s){sx.save();sx.translate(cx,cy);sx.scale(s,s);sx.beginPath();
+  sx.roundRect(-9,-8,18,14,4);sx.moveTo(-3,6);sx.lineTo(0,11);sx.lineTo(3,6);sx.lineWidth=1.5/s;sx.stroke();sx.restore();}
+function drawShare(cx,cy,s){sx.save();sx.translate(cx,cy);sx.scale(s,s);sx.lineWidth=1.5/s;sx.lineCap='round';
+  sx.beginPath();sx.moveTo(0,-8);sx.lineTo(0,6);sx.stroke();
+  sx.beginPath();sx.moveTo(-5,-3);sx.lineTo(0,-8);sx.lineTo(5,-3);sx.stroke();
+  sx.beginPath();sx.moveTo(-8,2);sx.lineTo(-8,9);sx.lineTo(8,9);sx.lineTo(8,2);sx.stroke();sx.restore();}
+function drawBookmark(cx,cy,s){sx.save();sx.translate(cx,cy);sx.scale(s,s);sx.lineWidth=1.5/s;sx.lineCap='round';sx.lineJoin='round';
+  sx.beginPath();sx.moveTo(-6,-9);sx.lineTo(-6,9);sx.lineTo(0,4);sx.lineTo(6,9);sx.lineTo(6,-9);sx.closePath();sx.stroke();sx.restore();}
+function drawHome(cx,cy,s,active){sx.save();sx.translate(cx,cy);sx.scale(s,s);sx.lineWidth=1.8/s;sx.lineCap='round';sx.lineJoin='round';
+  sx.beginPath();sx.moveTo(-9,1);sx.lineTo(0,-8);sx.lineTo(9,1);if(active){sx.lineTo(9,9);sx.lineTo(-9,9);sx.closePath();sx.fill();}else{sx.stroke();
+  sx.beginPath();sx.roundRect(-7,1,14,8,1);sx.stroke();}sx.restore();}
+function drawExplore(cx,cy,s){sx.save();sx.translate(cx,cy);sx.scale(s,s);sx.lineWidth=1.5/s;
+  sx.beginPath();sx.arc(0,0,8,0,Math.PI*2);sx.stroke();
+  sx.beginPath();sx.moveTo(-3,-3);sx.lineTo(5,5);sx.lineWidth=2/s;sx.stroke();sx.restore();}
+function drawPlus(cx,cy,r){sx.beginPath();sx.arc(cx,cy,r,0,Math.PI*2);sx.fill();
+  sx.strokeStyle='#050505';sx.lineWidth=2.5;sx.lineCap='round';
+  sx.beginPath();sx.moveTo(cx-7,cy);sx.lineTo(cx+7,cy);sx.stroke();
+  sx.beginPath();sx.moveTo(cx,cy-7);sx.lineTo(cx,cy+7);sx.stroke();}
+function drawProfile(cx,cy,s){sx.save();sx.translate(cx,cy);sx.scale(s,s);sx.lineWidth=1.5/s;
+  sx.beginPath();sx.arc(0,-4,4,0,Math.PI*2);sx.stroke();
+  sx.beginPath();sx.moveTo(-7,9);sx.quadraticCurveTo(-7,1,0,1);sx.quadraticCurveTo(7,1,7,9);sx.stroke();sx.restore();}
+function drawFilter(cx,cy,s){sx.save();sx.translate(cx,cy);sx.scale(s,s);sx.lineWidth=1.5/s;sx.lineCap='round';
+  [-5,0,5].forEach(function(ly,i){var dx=i===1?3:-3;sx.beginPath();sx.moveTo(-7,ly);sx.lineTo(7,ly);sx.stroke();
+    sx.beginPath();sx.arc(dx,ly,2.2,0,Math.PI*2);sx.fill();});sx.restore();}
+
+/* ══ APP CHROME (shared) ══ */
+function drawAppChrome(activeNav){
+  // status bar
+  sx.fillStyle='rgba(0,0,0,.5)';sx.fillRect(0,0,430,54);
+  sx.fillStyle='rgba(255,255,255,.7)';sx.font='600 14px Inter,sans-serif';sx.textAlign='center';
+  sx.fillText('9:41',215,38);
+  // dynamic island
+  sx.fillStyle='#000';sx.beginPath();sx.roundRect(155,10,120,30,15);sx.fill();
+  // header bg gradient
+  var hg=sx.createLinearGradient(0,54,0,145);hg.addColorStop(0,'rgba(0,0,0,.65)');hg.addColorStop(1,'rgba(0,0,0,0)');
+  sx.fillStyle=hg;sx.fillRect(0,54,430,91);
+  // "Hi, Zack"
+  sx.fillStyle='#fff';sx.font='700 22px Manrope,sans-serif';sx.textAlign='left';sx.fillText('Hi, Zack',22,85);
+  // top-right icons
+  sx.strokeStyle='rgba(255,255,255,.7)';sx.fillStyle='rgba(255,255,255,.7)';
+  drawFilter(372,78,1.1);
+  sx.strokeStyle='rgba(255,255,255,.7)';sx.fillStyle='rgba(255,255,255,.7)';
+  drawExplore(404,78,1.1);
+  // tabs
+  sx.beginPath();sx.roundRect(22,100,90,28,14);sx.fillStyle='#fff';sx.fill();
+  sx.fillStyle='#0a0a0a';sx.font='600 12px Inter,sans-serif';sx.textAlign='center';sx.fillText('business',67,118);
+  sx.beginPath();sx.roundRect(120,100,72,28,14);sx.strokeStyle='rgba(255,255,255,.3)';sx.lineWidth=1;sx.stroke();
+  sx.fillStyle='rgba(255,255,255,.6)';sx.font='400 12px Inter,sans-serif';sx.fillText('social',156,118);
+
+  // bottom nav bar
+  var ng=sx.createLinearGradient(0,855,0,932);ng.addColorStop(0,'rgba(0,0,0,0)');ng.addColorStop(.3,'rgba(0,0,0,.7)');ng.addColorStop(1,'rgba(0,0,0,.85)');
+  sx.fillStyle=ng;sx.fillRect(0,855,430,77);
+  var navX=[50,130,215,300,380];
+  // home
+  sx.strokeStyle=activeNav===0?'#fff':'rgba(255,255,255,.35)';sx.fillStyle=activeNav===0?'#fff':'rgba(255,255,255,.35)';
+  drawHome(navX[0],898,1.15,activeNav===0);
+  // explore
+  sx.strokeStyle=activeNav===1?'#fff':'rgba(255,255,255,.35)';sx.fillStyle=activeNav===1?'#fff':'rgba(255,255,255,.35)';
+  drawExplore(navX[1],898,1.15);
+  // plus button (center)
+  sx.fillStyle=GC;drawPlus(navX[2],898,18);
+  // chat
+  sx.strokeStyle=activeNav===3?GC:'rgba(255,255,255,.35)';sx.fillStyle=activeNav===3?GC:'rgba(255,255,255,.35)';
+  drawChat(navX[3],898,1.15);
+  // profile
+  sx.strokeStyle=activeNav===4?'#fff':'rgba(255,255,255,.35)';sx.fillStyle=activeNav===4?'#fff':'rgba(255,255,255,.35)';
+  drawProfile(navX[4],898,1.15);
+  // home bar
+  sx.fillStyle='rgba(255,255,255,.2)';sx.beginPath();sx.roundRect(155,922,120,4,2);sx.fill();
+}
+
+/* ══ DRAW: feed screen — 1:1 coordinates from original 375x812 layout ══ */
+function drawFeedScreen(t){
+  sx.clearRect(0,0,375,812);
+  sx.fillStyle='#000';sx.fillRect(0,0,375,812);
+
+  /* Video background — dimmed, object-fit:cover */
+  if(feedVideoReady){
+    sx.save();sx.globalAlpha=0.56;
+    var vw=feedVideo.videoWidth||1080,vh=feedVideo.videoHeight||1920;
+    var dw=375,dh=768,dar=dw/dh,var_=vw/vh;
+    var sw,sh,ssx,ssy;
+    if(var_>dar){sw=vh*dar;sh=vh;ssx=(vw-sw)/2;ssy=0;}
+    else{sw=vw;sh=vw/dar;ssx=0;ssy=(vh-sh)/2;}
+    sx.drawImage(feedVideo,ssx,ssy,sw,sh,0,-44,dw,dh);
+    sx.restore();
+  }
+
+  /* Black bar below video */
+  sx.fillStyle='#000';sx.fillRect(0,718,375,94);
+
+  /* Gradient overlays */
+  var gt=sx.createLinearGradient(0,0,0,130);
+  gt.addColorStop(0,'rgba(0,0,0,0.65)');gt.addColorStop(0.5,'rgba(0,0,0,0.3)');gt.addColorStop(1,'transparent');
+  sx.fillStyle=gt;sx.fillRect(0,0,375,130);
+  var gb=sx.createLinearGradient(0,480,0,724);
+  gb.addColorStop(0,'transparent');gb.addColorStop(0.6,'rgba(0,0,0,0.5)');gb.addColorStop(1,'rgba(0,0,0,0.85)');
+  sx.fillStyle=gb;sx.fillRect(0,480,375,244);
+
+  /* Dynamic island covers status bar area */
+  sx.fillStyle='#000';sx.beginPath();sx.roundRect(113,10,150,28,14);sx.fill();
+
+  /* Lines */
+  sx.strokeStyle='rgba(225,225,225,0.5)';sx.lineWidth=0.75;
+  sx.beginPath();sx.moveTo(0,73);sx.lineTo(375,73);sx.stroke();
+  sx.strokeStyle='rgba(225,225,225,0.3)';sx.lineWidth=1;
+  sx.beginPath();sx.moveTo(0,117);sx.lineTo(375,117);sx.stroke();
+  sx.strokeStyle='rgba(225,225,225,0.5)';
+  sx.beginPath();sx.moveTo(0,724);sx.lineTo(375,724);sx.stroke();
+
+  /* "Hi, Zack" */
+  sx.fillStyle='#fff';sx.font='600 21px Poppins,sans-serif';sx.textAlign='left';
+  sx.fillText('Hi, Zack',23,52);
+
+  /* Filter button + search */
+  var a=feedAssets;
+  if(a['btn_filter.svg'].complete)sx.drawImage(a['btn_filter.svg'],317,27,48,40);
+  if(a['icon_search.svg'].complete)sx.drawImage(a['icon_search.svg'],332,80,27,27);
+
+  /* Tabs */
+  sx.fillStyle='#fff';sx.font='600 15px Poppins,sans-serif';sx.textAlign='center';
+  sx.fillText('business',114,102);
+  sx.fillStyle='rgba(255,255,255,.6)';sx.font='500 15px Poppins,sans-serif';
+  sx.fillText('social',252,102);
+  sx.fillStyle='rgba(255,255,255,0.8)';sx.fillRect(242,106,20,1);
+
+  /* Side icons */
+  if(a['icon_share.svg'].complete)sx.drawImage(a['icon_share.svg'],333,415,27,25);
+  if(a['icon_heart.svg'].complete)sx.drawImage(a['icon_heart.svg'],333,463,26,25);
+  sx.fillStyle='rgba(255,255,255,.6)';sx.font='500 10px Montserrat,sans-serif';sx.textAlign='center';
+  sx.fillText(feedLikesFmt(feedDrip.likes),346,500);
+  if(a['icon_bookmark.svg'].complete)sx.drawImage(a['icon_bookmark.svg'],335,514,24,25);
+  if(a['icon_grid.svg'].complete)sx.drawImage(a['icon_grid.svg'],335,565,22,24);
+
+  /* Project avatar */
+  if(a['project_avatar.png'].complete){
+    sx.save();sx.beginPath();sx.roundRect(18,611,30,25,4);sx.clip();
+    sx.drawImage(a['project_avatar.png'],18,611,30,25);sx.restore();
+    sx.strokeStyle='#fff';sx.lineWidth=1;sx.beginPath();sx.roundRect(18,611,30,25,4);sx.stroke();
+  }
+
+  /* Init timer on first draw */
+  if(!feedDrip.started){feedDrip.started=true;feedDrip.startTime=t;feedDrip.raised=229000;feedDrip.likes=2400;feedDrip.progWidth=0;feedDrip.floaters=[];}
+  var ft=t-feedDrip.startTime;
+
+  /* Drip counter — add random amount every 3-8s */
+  if(ft>feedDrip.nextDrip){
+    var add=feedDrip.amounts[Math.floor(Math.random()*feedDrip.amounts.length)];
+    feedDrip.raised+=add;
+    feedDrip.floaters.push({text:'+'+feedFmt(add)+' $',x:250+Math.random()*55,y:600+Math.random()*10,birth:t});
+    feedDrip.nextDrip=ft+1+Math.random()*2;
+  }
+
+  /* Likes counter — +1-3 every 2-5s */
+  if(ft>feedDrip.nextLike){
+    feedDrip.likes+=Math.floor(Math.random()*3)+1;
+    feedDrip.nextLike=ft+2+Math.random()*3;
+  }
+
+  /* Progress bar reflects actual raised/goal ratio (goal: 350,000) */
+  feedDrip.progWidth=Math.min(344,(feedDrip.raised/350000)*344);
+
+  /* Project name + funding */
+  sx.fillStyle='#fff';sx.font='600 15px Poppins,sans-serif';sx.textAlign='left';
+  sx.fillText('Social App',57,626);
+  sx.font='500 15px Poppins,sans-serif';sx.textAlign='right';
+  sx.fillText(feedFmt(feedDrip.raised)+'/350,000 $',361,626);
+
+  /* Progress bar */
+  sx.fillStyle='#E1E1E1';sx.fillRect(18,645,344,1);
+  sx.fillStyle='#FFA717';sx.fillRect(18,644,feedDrip.progWidth,2);
+
+  /* Floating +amount particles */
+  for(var fi=feedDrip.floaters.length-1;fi>=0;fi--){
+    var fl=feedDrip.floaters[fi];
+    var age=t-fl.birth;
+    if(age>2.2){feedDrip.floaters.splice(fi,1);continue;}
+    var frac=age/2.2;
+    var fy=fl.y-frac*65;
+    var fa=frac<0.15?frac/0.15:frac>0.7?1-(frac-0.7)/0.3:1;
+    var fscale=frac<0.15?0.7+frac/0.15*0.3:frac>0.7?1-(frac-0.7)*0.33:1;
+    sx.save();sx.globalAlpha=fa*0.9;
+    sx.fillStyle='#FFC34A';sx.font='600 '+Math.round(16*fscale)+'px Poppins,sans-serif';sx.textAlign='right';
+    sx.shadowColor='rgba(255,167,23,0.5)';sx.shadowBlur=6;
+    sx.fillText(fl.text,fl.x,fy);
+    sx.restore();
+  }
+
+  /* Donate button */
+  sx.strokeStyle='rgba(255,255,255,0.9)';sx.lineWidth=1.5;
+  sx.beginPath();sx.roundRect(18,658,344,54,10);sx.stroke();
+  sx.fillStyle='#fff';sx.font='600 15px Poppins,sans-serif';sx.textAlign='center';
+  sx.fillText('Donate',190,690);
+
+  /* Bottom nav */
+    if(a['nav_left.svg'].complete)sx.drawImage(a['nav_left.svg'],31,747,24,24);
+  if(a['nav_home.svg'].complete)sx.drawImage(a['nav_home.svg'],95,747,24,24);
+  if(a['nav_center.svg'].complete)sx.drawImage(a['nav_center.svg'],159,735,58,49);
+  if(a['nav_right2.svg'].complete)sx.drawImage(a['nav_right2.svg'],257,747,24,24);
+  if(a['nav_right.svg'].complete)sx.drawImage(a['nav_right.svg'],321,747,24,24);
+
+  /* Badge "7" */
+  sx.fillStyle='#FFA717';sx.beginPath();sx.roundRect(274,741,14,12,2);sx.fill();
+  sx.fillStyle='#fff';sx.font='500 9px Montserrat,sans-serif';sx.textAlign='center';
+  sx.fillText('7',281,751);
+
+  /* Home indicator */
+  sx.fillStyle='rgba(255,255,255,.2)';sx.beginPath();sx.roundRect(123,804,130,4,2);sx.fill();
+}
+
+/* ══ DRAW: placeholder — wireframe grid ══ */
+function drawScreen(t){
+  sx.clearRect(0,0,375,812);
+  sx.fillStyle='#0c0c10';sx.fillRect(0,0,375,812);
+  sx.strokeStyle='rgba(255,255,255,.04)';sx.lineWidth=1;
+  for(var gx=0;gx<=375;gx+=32){sx.beginPath();sx.moveTo(gx,0);sx.lineTo(gx,812);sx.stroke();}
+  for(var gy=0;gy<=812;gy+=32){sx.beginPath();sx.moveTo(0,gy);sx.lineTo(375,gy);sx.stroke();}
+  sx.strokeStyle='rgba(222,167,82,.06)';
+  sx.beginPath();sx.moveTo(0,0);sx.lineTo(375,812);sx.stroke();
+  sx.beginPath();sx.moveTo(375,0);sx.lineTo(0,812);sx.stroke();
+  sx.fillStyle='rgba(222,167,82,.15)';sx.beginPath();sx.arc(187,406,4,0,Math.PI*2);sx.fill();
+}
+
+var showHelen=false;
+/* ── Helen drip state ── */
+var helenDrip={raised:37000,nextDrip:0.3,amounts:[100,150,200,250,350,500,750,1000],floaters:[],likes:180,nextLike:1,progWidth:0,started:false,startTime:0};
+
+function drawHelenFeed(t){
+  sx.fillStyle='#000';sx.fillRect(0,0,375,812);
+  if(uploadedVideoReady){
+    var _ga=sx.globalAlpha;
+    sx.globalAlpha=_ga*0.56;
+    var vw=uploadedVideo.videoWidth||1080,vh=uploadedVideo.videoHeight||1920;
+    var dw=375,dh=768,dar=dw/dh,var_=vw/vh;
+    var sw,sh,ssx,ssy;
+    if(var_>dar){sw=vh*dar;sh=vh;ssx=(vw-sw)/2;ssy=0;}else{sw=vw;sh=vw/dar;ssx=0;ssy=0;} /* ssy=0: show top (face) */
+    sx.drawImage(uploadedVideo,ssx,ssy,sw,sh,0,-44,dw,dh);
+    sx.globalAlpha=_ga;
+  }
+  sx.fillStyle='#000';sx.fillRect(0,718,375,94);
+  var gt=sx.createLinearGradient(0,0,0,130);gt.addColorStop(0,'rgba(0,0,0,0.65)');gt.addColorStop(0.5,'rgba(0,0,0,0.3)');gt.addColorStop(1,'transparent');
+  sx.fillStyle=gt;sx.fillRect(0,0,375,130);
+  var gb=sx.createLinearGradient(0,480,0,724);gb.addColorStop(0,'transparent');gb.addColorStop(0.6,'rgba(0,0,0,0.5)');gb.addColorStop(1,'rgba(0,0,0,0.85)');
+  sx.fillStyle=gb;sx.fillRect(0,480,375,244);
+  sx.fillStyle='#000';sx.beginPath();sx.roundRect(113,10,150,28,14);sx.fill();
+  sx.strokeStyle='rgba(225,225,225,0.5)';sx.lineWidth=0.75;sx.beginPath();sx.moveTo(0,73);sx.lineTo(375,73);sx.stroke();
+  sx.strokeStyle='rgba(225,225,225,0.3)';sx.lineWidth=1;sx.beginPath();sx.moveTo(0,117);sx.lineTo(375,117);sx.stroke();
+  sx.strokeStyle='rgba(225,225,225,0.5)';sx.beginPath();sx.moveTo(0,724);sx.lineTo(375,724);sx.stroke();
+  sx.fillStyle='#fff';sx.font='600 21px Poppins,sans-serif';sx.textAlign='left';sx.fillText('Hi, Helen',23,52);
+  var a=feedAssets;
+  if(a['btn_filter.svg'].complete)sx.drawImage(a['btn_filter.svg'],317,27,48,40);
+  if(a['icon_search.svg'].complete)sx.drawImage(a['icon_search.svg'],332,80,27,27);
+  sx.fillStyle='#fff';sx.font='600 15px Poppins,sans-serif';sx.textAlign='center';sx.fillText('business',114,102);
+  sx.fillStyle='rgba(255,255,255,.6)';sx.font='500 15px Poppins,sans-serif';sx.fillText('social',252,102);
+  sx.fillStyle='rgba(255,255,255,0.8)';sx.fillRect(242,106,20,1);
+  if(a['icon_share.svg'].complete)sx.drawImage(a['icon_share.svg'],333,415,27,25);
+  if(a['icon_heart.svg'].complete)sx.drawImage(a['icon_heart.svg'],333,463,26,25);
+  sx.fillStyle='rgba(255,255,255,.6)';sx.font='500 10px Montserrat,sans-serif';sx.textAlign='center';
+  sx.fillText(feedLikesFmt(helenDrip.likes),346,500);
+  if(a['icon_bookmark.svg'].complete)sx.drawImage(a['icon_bookmark.svg'],335,514,24,25);
+  if(a['icon_grid.svg'].complete)sx.drawImage(a['icon_grid.svg'],335,565,22,24);
+  /* Helen drip logic */
+  if(!helenDrip.started){helenDrip.started=true;helenDrip.startTime=t;helenDrip.raised=37000;helenDrip.likes=180;helenDrip.progWidth=0;helenDrip.floaters=[];}
+  var ft=t-helenDrip.startTime;
+  if(ft>helenDrip.nextDrip){var add=helenDrip.amounts[Math.floor(Math.random()*helenDrip.amounts.length)];helenDrip.raised+=add;helenDrip.floaters.push({text:'+'+feedFmt(add)+' $',x:250+Math.random()*55,y:600+Math.random()*10,birth:t});helenDrip.nextDrip=ft+0.3+Math.random()*0.8;}
+  if(ft>helenDrip.nextLike){helenDrip.likes+=Math.floor(Math.random()*3)+1;helenDrip.nextLike=ft+2+Math.random()*3;}
+  helenDrip.progWidth=Math.min(344,(helenDrip.raised/100000)*344);
+  sx.fillStyle='#fff';sx.font='600 15px Poppins,sans-serif';sx.textAlign='left';sx.fillText('Tech App',57,626);
+  sx.font='500 15px Poppins,sans-serif';sx.textAlign='right';sx.fillText(feedFmt(helenDrip.raised)+'/100,000 $',361,626);
+  sx.fillStyle='#E1E1E1';sx.fillRect(18,645,344,1);sx.fillStyle='#FFA717';sx.fillRect(18,644,helenDrip.progWidth,2);
+  sx.strokeStyle='rgba(255,255,255,0.9)';sx.lineWidth=1.5;sx.beginPath();sx.roundRect(18,658,344,54,10);sx.stroke();
+  sx.fillStyle='#fff';sx.font='600 15px Poppins,sans-serif';sx.textAlign='center';sx.fillText('Donate',190,690);
+    if(a['nav_left.svg'].complete)sx.drawImage(a['nav_left.svg'],31,747,24,24);
+  if(a['nav_home.svg'].complete)sx.drawImage(a['nav_home.svg'],95,747,24,24);
+  if(a['nav_center.svg'].complete)sx.drawImage(a['nav_center.svg'],159,735,58,49);
+  if(a['nav_right2.svg'].complete)sx.drawImage(a['nav_right2.svg'],257,747,24,24);
+  if(a['nav_right.svg'].complete)sx.drawImage(a['nav_right.svg'],321,747,24,24);
+  sx.fillStyle='#FFA717';sx.beginPath();sx.roundRect(274,741,14,12,2);sx.fill();
+  sx.fillStyle='#fff';sx.font='500 9px Montserrat,sans-serif';sx.textAlign='center';sx.fillText('7',281,751);
+  sx.fillStyle='rgba(255,255,255,.2)';sx.beginPath();sx.roundRect(123,804,130,4,2);sx.fill();
+  /* Floaters */
+  for(var fi=helenDrip.floaters.length-1;fi>=0;fi--){var fl=helenDrip.floaters[fi];var age=t-fl.birth;if(age>2.2){helenDrip.floaters.splice(fi,1);continue;}var frac=age/2.2;var fy=fl.y-frac*65;var fa=frac<0.15?frac/0.15:frac>0.7?1-(frac-0.7)/0.3:1;sx.save();sx.globalAlpha=fa*0.9;sx.fillStyle='#FFC34A';sx.font='600 '+Math.round(16*(frac<0.15?0.7+frac*2:1))+'px Poppins,sans-serif';sx.textAlign='right';sx.shadowColor='rgba(255,167,23,0.5)';sx.shadowBlur=6;sx.fillText(fl.text,fl.x,fy);sx.restore();}
+}
+
+function drawPlaceholder(t){ drawScreen(t); }
+
+/* ── Load uploaded video for Helen feed ── */
+var uploadedVideo=document.createElement('video');
+uploadedVideo.src='screen assets/uploaded_video.mp4';
+uploadedVideo.muted=true;uploadedVideo.loop=true;uploadedVideo.playsInline=true;uploadedVideo.preload='auto';
+var uploadedVideoReady=false;
+uploadedVideo.addEventListener('canplay',function(){uploadedVideoReady=true;uploadedVideo.play();});
+
+/* ══ Tutorial screen helpers ══ */
+function drawTutorialBase(){
+  sx.clearRect(0,0,375,812);
+  sx.fillStyle='#171717';sx.fillRect(0,0,375,812);
+  /* PoolHive logo */
+  sx.fillStyle='#fff';sx.font='800 30px Poppins,sans-serif';sx.textAlign='center';
+  sx.fillText('PoolHive',187,103);
+  /* Back arrow */
+  sx.fillStyle='#fff';sx.font='400 18px -apple-system,sans-serif';sx.textAlign='left';
+  sx.fillText('\u2190',23,48);
+  /* Notch — same as feed/helen */
+  sx.fillStyle='#000';sx.beginPath();sx.roundRect(113,10,150,28,14);sx.fill();
+  /* Home indicator */
+  sx.fillStyle='rgba(255,255,255,.3)';sx.beginPath();sx.roundRect(123,804,130,4,2);sx.fill();
+}
+function drawField(x,y,w,h,active){
+  sx.strokeStyle=active?'rgba(255,167,23,0.75)':'rgba(255,255,255,0.15)';
+  sx.lineWidth=1;sx.beginPath();sx.roundRect(x,y,w,h,10);sx.stroke();
+}
+function drawBtnNext(label,filled){
+  /* Continuous pulse glow — alive even in pause */
+  var pulse=0.5+Math.sin(performance.now()*0.003)*0.5;
+  if(filled){
+    sx.save();sx.shadowColor='rgba(255,167,23,'+(0.3+pulse*0.3).toFixed(2)+')';sx.shadowBlur=12+pulse*18;
+    sx.fillStyle='#FFA717';sx.beginPath();sx.roundRect(18,708,338,54,10);sx.fill();
+    sx.restore();
+  }else{
+    sx.strokeStyle='rgba(255,255,255,'+(0.25+pulse*0.2).toFixed(2)+')';sx.lineWidth=1;
+    sx.beginPath();sx.roundRect(18,708,344,54,10);sx.stroke();
+    /* Subtle inner glow */
+    sx.save();sx.globalAlpha=pulse*0.08;
+    sx.fillStyle='#FFA717';sx.beginPath();sx.roundRect(18,708,344,54,10);sx.fill();
+    sx.restore();
+  }
+  sx.fillStyle='#fff';sx.font='500 15px Poppins,sans-serif';sx.textAlign='center';
+  sx.fillText(label||'Next',190,740);
+}
+function drawCursor(x,y,t){
+  if(Math.floor(t*1.4)%2===0){sx.fillStyle='#FFA717';sx.fillRect(x,y,1.5,16);}
+}
+function typeProgress(t,text,speed){
+  var chars=Math.min(text.length,Math.floor(t/speed));
+  return text.slice(0,chars);
+}
+
+/* ══ STEP 0: Upload Video — smooth choreographed entrance ══ */
+function drawStepUpload(t){
+  drawTutorialBase();
+
+  /* Title — fade + rise */
+  var a1=animIn(0.1,0.55,t);
+  if(a1.p>0){
+    sx.save();sx.globalAlpha=a1.e;sx.translate(0,(1-a1.e)*-8);
+    sx.fillStyle='#fff';sx.font='600 14px Poppins,sans-serif';sx.textAlign='center';
+    sx.fillText('UPLOAD A VIDEO PITCH DECK',187,182);
+    sx.restore();
+  }
+
+  /* Description lines — staggered fade + rise */
+  var lines=['Discover & support ideas','Create a campaign with your own project','Set a funding goal','Share it with your network.'];
+  for(var i=0;i<4;i++){
+    var ad=animIn(0.3+i*0.08,0.5,t);
+    if(ad.p>0){
+      sx.save();sx.globalAlpha=ad.e;sx.translate(0,(1-ad.e)*10);
+      sx.fillStyle='#fff';sx.font='500 15px Poppins,sans-serif';sx.textAlign='left';
+      sx.fillText(lines[i],16,260+i*40);
+      sx.restore();
+    }
+  }
+
+  /* Upload zone — fade + scale from 0.95, bouncy */
+  var az=animIn(0.75,0.65,t);
+  if(az.p>0){
+    sx.save();sx.globalAlpha=az.e;
+    var zs=0.95+0.05*az.b;
+    sx.translate(16+171.5,425+116);sx.scale(zs,zs);sx.translate(-171.5,-116);
+    sx.setLineDash([6,4]);sx.strokeStyle='#FFC34A';sx.lineWidth=1;
+    sx.beginPath();sx.roundRect(0,0,343,232,8);sx.stroke();sx.setLineDash([]);
+    /* Icon — separate bounce-in */
+    var ai=animIn(1.0,0.5,t);
+    if(ai.p>0){
+      sx.save();sx.globalAlpha=ai.e;
+      sx.translate(171.5,48);sx.scale(ai.b,ai.b);
+      sx.fillStyle='#FFA717';sx.beginPath();sx.arc(0,0,20,0,Math.PI*2);sx.fill();
+      sx.fillStyle='#171717';sx.font='700 18px sans-serif';sx.textAlign='center';sx.fillText('\u2191',0,6);
+      sx.restore();
+    }
+    /* Tap text + format */
+    var at=animIn(1.2,0.4,t);
+    if(at.p>0){
+      sx.save();sx.globalAlpha=at.e;sx.translate(0,(1-at.e)*6);
+      sx.fillStyle='#fff';sx.font='500 14px Poppins,sans-serif';sx.textAlign='center';
+      sx.fillText('Tap to upload',171.5,112);
+      sx.font='400 10px Montserrat,sans-serif';sx.fillStyle='rgba(255,255,255,.6)';
+      sx.fillText('File format: video',171.5,132);
+      sx.restore();
+    }
+    sx.restore();
+  }
+
+  /* Progress bar — smooth fade in, then fill */
+  var ap=animIn(1.4,0.4,t);
+  if(ap.p>0){
+    sx.save();sx.globalAlpha=ap.e;
+    sx.fillStyle='rgba(255,255,255,.1)';sx.fillRect(56,625,263,3);
+    var prog=Math.max(0,Math.min(1,(t-1.6)/3.6));
+    prog=easeOutCubic(prog);
+    var grd=sx.createLinearGradient(56,0,56+263*prog,0);
+    grd.addColorStop(0,'#FFA717');grd.addColorStop(1,'#FFC34A');
+    sx.fillStyle=grd;sx.fillRect(56,625,263*prog,3);
+    /* Pulse at leading edge */
+    if(prog>0&&prog<1){
+      var pulse=0.5+Math.sin(t*6)*0.5;
+      sx.globalAlpha=ap.e*pulse*0.6;
+      sx.fillStyle='#FFC34A';
+      sx.fillRect(56+263*prog-6,624,6,5);
+    }
+    sx.restore();
+  }
+
+  /* Uploaded overlay — smooth slide-up + bounce checkmark */
+  var au=animIn(5.2,0.5,t);
+  if(au.p>0){
+    sx.save();sx.globalAlpha=au.e;
+    sx.fillStyle='rgba(23,23,23,0.92)';
+    sx.beginPath();sx.roundRect(16,425,343,232,8);sx.fill();
+    sx.restore();
+    var ac=animIn(5.35,0.5,t);
+    if(ac.p>0){
+      sx.save();
+      sx.translate(187,520);sx.scale(ac.b,ac.b);
+      sx.fillStyle='#FFA717';sx.beginPath();sx.arc(0,0,22,0,Math.PI*2);sx.fill();
+      /* Draw checkmark */
+      sx.strokeStyle='#171717';sx.lineWidth=3;sx.lineCap='round';sx.lineJoin='round';
+      sx.beginPath();sx.moveTo(-8,1);sx.lineTo(-2,7);sx.lineTo(9,-5);sx.stroke();
+      sx.restore();
+    }
+    var at2=animIn(5.55,0.4,t);
+    if(at2.p>0){
+      sx.save();sx.globalAlpha=at2.e;sx.translate(0,(1-at2.e)*6);
+      sx.fillStyle='#fff';sx.font='500 12px Poppins,sans-serif';sx.textAlign='center';
+      sx.fillText('Uploaded!',187,553);
+      sx.restore();
+    }
+  }
+
+  /* Next button — smooth rise */
+  var an=animIn(5.7,0.5,t);
+  if(an.p>0){
+    sx.save();sx.globalAlpha=an.e;sx.translate(0,(1-an.e)*12);
+    drawBtnNext();
+    sx.restore();
+  }
+}
+
+/* ══ STEP 1: Fill Description — smooth choreographed entrance ══ */
+function drawStepDescription(t){
+  drawTutorialBase();
+
+  /* Section header — fade + rise */
+  var a1=animIn(0.05,0.5,t);
+  if(a1.p>0){
+    sx.save();sx.globalAlpha=a1.e;sx.translate(0,(1-a1.e)*10);
+    sx.fillStyle='#fff';sx.font='500 15px Poppins,sans-serif';sx.textAlign='left';
+    sx.fillText('Add your campaign',18,175);
+    sx.restore();
+  }
+
+  /* Field 1 (Tech App) — scale-in + typing */
+  var af1=animIn(0.25,0.5,t);
+  if(af1.p>0){
+    sx.save();sx.globalAlpha=af1.e;
+    var fs=0.97+0.03*af1.e;
+    sx.translate(18+172,196+27.5);sx.scale(fs,fs);sx.translate(-172,-27.5);
+    sx.strokeStyle=t<1.1?'rgba(255,167,23,0.75)':'rgba(255,255,255,0.15)';
+    sx.lineWidth=1;sx.beginPath();sx.roundRect(0,0,344,55,10);sx.stroke();
+    var t1=typeProgress(Math.max(0,t-0.5),'Tech App',0.08);
+    sx.fillStyle='#fff';sx.font='400 14px Poppins,sans-serif';sx.fillText(t1,18,32);
+    if(t1.length<'Tech App'.length)drawCursor(18+sx.measureText(t1).width+2,18,t);
+    sx.restore();
+  }
+
+  /* Field 2 (Machine Learning) — fade + rise */
+  var af2=animIn(0.75,0.5,t);
+  if(af2.p>0){
+    sx.save();sx.globalAlpha=af2.e;sx.translate(0,(1-af2.e)*8);
+    drawField(18,266,344,55,false);
+    sx.fillStyle='#fff';sx.font='400 14px Poppins,sans-serif';sx.fillText('Machine Learning',36,298);
+    sx.restore();
+  }
+
+  /* Amount label — fade + rise */
+  var al1=animIn(1.1,0.5,t);
+  if(al1.p>0){
+    sx.save();sx.globalAlpha=al1.e;sx.translate(0,(1-al1.e)*8);
+    sx.fillStyle='#fff';sx.font='500 15px Poppins,sans-serif';
+    sx.fillText('Provide the amount needed to raise',18,370);
+    sx.restore();
+  }
+
+  /* Amount field — scale-in + typing */
+  var af3=animIn(1.25,0.5,t);
+  if(af3.p>0){
+    sx.save();sx.globalAlpha=af3.e;
+    var fs=0.97+0.03*af3.e;
+    sx.translate(18+172,389+27.5);sx.scale(fs,fs);sx.translate(-172,-27.5);
+    sx.strokeStyle=t<2.5?'rgba(255,167,23,0.75)':'rgba(255,255,255,0.15)';
+    sx.lineWidth=1;sx.beginPath();sx.roundRect(0,0,344,55,10);sx.stroke();
+    var t3=typeProgress(Math.max(0,t-1.5),'100 000',0.09);
+    sx.fillStyle='#fff';sx.font='400 18px Poppins,sans-serif';sx.fillText(t3,15,32);
+    if(t3.length<'100 000'.length)drawCursor(15+sx.measureText(t3).width+2,15,t);
+    sx.font='400 18px Baloo Bhai 2,cursive';sx.fillText('$',305,32);
+    sx.restore();
+  }
+
+  /* Description label — fade + rise */
+  var al2=animIn(1.7,0.5,t);
+  if(al2.p>0){
+    sx.save();sx.globalAlpha=al2.e;sx.translate(0,(1-al2.e)*8);
+    sx.fillStyle='#fff';sx.font='500 15px Poppins,sans-serif';sx.fillText('Project description',20,486);
+    sx.restore();
+  }
+
+  /* Description textarea — scale-in + typing */
+  var af4=animIn(1.85,0.55,t);
+  if(af4.p>0){
+    sx.save();sx.globalAlpha=af4.e;
+    var fs=0.97+0.03*af4.e;
+    sx.translate(18+172,504+94.5);sx.scale(fs,fs);sx.translate(-172,-94.5);
+    sx.strokeStyle=t<4.5?'rgba(255,167,23,0.75)':'rgba(255,255,255,0.15)';
+    sx.lineWidth=1;sx.beginPath();sx.roundRect(0,0,344,189,10);sx.stroke();
+    var desc='Please, enter the description of your\nproject here';
+    var t4=typeProgress(Math.max(0,t-2.1),desc,0.04);
+    sx.fillStyle='#fff';sx.font='400 14px Baloo Bhai 2,cursive';
+    var dlines=t4.split('\n');
+    for(var i=0;i<dlines.length;i++)sx.fillText(dlines[i],22,37+i*24);
+    if(t4.length<desc.length){var lastL=dlines[dlines.length-1];drawCursor(22+sx.measureText(lastL).width+2,22+(dlines.length-1)*24,t);}
+    sx.restore();
+  }
+
+  /* Next button — smooth rise */
+  var an=animIn(2.9,0.5,t);
+  if(an.p>0){
+    sx.save();sx.globalAlpha=an.e;sx.translate(0,(1-an.e)*12);
+    drawBtnNext();
+    sx.restore();
+  }
+}
+
+/* Easing helpers — smooth entrance animations */
+function easeOutCubic(x){return 1-Math.pow(1-x,3);}
+function easeOutBack(x){var c=1.2,c3=c+1;return 1+c3*Math.pow(x-1,3)+c*Math.pow(x-1,2);}
+function animIn(startT,dur,curT){
+  var p=Math.max(0,Math.min(1,(curT-startT)/dur));
+  return{p:p,e:easeOutCubic(p),b:easeOutBack(p)};
+}
+
+/* ══ STEP 2: Financial Goal — smooth choreographed entrance ══ */
+function drawStepGoal(t){
+  drawTutorialBase();
+
+  /* Success title — fade + slight drop */
+  var a1=animIn(0.1,0.6,t);
+  if(a1.p>0){
+    sx.save();sx.globalAlpha=a1.e;
+    sx.translate(0,(1-a1.e)*-8);
+    sx.fillStyle='#fff';sx.font='400 18px Poppins,sans-serif';sx.textAlign='center';
+    sx.fillText('Success!',187,178);
+    sx.restore();
+  }
+
+  /* Chips label — fade + rise from below */
+  var a2=animIn(0.4,0.5,t);
+  if(a2.p>0){
+    sx.save();sx.globalAlpha=a2.e;
+    sx.translate(0,(1-a2.e)*10);
+    sx.fillStyle='#fff';sx.font='500 15px Poppins,sans-serif';sx.textAlign='left';
+    sx.fillText('Default amounts for donates:',18,278);
+    sx.restore();
+  }
+
+  /* Chips — stagger with scale bounce + fade */
+  var chips=['100$','200$','500$','1k$'];
+  for(var i=0;i<4;i++){
+    var ci=animIn(0.55+i*0.1,0.55,t);
+    if(ci.p>0){
+      var cx=18+i*90,cy=301;
+      var sel=(i===2&&t>1.1);
+      var scl=ci.b; /* overshoot */
+      sx.save();
+      sx.globalAlpha=Math.min(1,ci.e*1.2);
+      sx.translate(cx+34,cy+21.5);sx.scale(scl,scl);sx.translate(-34,-21.5);
+      sx.fillStyle=sel?'rgba(255,167,23,0.25)':'rgba(255,255,255,0.15)';
+      sx.beginPath();sx.roundRect(0,0,68,43,10);sx.fill();
+      if(sel){sx.strokeStyle='#FFA717';sx.lineWidth=1;sx.beginPath();sx.roundRect(0,0,68,43,10);sx.stroke();}
+      sx.fillStyle='#fff';sx.font='400 17px Poppins,sans-serif';sx.textAlign='center';
+      sx.fillText(chips[i],34,29);
+      sx.restore();
+    }
+  }
+
+  /* Selected chip — pulsing glow ring (smoother, offset fade-in) */
+  var selAnim=animIn(1.2,0.6,t);
+  if(selAnim.p>0){
+    var pulse=0.5+Math.sin(t*2.5)*0.5;
+    var cxp=18+2*90;
+    sx.save();sx.globalAlpha=selAnim.e*pulse*0.6;
+    sx.strokeStyle='#FFA717';sx.lineWidth=2;
+    sx.beginPath();sx.roundRect(cxp-2,299,72,47,11);sx.stroke();
+    /* outer soft glow */
+    sx.globalAlpha=selAnim.e*pulse*0.15;
+    sx.lineWidth=5;
+    sx.beginPath();sx.roundRect(cxp-4,297,76,51,13);sx.stroke();
+    sx.restore();
+  }
+
+  /* Chat label — fade + rise */
+  var a3=animIn(1.0,0.5,t);
+  if(a3.p>0){
+    sx.save();sx.globalAlpha=a3.e;
+    sx.translate(0,(1-a3.e)*10);
+    sx.fillStyle='#fff';sx.font='500 15px Poppins,sans-serif';sx.textAlign='left';
+    sx.fillText('Contributor can request a chat from:',18,431);
+    sx.restore();
+  }
+
+  /* Field — fade + scale from 0.96 */
+  var a4=animIn(1.2,0.55,t);
+  if(a4.p>0){
+    sx.save();sx.globalAlpha=a4.e;
+    var fs=0.96+0.04*a4.e;
+    sx.translate(18+169,452+27.5);sx.scale(fs,fs);sx.translate(-169,-27.5);
+    sx.fillStyle='rgba(255,255,255,0.15)';sx.beginPath();sx.roundRect(0,0,338,55,10);sx.fill();
+    /* Active border glow, fades in */
+    var ba=animIn(1.5,0.4,t);
+    if(ba.p>0){
+      sx.globalAlpha=a4.e*ba.e*0.6;
+      sx.strokeStyle='#FFA717';sx.lineWidth=1;sx.beginPath();sx.roundRect(0,0,338,55,10);sx.stroke();
+    }
+    sx.restore();
+  }
+
+  /* Typed amount + $ — cursor continues blinking */
+  var a5=animIn(1.35,0.3,t);
+  if(a5.p>0){
+    sx.save();sx.globalAlpha=a5.e;
+    var txt=typeProgress(Math.max(0,t-1.5),'100 000',0.1);
+    sx.fillStyle='#fff';sx.font='400 17px Poppins,sans-serif';sx.textAlign='left';
+    sx.fillText(txt,34,484);
+    if(txt.length<'100 000'.length)drawCursor(34+sx.measureText(txt).width+2,470,t);
+    sx.font='400 18px Poppins,sans-serif';sx.textAlign='left';sx.fillText('$',318,484);
+    sx.restore();
+  }
+
+  /* Next button — fade + rise last */
+  var a6=animIn(1.9,0.5,t);
+  if(a6.p>0){
+    sx.save();sx.globalAlpha=a6.e;
+    sx.translate(0,(1-a6.e)*12);
+    drawBtnNext();
+    sx.restore();
+  }
+}
+
+/* ══ STEP 3: Published — success screen, smooth choreography ══ */
+function drawStepPublish(t){
+  drawTutorialBase();
+
+  /* Expanding ripple rings — always living once started */
+  var arip=animIn(0.3,0.4,t);
+  if(arip.p>0){
+    for(var r=0;r<3;r++){
+      var ringT=(t-0.3-r*0.5)%2.6;
+      if(ringT<0||ringT>2.0)continue;
+      var rp=ringT/2.0;
+      var re=easeOutCubic(rp);
+      var radius=45+re*145;
+      var a=(1-rp)*0.4*arip.e;
+      sx.strokeStyle='rgba(255,167,23,'+a.toFixed(3)+')';sx.lineWidth=2;
+      sx.beginPath();sx.arc(187,340,radius,0,Math.PI*2);sx.stroke();
+    }
+  }
+
+  /* Checkmark — scale bounce in, then settle with subtle breath */
+  var ach=animIn(0.15,0.55,t);
+  if(ach.p>0){
+    var breath=1+Math.sin((t-0.7)*2)*0.02; /* subtle life */
+    var baseScale=ach.b;
+    var scl=(t>0.7)?(1*breath):baseScale;
+    sx.save();sx.translate(187,340);sx.scale(scl,scl);
+    sx.fillStyle='#FFA717';sx.beginPath();sx.arc(0,0,46,0,Math.PI*2);sx.fill();
+    /* Animated checkmark draw */
+    var achm=animIn(0.5,0.45,t);
+    if(achm.p>0){
+      var chT=achm.e;
+      sx.strokeStyle='#fff';sx.lineWidth=5;sx.lineCap='round';sx.lineJoin='round';
+      sx.beginPath();sx.moveTo(-18,2);
+      if(chT<0.4){sx.lineTo(-18+12*(chT/0.4),2+10*(chT/0.4));}
+      else{sx.lineTo(-6,12);var p2=(chT-0.4)/0.6;sx.lineTo(-6+26*p2,12-22*p2);}
+      sx.stroke();
+    }
+    sx.restore();
+  }
+
+  /* "Published!" — fade + scale from 0.92 */
+  var at1=animIn(0.85,0.55,t);
+  if(at1.p>0){
+    sx.save();sx.globalAlpha=at1.e;
+    var ts=0.92+0.08*at1.b;
+    sx.translate(187,430);sx.scale(ts,ts);
+    sx.fillStyle='#fff';sx.font='700 26px Poppins,sans-serif';sx.textAlign='center';
+    sx.fillText('Published!',0,0);
+    sx.restore();
+  }
+
+  /* Subtitle — fade + rise */
+  var at2=animIn(1.1,0.5,t);
+  if(at2.p>0){
+    sx.save();sx.globalAlpha=at2.e;sx.translate(0,(1-at2.e)*8);
+    sx.fillStyle='rgba(255,255,255,0.65)';sx.font='400 14px Poppins,sans-serif';sx.textAlign='center';
+    sx.fillText('Your campaign is now live',187,458);
+    sx.restore();
+  }
+
+  /* Project card — fade + scale from 0.95 + rise */
+  var ac=animIn(1.4,0.6,t);
+  if(ac.p>0){
+    sx.save();sx.globalAlpha=ac.e;
+    var cs=0.95+0.05*ac.b;
+    sx.translate(22+167,498+60);sx.scale(cs,cs);sx.translate(-167,-60);
+    sx.translate(0,(1-ac.e)*10);
+    sx.fillStyle='rgba(255,255,255,0.06)';sx.beginPath();sx.roundRect(0,0,334,120,12);sx.fill();
+    sx.strokeStyle='rgba(255,167,23,0.3)';sx.lineWidth=1;sx.stroke();
+
+    /* Project name */
+    sx.fillStyle='#fff';sx.font='600 16px Poppins,sans-serif';sx.textAlign='left';
+    sx.fillText('Tech App',18,30);
+    /* Goal */
+    sx.fillStyle='rgba(255,255,255,0.5)';sx.font='400 12px Poppins,sans-serif';
+    sx.fillText('Goal: 100,000 $',18,50);
+
+    /* Live pulse — stagger fade-in */
+    var alp=animIn(1.7,0.4,t);
+    if(alp.p>0){
+      sx.save();sx.globalAlpha=alp.e;
+      var pulse=Math.sin(t*3)*0.3+0.7;
+      sx.fillStyle='rgba(255,50,50,'+pulse.toFixed(2)+')';
+      sx.beginPath();sx.arc(278,32,5,0,Math.PI*2);sx.fill();
+      sx.fillStyle='#fff';sx.font='500 11px Poppins,sans-serif';sx.textAlign='right';
+      sx.fillText('LIVE',313,36);
+      sx.restore();
+    }
+
+    /* Views — stagger */
+    var av=animIn(1.85,0.4,t);
+    if(av.p>0){
+      sx.save();sx.globalAlpha=av.e;
+      sx.textAlign='left';
+      var views=Math.floor((t-1.85)*8);
+      sx.fillStyle='rgba(255,255,255,0.5)';sx.font='400 12px Poppins,sans-serif';
+      sx.fillText('👁  '+views+' viewers',18,92);
+      sx.restore();
+    }
+
+    /* Mini progress */
+    var ap=animIn(2.0,0.4,t);
+    if(ap.p>0){
+      sx.save();sx.globalAlpha=ap.e;
+      sx.fillStyle='rgba(255,255,255,0.1)';sx.fillRect(18,107,276,2);
+      var mpr=Math.min(100,(t-2.0)*12);
+      var grd=sx.createLinearGradient(18,0,18+mpr,0);
+      grd.addColorStop(0,'#FFA717');grd.addColorStop(1,'#FFC34A');
+      sx.fillStyle=grd;sx.fillRect(18,106,mpr,2);
+      sx.restore();
+    }
+    sx.restore();
+  }
+
+  /* Share button — smooth rise */
+  var ab=animIn(2.3,0.5,t);
+  if(ab.p>0){
+    sx.save();sx.globalAlpha=ab.e;sx.translate(0,(1-ab.e)*12);
+    var glow=Math.sin(t*4)*0.3+0.5;
+    sx.shadowColor='rgba(255,167,23,'+(0.2+glow*0.3)+')';sx.shadowBlur=15+glow*25;
+    sx.fillStyle='#FFA717';sx.beginPath();sx.roundRect(18,708,338,54,10);sx.fill();
+    sx.shadowColor='transparent';sx.shadowBlur=0;
+    sx.fillStyle='#fff';sx.font='500 15px Poppins,sans-serif';sx.textAlign='center';
+    sx.fillText('Share campaign',187,740);
+    sx.restore();
+  }
+}
+
+/* ══ Draw step router — content drawn upside-down (phone is at z=π), fades in ══ */
+function drawStep(step,t){
+  /* Black base first */
+  sx.clearRect(0,0,375,812);sx.fillStyle='#0c0c10';sx.fillRect(0,0,375,812);
+  /* Draw tutorial content rotated 180° */
+  sx.save();
+  sx.translate(375/2,812/2);
+  sx.rotate(Math.PI);
+  sx.translate(-375/2,-812/2);
+  if(step===0)drawStepUpload(t);
+  else if(step===1)drawStepDescription(t);
+  else if(step===2)drawStepGoal(t);
+  else drawStepPublish(t);
+  sx.restore();
+  /* Fade overlay — from black to visible */
+  if(tutorialOpacity<0.99){
+    sx.save();sx.globalAlpha=1-tutorialOpacity;
+    sx.fillStyle='#0c0c10';sx.fillRect(0,0,375,812);
+    sx.restore();
+  }
+}
+
+// Draw initial
+drawPlaceholder(0);
+
+var sTex=new THREE.CanvasTexture(sCanvas);
+sTex.minFilter=THREE.LinearMipmapLinearFilter;sTex.magFilter=THREE.LinearFilter;
+sTex.anisotropy=renderer.capabilities.getMaxAnisotropy();
+sTex.encoding=THREE.sRGBEncoding;sTex.generateMipmaps=true;
+
+// CRITICAL: screen must be IN FRONT of body. Body front = PD/2 + BEVEL
+var SCREEN_Z = PD/2 + BEVEL + 0.003; // safely above body surface
+// Rounded screen geometry matching phone body corners
+var screenRadius=PR-0.02; // inner radius close to body radius
+var screenShape=rrShape(SW,SH,screenRadius);
+var screenGeom=new THREE.ShapeGeometry(screenShape,32);
+
+// UV remap — ShapeGeometry UVs are in world coords, need 0-1 range
+var uvAttr=screenGeom.attributes.uv;
+for(var ui=0;ui<uvAttr.count;ui++){
+  uvAttr.setX(ui,(uvAttr.getX(ui)+SW/2)/SW);
+  uvAttr.setY(ui,(uvAttr.getY(ui)+SH/2)/SH);
+}
+uvAttr.needsUpdate=true;
+
+// Dark bezel inset between body and screen
+var bezelShape=rrShape(SW+0.03,SH+0.03,screenRadius+0.015);
+var bezelMesh=new THREE.Mesh(new THREE.ShapeGeometry(bezelShape,32), new THREE.MeshBasicMaterial({color:0x050508}));
+bezelMesh.position.z=SCREEN_Z-0.001;
+ph.add(bezelMesh);
+
+var screenMesh=new THREE.Mesh(screenGeom, new THREE.MeshBasicMaterial({map:sTex}));
+screenMesh.position.z=SCREEN_Z;
+ph.add(screenMesh);
+
+// Glass reflection — shader-based specular on fake-curved surface
+var glassGeom=new THREE.ShapeGeometry(rrShape(SW,SH,screenRadius),32);
+// Remap UVs from world coords to 0..1 (same as screen mesh)
+var glUv=glassGeom.attributes.uv;
+for(var gi=0;gi<glUv.count;gi++){
+  glUv.setX(gi,(glUv.getX(gi)+SW/2)/SW);
+  glUv.setY(gi,(glUv.getY(gi)+SH/2)/SH);
+}
+glUv.needsUpdate=true;
+var glassUniforms={
+  uLightDir:{value:new THREE.Vector3(0.5,0.8,1.0)},
+  uLight4Dir:{value:new THREE.Vector3(-0.7,-0.9,0.8)},
+  uTime:{value:0},
+  uIntensity:{value:1.0}
+};
+var glassMat=new THREE.ShaderMaterial({
+  uniforms:glassUniforms,
+  transparent:true,
+  blending:THREE.AdditiveBlending,
+  depthWrite:false,
+  vertexShader:[
+    'varying vec2 vUv;',
+    'void main(){',
+    '  vUv=uv;',
+    '  gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);',
+    '}'
+  ].join('\n'),
+  fragmentShader:[
+    'uniform vec3 uLightDir;',
+    'uniform vec3 uLight4Dir;',
+    'uniform float uTime;',
+    'uniform float uIntensity;',
+    'varying vec2 vUv;',
+    'void main(){',
+    '  vec2 uv=vUv;',
+    '  vec2 center=uv-0.5;',
+    /* fake slight curvature so highlight has a position on screen */
+    '  vec3 N=normalize(vec3(center*0.5,1.0));',
+    '  vec3 V=vec3(0.0,0.0,1.0);',
+    /* main white specular — big soft blob */
+    '  vec3 L1=normalize(uLightDir);',
+    '  vec3 R1=reflect(-V,N);',
+    '  float spec1=pow(max(dot(R1,L1),0.0),6.0);',
+    /* secondary gold specular */
+    '  vec3 L2=normalize(uLightDir+vec3(0.6,-0.4,0.0));',
+    '  float spec2=pow(max(dot(reflect(-V,N),L2),0.0),12.0);',
+    /* broad ambient wash */
+    '  vec3 L3=normalize(vec3(-uLightDir.x,uLightDir.y*0.5,1.0));',
+    '  float spec3=pow(max(dot(reflect(-V,N),L3),0.0),4.0);',
+    /* bottom-right light — fixed offset from main */
+    '  vec3 L4=normalize(uLight4Dir);',
+    '  float spec4=pow(max(dot(reflect(-V,N),L4),0.0),4.0);',
+    /* edge fresnel */
+    '  float fresnel=1.0-dot(N,V);',
+    '  fresnel=pow(fresnel,2.5)*0.3;',
+    /* compose — strong and visible */
+    '  vec3 col=vec3(1.0)*spec1*0.55',
+    '    +vec3(0.87,0.65,0.32)*spec2*0.4',
+    '    +vec3(0.6,0.7,0.9)*spec3*0.2',
+    '    +vec3(0.9,0.85,1.0)*spec4*0.55;',
+    '  float a=(spec1*0.45+spec2*0.3+spec3*0.15+spec4*0.45+fresnel)*uIntensity;',
+    '  gl_FragColor=vec4(col,a);',
+    '}'
+  ].join('\n')
+});
+var glassMesh=new THREE.Mesh(glassGeom,glassMat);
+glassMesh.position.z=SCREEN_Z+0.001;
+ph.add(glassMesh);
+
+/* ── Camera module (back) ── */
+var BACK_Z = -(PD/2 + BEVEL);
+var camBump=new THREE.ExtrudeGeometry(rrShape(0.42,0.42,0.08),{depth:0.015,bevelEnabled:true,bevelThickness:0.003,bevelSize:0.003,bevelSegments:3,curveSegments:16});
+camBump.center();
+var camBumpMesh=new THREE.Mesh(camBump,new THREE.MeshPhysicalMaterial({color:0x181820,metalness:.7,roughness:.2,envMap:envMap,envMapIntensity:.8}));
+camBumpMesh.position.set(-PW/2+0.32,PH/2-0.32,BACK_Z-0.008);
+ph.add(camBumpMesh);
+
+// Lens rings + glass
+var lensRingMat=new THREE.MeshPhysicalMaterial({color:0x909098,metalness:.95,roughness:.06,envMap:envMap,envMapIntensity:2.5});
+var lensGlassMat=new THREE.MeshPhysicalMaterial({color:0x08080e,metalness:1,roughness:0.01,envMap:envMap,envMapIntensity:2});
+[[-0.085,0.085],[0.085,0.085],[-0.085,-0.085]].forEach(function(off){
+  var ox=-PW/2+0.32+off[0], oy=PH/2-0.32+off[1], oz=BACK_Z-0.018;
+  var ring=new THREE.Mesh(new THREE.TorusGeometry(0.058,0.01,12,32),lensRingMat);
+  ring.position.set(ox,oy,oz);ph.add(ring);
+  var glass=new THREE.Mesh(new THREE.CircleGeometry(0.048,32),lensGlassMat);
+  glass.position.set(ox,oy,oz-0.001);glass.rotation.y=Math.PI;ph.add(glass);
+});
+
+// Flash
+var flashM=new THREE.Mesh(new THREE.CircleGeometry(.018,12),new THREE.MeshStandardMaterial({color:0xfffff0,emissive:0x443300,emissiveIntensity:.2}));
+flashM.position.set(-PW/2+0.32+0.085,PH/2-0.32-0.085,BACK_Z-0.018);flashM.rotation.y=Math.PI;ph.add(flashM);
+
+/* ── Side buttons ── */
+var btnMat=new THREE.MeshPhysicalMaterial({color:0xc0c0c8,metalness:.95,roughness:.06,envMap:envMap,envMapIntensity:2.5});
+[[PW/2+0.007,0.25,0,.012,.17,.02],[-(PW/2+0.007),0.15,0,.012,.1,.02],[-(PW/2+0.007),-0.05,0,.012,.1,.02],[-(PW/2+0.007),0.35,0,.012,.045,.02]].forEach(function(b){
+  var m=new THREE.Mesh(new THREE.BoxGeometry(b[3],b[4],b[5]),btnMat);
+  m.position.set(b[0],b[1],b[2]);ph.add(m);
+});
+
+/* ── Dynamic Island ── */
+/* Dynamic Island — drawn on screen canvas, no 3D mesh needed */
+
+/* ── Start hidden ── */
+ph.position.set(0,0,-2);
+ph.rotation.set(.15,-.5,.05);
+ph.scale.setScalar(0);
+
+/* ════ PHONE — SINGLE MASTER TIMELINE ════
+   One timeline = one owner of position/rotation/scale.
+   No more competing ScrollTriggers fighting each other. */
+var phoneVisible=false;
+
+/* ════ PHONE VISIBILITY — single scroll listener, always correct ════ */
+function updatePhoneVisibility(){
+  var whatTop=document.getElementById('what').getBoundingClientRect().top;
+  var ctaTop=document.getElementById('cta').getBoundingClientRect().top;
+  var howTop=document.getElementById('how').getBoundingClientRect().top;
+  var closeTop=document.getElementById('close').getBoundingClientRect().top;
+  var vh=window.innerHeight;
+
+  /* Phone visible until CTA top passes viewport top (exit animation has time to play) */
+  var shouldShow=whatTop<vh*0.7&&ctaTop>-vh*0.2;
+
+  if(shouldShow&&!phoneVisible){phoneVisible=true;canvas.classList.add('visible');}
+  if(!shouldShow&&phoneVisible){phoneVisible=false;canvas.classList.remove('visible');}
+
+  /* Placeholder: only before HOW (not for Helen — Helen overlays tutorial) */
+  isPlaceholder=howTop>vh*0.9;
+
+  /* Helen transition: tutorial→black→Helen
+     closeTop vh*1.0→0.6: tutorial fades to black
+     closeTop vh*0.6→0.2: Helen fades in from black */
+  tutFade=Math.max(0,Math.min(1,(closeTop-vh*0.6)/(vh*0.4)));
+  helenOpacity=Math.max(0,Math.min(1,(vh*0.6-closeTop)/(vh*0.4)));
+  showHelen=helenOpacity>0.01;
+
+  /* tutorialOpacity: fades in as phone settles into HOW position (second rotation ending) */
+  if(!isPlaceholder&&!showFeed){
+    var howProg=Math.max(0,1-howTop/vh); /* 0 when how at bottom, 1 when at top */
+    tutorialOpacity=Math.max(0,Math.min(1,(howProg-0.3)/0.4));
+  }else{tutorialOpacity=0;}
+
+  /* Feed phase: smooth fade out as we approach landscape rotation */
+  var uspTop=document.getElementById('usp').getBoundingClientRect().top;
+  var whatBot=document.getElementById('what').getBoundingClientRect().bottom;
+  showFeed=shouldShow&&uspTop>vh*0.1;
+  /* feedOpacity: 1.0 when feed fully visible, fades to 0 as what-bottom approaches viewport top */
+  if(showFeed){
+    var fadeStart=vh*0.7; /* start fading when what-bottom is at 70% of viewport */
+    var fadeEnd=vh*0.15;  /* fully faded at 15% */
+    feedOpacity=Math.max(0,Math.min(1,(whatBot-fadeEnd)/(fadeStart-fadeEnd)));
+  }else{feedOpacity=0;}
+}
+window.addEventListener('scroll',updatePhoneVisibility,{passive:true});
+updatePhoneVisibility();
+
+
+/* Canvas is always 100% width. Phone positioning is done entirely in 3D space.
+   For right-half appearance: shift phone X in 3D.
+   Camera FOV=28°, z=5.5 → visible half-width ≈ 2.4 units at z=0.
+   Center of right-half ≈ x:1.2 in 3D. */
+var PH_RIGHT=1.15; /* 3D offset for "right half of screen" look */
+
+/* ════ PHONE SCROLL MOTION — SINGLE MASTER TIMELINE ════ */
+/* One timeline owns position/rotation/scale — no competing tweens = no jerk.
+   Scrub lag provides smoothing; internal ease:'none' keeps motion linear. */
+
+var phoneTL=null;
+function buildPhoneTL(){
+  if(phoneTL){phoneTL.scrollTrigger&&phoneTL.scrollTrigger.kill();phoneTL.kill();}
+
+  var _vh=window.innerHeight;
+  var _maxScroll=document.documentElement.scrollHeight-_vh;
+
+  /* Convert GSAP-style trigger position to scroll fraction 0..1 */
+  function sfrac(elId,triggerPos,scrollerPos){
+    var el=document.getElementById(elId);if(!el)return 0;
+    var top=el.offsetTop,h=el.offsetHeight;
+    var tY=triggerPos==='top'?top:triggerPos==='center'?top+h/2:triggerPos==='bottom'?top+h:top+h*(parseFloat(triggerPos)/100);
+    var sY=scrollerPos==='top'?0:scrollerPos==='center'?_vh/2:scrollerPos==='bottom'?_vh:_vh*(parseFloat(scrollerPos)/100);
+    return Math.max(0,Math.min(1,(tY-sY)/_maxScroll));
+  }
+
+  /* Key scroll fractions — must be strictly sequential (no overlaps!) */
+  var K={
+    enterS:sfrac('what','top','70%'),       enterE:sfrac('what','center','center'),
+    landE: sfrac('what','bottom','top'),
+    portS: Math.max(sfrac('what','bottom','top'),sfrac('usp','center','center')),
+    portE:sfrac('how','top','30%'),
+    howE:  sfrac('how','bottom','bottom'),
+    closeS:sfrac('close','top','70%'),       closeM:sfrac('close','center','center'),
+    closeE:sfrac('close','bottom','top')
+  };
+
+  function d(a,b){return Math.max(0.001,b-a);}
+
+  phoneTL=gsap.timeline({
+    defaults:{ease:'none',immediateRender:false},
+    scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:0.8}
+  });
+
+  /* Pad timeline to exactly 1.0 so scroll fractions align */
+  phoneTL.set({},{},'+=0');
+  phoneTL.to({},{duration:0.001},1);
+
+  /* All segments use fromTo() — explicit from/to guarantees continuity.
+     GSAP .to() records start values at timeline creation (scroll=0),
+     which causes teleports when the actual "from" should be the previous segment's end. */
+
+  /* Shared state values — each segment's "from" = previous segment's "to"
+     MERGED: "portrait right" + "how settle" into one tween (they overlapped before) */
+  /* Two 90° CCW rotations: portrait(0) → landscape(π/2) → upside-down(π). */
+  var ZEND=Math.PI; /* π = 180° = upside-down portrait */
+  var P0={x:PH_RIGHT,y:0,z:-2}, R0={x:.15,y:-.5,z:.05}, S0={x:0,y:0,z:0};           // hidden
+  var P1={x:PH_RIGHT,y:0,z:0},  R1={x:.04,y:-.18,z:.01}, S1={x:1,y:1,z:1};           // enter end
+  var P2={x:0,y:-.1,z:1.6},     R2={x:.05,y:0,z:Math.PI/2}, S2={x:1.13,y:1.13,z:1.13}; // landscape (90° CCW)
+  var P4={x:0.85,y:0,z:0.3}, R4={x:0,y:-.08,z:ZEND}, S4={x:0.9,y:0.9,z:0.9};   // how position (upside-down, left + smaller)
+  var R5={x:.03,y:-.04,z:ZEND+.01};                                                     // how sway end
+  var P6={x:0.85,y:0.5,z:1.4}, R6={x:0,y:0,z:ZEND},    S6={x:1.55,y:1.55,z:1.55};    // close: slightly left, higher
+  var P7={x:0,y:-3,z:-1},       R7={x:.1,y:-.3,z:ZEND+.03}, S7={x:.2,y:.2,z:.2};      // exit
+
+  /* Initial state: phone hidden */
+  phoneTL.set(ph.position,P0,0);
+  phoneTL.set(ph.rotation,R0,0);
+  phoneTL.set(ph.scale,S0,0);
+
+  /* Enter: phone scales in on RIGHT */
+  phoneTL.fromTo(ph.position,P0,{x:P1.x,y:P1.y,z:P1.z,duration:d(K.enterS,K.enterE)},K.enterS);
+  phoneTL.fromTo(ph.rotation,R0,{x:R1.x,y:R1.y,z:R1.z,duration:d(K.enterS,K.enterE)},K.enterS);
+  phoneTL.fromTo(ph.scale,S0,{x:S1.x,y:S1.y,z:S1.z,duration:d(K.enterS,K.enterE)},K.enterS);
+
+  /* What → Landscape: phone CENTER, rotated, scaled up */
+  phoneTL.fromTo(ph.position,P1,{x:P2.x,y:P2.y,z:P2.z,duration:d(K.enterE,K.landE)},K.enterE);
+  phoneTL.fromTo(ph.rotation,R1,{x:R2.x,y:R2.y,z:R2.z,duration:d(K.enterE,K.landE)},K.enterE);
+  phoneTL.fromTo(ph.scale,S1,{x:S2.x,y:S2.y,z:S2.z,duration:d(K.enterE,K.landE)},K.enterE);
+
+  /* Landscape → HOW position: one smooth motion from landscape to steps position.
+     Merged "portrait right" + "how settle" — they previously overlapped causing a snap. */
+  phoneTL.fromTo(ph.position,P2,{x:P4.x,y:P4.y,z:P4.z,duration:d(K.portS,K.portE)},K.portS);
+  phoneTL.fromTo(ph.rotation,R2,{x:R4.x,y:R4.y,z:R4.z,duration:d(K.portS,K.portE)},K.portS);
+  phoneTL.fromTo(ph.scale,S2,{x:S4.x,y:S4.y,z:S4.z,duration:d(K.portS,K.portE)},K.portS);
+
+  /* HOW sway: subtle rotation during steps */
+  phoneTL.fromTo(ph.rotation,R4,{x:R5.x,y:R5.y,z:R5.z,duration:d(K.portE,K.howE)},K.portE);
+
+  /* Close: phone CENTER, enlarged behind text */
+  phoneTL.fromTo(ph.position,P4,{x:P6.x,y:P6.y,z:P6.z,duration:d(K.closeS,K.closeM)},K.closeS);
+  phoneTL.fromTo(ph.rotation,R5,{x:R6.x,y:R6.y,z:R6.z,duration:d(K.closeS,K.closeM)},K.closeS);
+  phoneTL.fromTo(ph.scale,S4,{x:S6.x,y:S6.y,z:S6.z,duration:d(K.closeS,K.closeM)},K.closeS);
+
+  /* CTA exit: phone drops out */
+  phoneTL.fromTo(ph.position,P6,{x:P7.x,y:P7.y,z:P7.z,duration:d(K.closeM,K.closeE)},K.closeM);
+  phoneTL.fromTo(ph.rotation,R6,{x:R7.x,y:R7.y,z:R7.z,duration:d(K.closeM,K.closeE)},K.closeM);
+  phoneTL.fromTo(ph.scale,S6,{x:S7.x,y:S7.y,z:S7.z,duration:d(K.closeM,K.closeE)},K.closeM);
+}
+buildPhoneTL();
+
+var docH=document.documentElement.scrollHeight-window.innerHeight;
+
+
+/* ════ IDLE GROUP — prevents additive drift ════ */
+// Wrap all phone children into an idle group inside ph
+var idleGroup=new THREE.Group();
+// Move all children from ph to idleGroup
+while(ph.children.length>0){idleGroup.add(ph.children[0]);}
+ph.add(idleGroup);
+
+/* ════ RENDER LOOP ════ */
+var time=0,lastFrame=performance.now(),prevPlaceholder=true,prevStep=-1;
+var lastScrollY=window.scrollY||0,scrollVelocity=0;
+var screenCached=false; /* static screens: draw once, skip GPU upload */
+(function tick(){
+  requestAnimationFrame(tick);
+  var now=performance.now(),dt=Math.min((now-lastFrame)/1000,0.05);lastFrame=now;
+  time+=dt;
+
+  if(!phoneVisible){return;}
+
+  /* Smooth scroll velocity tracking — higher inertia = less jitter */
+  var curScrollY=window.scrollY||0;
+  scrollVelocity=scrollVelocity*0.92+Math.abs(curScrollY-lastScrollY)*0.08;
+  lastScrollY=curScrollY;
+  /* Sigmoid-style dampening — gentle fade, no harsh cutoff */
+  var idleDamp=1/(1+scrollVelocity*0.4);
+
+  /* Expressive idle breathing — strong rotation on all 3 axes */
+  idleGroup.rotation.x=Math.sin(time*0.8)*0.06+Math.sin(time*1.9)*0.025;
+  idleGroup.rotation.y=Math.cos(time*0.6)*0.07+Math.cos(time*1.7)*0.03;
+  idleGroup.rotation.z=Math.sin(time*0.5)*0.035+Math.sin(time*1.3)*0.015;
+  idleGroup.position.x=(Math.cos(time*0.5)*0.018+Math.sin(time*1.1)*0.008)*idleDamp;
+  idleGroup.position.y=(Math.sin(time*0.7)*0.025+Math.cos(time*1.5)*0.01)*idleDamp;
+  idleGroup.position.z=(Math.sin(time*0.9)*0.015+Math.cos(time*1.8)*0.006)*idleDamp;
+
+  /* Screen texture */
+  /* Only advance animation time when tutorial content is actually visible.
+     Otherwise keep screenTime at 0 so animation starts when user can see it. */
+  if(!isPlaceholder&&!showFeed){
+    if(tutorialOpacity>0.05)screenTime+=dt;
+    else screenTime=0;
+  }else screenTime+=dt;
+  var needsRedraw=false;
+  if(showFeed){
+    drawFeedScreen(time);
+    /* Fade feed to black as feedOpacity drops */
+    if(feedOpacity<0.99){
+      sx.save();sx.globalAlpha=1-feedOpacity;sx.fillStyle='#0c0c10';sx.fillRect(0,0,375,812);sx.restore();
+    }
+    needsRedraw=true;prevPlaceholder=false;prevStep=-1;screenCached=false;
+  }else{
+    if(feedDrip.started){feedDrip.started=false;}
+    if(!showHelen&&helenDrip.started){helenDrip.started=false;}
+    if(isPlaceholder){
+      if(!screenCached||!prevPlaceholder){drawPlaceholder(time);screenCached=true;prevPlaceholder=true;prevStep=-1;needsRedraw=true;}
+    }else{
+      if(prevPlaceholder||prevStep!==screenStep){prevPlaceholder=false;prevStep=screenStep;screenCached=false;}
+      /* Tutorial steps */
+      drawStep(screenStep,screenTime);
+      /* Tutorial fades to black near close section */
+      if(tutFade<0.99){
+        sx.save();sx.globalAlpha=1-tutFade;
+        sx.fillStyle='#000';sx.fillRect(0,0,375,812);
+        sx.restore();
+      }
+      /* Helen fades in from black */
+      if(showHelen){
+        sx.save();sx.globalAlpha=helenOpacity;
+        sx.translate(375/2,812/2);sx.rotate(Math.PI);sx.translate(-375/2,-812/2);
+        drawHelenFeed(time);
+        sx.restore();
+      }
+      needsRedraw=true;
+    }
+  }
+  if(needsRedraw)sTex.needsUpdate=true;
+
+  /* Update glass shader — transform world-space lights into phone local space.
+     Dim glare to 50% during landscape rotation (feed fading out). */
+  glassUniforms.uTime.value=time;
+  /* Glare: 1.0 with feed, dims to 0.5 during landscape, restores to 1.0 in HOW */
+  var howEl=document.getElementById('how');
+  var howRect=howEl.getBoundingClientRect();
+  var howProgress=Math.max(0,Math.min(1,(window.innerHeight-howRect.top)/(window.innerHeight*0.5)));
+  var glareScale=showFeed?0.5+0.5*feedOpacity:0.5+0.5*howProgress;
+  glassUniforms.uIntensity.value=glareScale;
+  glassMesh.updateWorldMatrix(true,false);
+  var _invM=new THREE.Matrix4().copy(glassMesh.matrixWorld).invert();
+  glassUniforms.uLightDir.value.set(0.5,0.8,1.0).transformDirection(_invM);
+  glassUniforms.uLight4Dir.value.set(-0.7,-0.9,0.8).transformDirection(_invM);
+
+  renderer.render(scene,cam);
+})();
+
+window.addEventListener('resize',function(){
+  var w=window.innerWidth;
+  var h=window.innerHeight;
+  cam.aspect=w/h;cam.updateProjectionMatrix();renderer.setSize(w,h);
+  docH=document.documentElement.scrollHeight-window.innerHeight;
+  /* Rebuild phone timeline — scroll fractions change with layout */
+  buildPhoneTL();
+  ScrollTrigger.refresh();
+});
+
+/* ════════════════════════════════════════════
+   AUTOPLAY — smooth scroll presentation loop
+   ════════════════════════════════════════════ */
+(function(){
+  var btn=document.getElementById('apBtn');
+  var overlay=document.getElementById('apOverlay');
+  var playing=false, stopped=false;
+
+  function getY(id,pct){
+    var el=document.getElementById(id);
+    if(!el)return 0;
+    return el.offsetTop + (el.offsetHeight*(pct||0));
+  }
+
+  /* Center a section in viewport: section.top + section.height/2 - vh/2 */
+  function centerY(id){
+    var el=document.getElementById(id);if(!el)return 0;
+    var vh=window.innerHeight;
+    var y=el.offsetTop+el.offsetHeight/2-vh/2;
+    var maxY=document.documentElement.scrollHeight-vh;
+    return Math.max(0,Math.min(y,maxY));
+  }
+  /* For #how steps: progress 0→1 maps to scrollY range where sticky content pins.
+     ScrollTrigger start:'top top' end:'bottom bottom' →
+     progress 0 at scrollY=how.top, progress 1 at scrollY=how.bottom-vh */
+  function howStepY(progressMid){
+    var el=document.getElementById('how');if(!el)return 0;
+    var vh=window.innerHeight;
+    var rangeStart=el.offsetTop;
+    var rangeEnd=el.offsetTop+el.offsetHeight-vh;
+    return Math.round(rangeStart+(rangeEnd-rangeStart)*progressMid);
+  }
+
+  function buildWaypoints(){
+    return [
+      /* Hero — start, hold for reading */
+      {y:0,                hold:5,  dur:0},
+      /* Reveal — logo wow */
+      {y:centerY('reveal'),hold:4.5,dur:2.2},
+      /* What — platform + phone enters */
+      {y:centerY('what'),  hold:6,  dur:2.5},
+      /* USP — key message, then scroll straight into HOW step 0 (no micro-stop) */
+      {y:centerY('usp'),   hold:4.5,dur:2},
+      /* How steps — stop at CENTER of each zone (0.125, 0.375, 0.625, 0.875) */
+      {y:howStepY(0.125),  hold:4,  dur:3},
+      {y:howStepY(0.375),  hold:4,  dur:2},
+      {y:howStepY(0.625),  hold:4,  dur:2},
+      {y:howStepY(0.875),  hold:4.5,dur:2},
+      /* Close — emotional */
+      {y:centerY('close'), hold:4,  dur:2.5},
+      /* CTA — final card + QR */
+      {y:centerY('cta'),   hold:5,  dur:2},
+    ];
+  }
+
+  function runCycle(){
+    if(stopped)return;
+    var wps=buildWaypoints();
+    var tl=gsap.timeline({
+      onComplete:function(){
+        if(stopped)return;
+        /* Fade to black */
+        overlay.classList.add('active');
+        gsap.delayedCall(1.4,function(){
+          if(stopped)return;
+          /* Jump to top while hidden + reset all slide animations */
+          window.scrollTo(0,0);
+          /* Reset hero + reveal timelines to start state so they replay */
+          if(typeof heroTL!=='undefined')heroTL.pause(0);
+          if(typeof revealTL!=='undefined')revealTL.pause(0);
+          /* Reset reveal state machine */
+          if(typeof resetRevealToIdle==='function')resetRevealToIdle();
+          ScrollTrigger.update();
+          gsap.delayedCall(0.6,function(){
+            if(stopped)return;
+            /* Fade back in */
+            overlay.classList.remove('active');
+            /* Replay hero + reveal animations */
+            if(typeof heroTL!=='undefined')heroTL.play(0);
+            if(typeof revealTL!=='undefined')revealTL.play(0);
+            gsap.delayedCall(1.4,function(){
+              if(stopped)return;
+              runCycle(); /* loop */
+            });
+          });
+        });
+      }
+    });
+
+    tl.eventCallback('onUpdate',function(){ScrollTrigger.update();});
+
+    wps.forEach(function(wp){
+      if(wp.dur>0){
+        tl.to(window,{scrollTo:{y:wp.y,autoKill:false},duration:wp.dur,ease:'power2.out'});
+      }
+      if(wp.hold>0){
+        tl.to({},{duration:wp.hold});
+      }
+    });
+  }
+
+  function startAutoplay(){
+    if(playing)return;
+    playing=true;stopped=false;
+    document.body.classList.add('ap-playing');
+    btn.classList.add('hidden');
+    /* Start from top */
+    window.scrollTo(0,0);
+    ScrollTrigger.update();
+    gsap.delayedCall(0.8,runCycle);
+  }
+
+  function stopAutoplay(){
+    stopped=true;playing=false;
+    gsap.killTweensOf(window);
+    overlay.classList.remove('active');
+    document.body.classList.remove('ap-playing');
+    btn.classList.remove('hidden');
+  }
+
+  btn.addEventListener('click',startAutoplay);
+  /* Auto-start autoplay if URL has ?autoplay=1 (for video rendering) */
+  if(location.search.indexOf('autoplay=1')>=0){setTimeout(startAutoplay,400);}
+
+  /* Click/scroll during autoplay stops it */
+  window.addEventListener('wheel',function(){if(playing)stopAutoplay();},{passive:true});
+  window.addEventListener('touchstart',function(){if(playing)stopAutoplay();},{passive:true});
+  document.addEventListener('keydown',function(e){if(playing&&e.key==='Escape')stopAutoplay();});
+})();
+
+})();
+</script>
+</body>
+</html>

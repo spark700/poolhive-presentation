@@ -1,0 +1,27 @@
+node_modules/
+.DS_Store
+*.log
+
+# Recording outputs
+recording.mp4
+recording_*.mp4
+frame_*.jpg
+frameX_*.jpg
+timecut-temp-*/
+render/
+
+# Render scripts (Node.js dependent, not needed for GitHub Pages)
+record.js
+record-perfect.js
+render-timecut.js
+render-wvc.mjs
+package.json
+package-lock.json
+
+# Source files not needed for deployment
+Poolhive Test app.fig
+Poolhive Test app.zip
+Poolhive Test app/
+materials/
+PoolHive_TZ_video.md
+бекап/

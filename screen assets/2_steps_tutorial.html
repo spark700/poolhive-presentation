@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PoolHive — Phone Animation</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Baloo+Bhai+2:wght@400;500;600&family=Montserrat:wght@400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: transparent;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* ── Phone shell ── */
+  .phone {
+    position: relative;
+    width: 375px;
+    height: 812px;
+    border-radius: 36px;
+    border: 3px solid #333;
+    background: #171717;
+    box-shadow:
+      0 0 0 2px #1a1a1a,
+      0 30px 100px rgba(0,0,0,0.8);
+    overflow: hidden;
+  }
+
+  .phone-notch {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 150px; height: 28px;
+    background: #0a0a0a;
+    border-radius: 0 0 20px 20px;
+    z-index: 20;
+  }
+
+  .phone-screen {
+    position: absolute;
+    inset: 0;
+    border-radius: 33px;
+    overflow: hidden;
+    background: #171717;
+  }
+
+  /* ── Shared: PoolHive logo ── */
+  .logo {
+    position: absolute;
+    top: 79px; left: 0;
+    width: 374px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 0.8em;
+    text-align: center;
+    color: #fff;
+  }
+
+  /* ── Shared: Back arrow ── */
+  .back-arrow {
+    position: absolute;
+    top: 32px; left: 23px;
+    font-family: -apple-system, 'SF Pro Display', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.333em;
+    color: #fff;
+  }
+
+  /* ── Shared: Home indicator ── */
+  .home-indicator {
+    position: absolute;
+    bottom: 4px;
+    left: 123px;
+    width: 130px;
+    height: 4px;
+    background: #fff;
+    border-radius: 2px;
+    opacity: 0.3;
+  }
+
+  /* ── Shared: Next button ── */
+  .btn-next {
+    position: absolute;
+    left: 18px; top: 708px;
+    width: 344px; height: 54px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.4);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-next span {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.067em;
+    color: #fff;
+    text-align: center;
+  }
+
+  /* ── Publish button (filled) ── */
+  .btn-publish {
+    position: absolute;
+    left: 18px; top: 708px;
+    width: 338px; height: 54px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.4);
+    background: #FFA717;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-publish span {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.067em;
+    color: #fff;
+    text-align: center;
+  }
+
+  /* ── Input field rectangle ── */
+  .field-rect {
+    position: absolute;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent;
+  }
+  .field-rect.active {
+    border-color: rgba(255,167,23,0.75);
+  }
+  .field-rect.filled-bg {
+    background: rgba(86,19,74,0.01);
+  }
+
+  /* ── Text styles from Figma ── */
+  .t-section-title {
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.6em;
+    color: #fff;
+  }
+
+  .t-field-value {
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.714em;
+    color: #fff;
+  }
+
+  .t-field-value-lg {
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.333em;
+    color: #fff;
+  }
+
+  .t-field-value-17 {
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.412em;
+    color: #fff;
+  }
+
+  .t-baloo {
+    position: absolute;
+    font-family: 'Baloo Bhai 2', cursive;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.714em;
+    color: #fff;
+  }
+
+  .t-upload-title {
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.571em;
+    text-transform: uppercase;
+    text-align: center;
+    color: #fff;
+  }
+
+  .t-upload-desc {
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 2.667em;
+    color: #fff;
+  }
+
+  .t-chip-17 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.412em;
+    text-align: center;
+    color: #fff;
+  }
+
+  /* ── Upload zone (Step 1) ── */
+  .upload-zone {
+    position: absolute;
+    left: 16px; top: 425px;
+    width: 343px; height: 232px;
+    border-radius: 8px;
+    border: 1px dashed #FFC34A;
+    background: transparent;
+  }
+
+  .upload-icon {
+    position: absolute;
+    left: 147px; top: 48px;
+    width: 48px; height: 48px;
+  }
+
+  .upload-tap {
+    position: absolute;
+    left: 121px; top: 112px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.714em;
+    letter-spacing: 1.786%;
+    color: #fff;
+  }
+
+  .upload-format {
+    position: absolute;
+    top: 140px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 2em;
+    letter-spacing: 2.5%;
+    color: #fff;
+  }
+
+  .upload-weight {
+    position: absolute;
+    left: 75px; top: 164px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 2em;
+    letter-spacing: 2.5%;
+    color: #fff;
+  }
+
+  /* ── Progress bar inside upload zone ── */
+  .upload-progress-wrap {
+    position: absolute;
+    left: 40px; bottom: 24px;
+    width: 263px; height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    opacity: 0;
+  }
+  .upload-progress-wrap.show { opacity: 1; transition: opacity 0.3s; }
+  .upload-progress-bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, #FFA717, #FFC34A);
+    border-radius: 2px;
+    transition: width 1.8s ease-in-out;
+  }
+  .upload-progress-bar.fill { width: 100%; }
+
+  /* ── Upload done overlay ── */
+  .upload-done-overlay {
+    position: absolute; inset: 0;
+    border-radius: 8px;
+    background: rgba(23,23,23,0.92);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .upload-done-overlay.show { opacity: 1; }
+  .upload-done-check {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: #FFA717;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: #171717; font-weight: 700;
+    transform: scale(0);
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .upload-done-overlay.show .upload-done-check { transform: scale(1); }
+  .upload-done-text {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500; font-size: 12px;
+    color: #fff; margin-top: 8px;
+  }
+
+  /* ── Amount chips ── */
+  .chip-row {
+    position: absolute;
+    display: flex;
+    gap: 22px;
+  }
+  .chip-rect {
+    width: 68px; height: 43px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: scale(0.85);
+  }
+  .chip-rect.show {
+    opacity: 1; transform: scale(1);
+    transition: opacity 0.3s ease, transform 0.3s ease, background 0.3s, box-shadow 0.3s;
+  }
+  .chip-rect.selected {
+    background: rgba(255,167,23,0.25);
+    box-shadow: 0 0 0 1px #FFA717;
+  }
+
+  /* ── Success title ── */
+  .success-title {
+    position: absolute;
+    left: 1px; top: 154px;
+    width: 374px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.333em;
+    text-align: center;
+    color: #fff;
+  }
+
+  /* ── Step screens ── */
+  .step-screen {
+    position: absolute; inset: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .step-screen.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Animations ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  .fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .scale-in {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  .scale-in.show {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  /* ── Typing cursor ── */
+  .cursor {
+    display: inline-block;
+    width: 1.5px; height: 1em;
+    background: #FFA717;
+    margin-left: 1px;
+    vertical-align: text-bottom;
+    animation: blink 0.7s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="phone-notch"></div>
+  <div class="phone-screen">
+
+    <!-- ════════ STEP 1: Upload Video ════════ -->
+    <div class="step-screen active" id="step1">
+      <div class="back-arrow">&larr;</div>
+      <div class="logo">PoolHive</div>
+      <div class="t-upload-title fade-in" id="s1-title" style="left:84px;top:160px;width:201px;">Upload a video pitch deck</div>
+      <div class="t-upload-desc fade-in" id="s1-desc" style="left:16px;top:235px;width:343px;">
+        Discover &amp; support ideas<br>
+        Create a campaign with your own project<br>
+        Set a funding goal<br>
+        Share it with your network.
+      </div>
+      <div class="upload-zone scale-in" id="s1-zone">
+        <svg class="upload-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16.24 20.16C18.4491 20.16 20.24 18.3691 20.24 16.16C20.24 13.9509 18.4491 12.16 16.24 12.16C14.0309 12.16 12.24 13.9509 12.24 16.16C12.24 18.3691 14.0309 20.16 16.24 20.16Z" fill="#FFA717"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M28.48 4H20C11.1634 4 4 11.1634 4 20V28.48C4 37.3166 11.1634 44.48 20 44.48H28.48C37.3166 44.48 44.48 37.3166 44.48 28.48V20C44.48 15.7565 42.7943 11.6869 39.7937 8.68629C36.7931 5.68571 32.7235 4 28.48 4ZM20 7H28.48C34.9718 7.01014 40.4611 11.8079 41.34 18.24H38.24C29.8935 18.2468 22.1758 22.6765 17.96 29.88C15.3272 27.7886 12.0623 26.6533 8.7 26.66H7V20C7.01101 12.8249 12.8249 7.01101 20 7ZM8.7 29.66H7.06C7.49446 34.3765 10.4598 38.4835 14.8 40.38C14.9433 37.7103 15.5455 35.0853 16.58 32.62C14.3969 30.7142 11.5979 29.6628 8.7 29.66ZM28.48 41.48H20C19.2481 41.477 18.4981 41.4034 17.76 41.26C18.0097 30.1227 27.0999 21.2189 38.24 21.2H41.48V28.48C41.469 35.6551 35.6551 41.469 28.48 41.48Z" fill="#FFA717"/>
+        </svg>
+        <div class="upload-tap">Tap to upload</div>
+        <div class="upload-format" style="left:127px;">File format: video</div>
+        <div class="upload-weight">File weight should not exceed 10mb</div>
+        <div class="upload-progress-wrap" id="s1-progress-wrap">
+          <div class="upload-progress-bar" id="s1-progress-bar"></div>
+        </div>
+        <div class="upload-done-overlay" id="s1-done">
+          <div class="upload-done-check">&#10003;</div>
+          <div class="upload-done-text">Uploaded!</div>
+        </div>
+      </div>
+      <div class="btn-next fade-in" id="s1-btn"><span>Next</span></div>
+      <div class="home-indicator"></div>
+    </div>
+
+    <!-- ════════ STEP 2: Fill Description ════════ -->
+    <div class="step-screen" id="step2">
+      <div class="back-arrow">&larr;</div>
+      <div class="logo">PoolHive</div>
+      <div class="t-section-title" style="left:18px;top:159px;">Add your campaign</div>
+      <div class="field-rect fade-in" id="s2-f1" style="left:18px;top:196px;width:344px;height:55px;"></div>
+      <div class="t-field-value fade-in" id="s2-v1" style="left:36px;top:212px;width:309px;"><span id="s2-t1"></span><span class="cursor" id="s2-c1"></span></div>
+      <div class="field-rect fade-in" id="s2-f2" style="left:18px;top:266px;width:344px;height:55px;"></div>
+      <div class="t-field-value fade-in" id="s2-v2" style="left:36px;top:282px;width:309px;">Machine Learning</div>
+      <div class="t-section-title fade-in" id="s2-lbl" style="left:18px;top:354px;">Provide the amount needed to raise</div>
+      <div class="field-rect fade-in" id="s2-f3" style="left:18px;top:389px;width:344px;height:55px;"></div>
+      <div class="t-field-value-lg fade-in" id="s2-v3" style="left:33px;top:405px;width:309px;"><span id="s2-t3"></span><span class="cursor" id="s2-c3"></span></div>
+      <div class="fade-in" id="s2-dollar" style="position:absolute;left:323px;top:405px;width:30px;font-family:'Baloo Bhai 2',cursive;font-weight:400;font-size:18px;line-height:1.333em;text-align:center;color:#fff;">$</div>
+      <div class="t-section-title fade-in" id="s2-dlbl" style="left:20px;top:470px;">Project description</div>
+      <div class="field-rect filled-bg fade-in" id="s2-f4" style="left:18px;top:504px;width:344px;height:189px;"></div>
+      <div class="t-baloo fade-in" id="s2-v4" style="left:40px;top:525px;width:261px;"><span id="s2-t4"></span><span class="cursor" id="s2-c4"></span></div>
+      <div class="btn-next fade-in" id="s2-btn"><span>Next</span></div>
+      <div class="home-indicator"></div>
+    </div>
+
+    <!-- ════════ STEP 3: Financial Goal ════════ -->
+    <div class="step-screen" id="step3">
+      <div class="back-arrow">&larr;</div>
+      <div class="logo">PoolHive</div>
+      <div class="success-title fade-in" id="s3-success" style="opacity:0;">Success!</div>
+      <div class="t-section-title fade-in" id="s3-lbl1" style="left:18px;top:262px;">Default amounts for donates:</div>
+      <div class="chip-row" id="s3-chips" style="left:18px;top:301px;">
+        <div class="chip-rect" id="c1"><span class="t-chip-17">100$</span></div>
+        <div class="chip-rect" id="c2"><span class="t-chip-17">200$</span></div>
+        <div class="chip-rect" id="c3"><span class="t-chip-17">500$</span></div>
+        <div class="chip-rect" id="c4"><span class="t-chip-17">1k$</span></div>
+      </div>
+      <div class="t-section-title fade-in" id="s3-lbl2" style="left:18px;top:415px;">Contributor can request a chat from:</div>
+      <div class="field-rect fade-in" id="s3-f1" style="left:18px;top:452px;width:338px;height:55px;background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.15);"></div>
+      <div class="t-field-value-17 fade-in" id="s3-v1" style="left:34px;top:468px;width:309px;"><span id="s3-t1"></span><span class="cursor" id="s3-c1"></span></div>
+      <div class="fade-in" id="s3-dollar" style="position:absolute;left:318px;top:468px;width:30px;font-family:'Poppins',sans-serif;font-weight:400;font-size:18px;line-height:1.333em;text-align:center;color:#fff;">$</div>
+      <div class="btn-next fade-in" id="s3-btn"><span>Next</span></div>
+      <div class="home-indicator"></div>
+    </div>
+
+    <!-- ════════ STEP 4: Publish ════════ -->
+    <div class="step-screen" id="step4">
+      <div class="back-arrow">&larr;</div>
+      <div class="logo">PoolHive</div>
+      <div class="success-title" id="s4-success" style="opacity:0;">Success!</div>
+      <div class="t-section-title" id="s4-lbl1" style="left:18px;top:262px;opacity:0;">Default amounts for donates:</div>
+      <div class="chip-row" style="left:18px;top:301px;">
+        <div class="chip-rect" id="c4a"><span class="t-chip-17">100$</span></div>
+        <div class="chip-rect" id="c4b"><span class="t-chip-17">200$</span></div>
+        <div class="chip-rect" id="c4c"><span class="t-chip-17">500$</span></div>
+        <div class="chip-rect" id="c4d"><span class="t-chip-17">1k$</span></div>
+      </div>
+      <div class="t-section-title" id="s4-lbl2" style="left:18px;top:415px;opacity:0;">Contributor can request a chat from:</div>
+      <div class="field-rect" id="s4-f1" style="left:18px;top:452px;width:338px;height:55px;background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.15);opacity:0;"></div>
+      <div class="t-field-value-17" id="s4-v1" style="left:34px;top:468px;width:309px;opacity:0;">11,000</div>
+      <div style="position:absolute;left:318px;top:468px;width:30px;font-family:'Poppins',sans-serif;font-weight:400;font-size:18px;line-height:1.333em;text-align:center;color:#fff;opacity:0;" id="s4-d1">$</div>
+      <div class="btn-publish" id="s4-btn" style="opacity:0;"><span>Publish</span></div>
+      <div class="home-indicator"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── Helpers ──
+function typeText(el, text, speed, cb) {
+  let i = 0;
+  const iv = setInterval(() => {
+    el.textContent = text.slice(0, ++i);
+    if (i >= text.length) { clearInterval(iv); if (cb) cb(); }
+  }, speed);
+}
+
+function show(id, delay) {
+  setTimeout(() => document.getElementById(id).classList.add('show'), delay);
+}
+
+function hide(id) {
+  const el = document.getElementById(id);
+  el.classList.remove('show', 'active');
+}
+
+// ── Screen management ──
+const screens = ['step1','step2','step3','step4'];
+let cur = -1;
+
+function activate(idx) {
+  if (cur >= 0) {
+    document.getElementById(screens[cur]).classList.remove('active');
+  }
+  cur = idx;
+  document.getElementById(screens[idx]).classList.add('active');
+}
+
+// ══════════ STEP 1: Upload Video ══════════
+function runStep1() {
+  activate(0);
+  show('s1-title', 200);
+  show('s1-desc', 400);
+  setTimeout(() => document.getElementById('s1-zone').classList.add('show'), 700);
+  setTimeout(() => {
+    document.getElementById('s1-progress-wrap').classList.add('show');
+    setTimeout(() => document.getElementById('s1-progress-bar').classList.add('fill'), 50);
+  }, 1300);
+  setTimeout(() => document.getElementById('s1-done').classList.add('show'), 3300);
+  show('s1-btn', 3800);
+  setTimeout(() => {
+    ['s1-title','s1-desc','s1-btn'].forEach(id => hide(id));
+    document.getElementById('s1-zone').classList.remove('show');
+    document.getElementById('s1-progress-wrap').classList.remove('show');
+    document.getElementById('s1-progress-bar').classList.remove('fill');
+    document.getElementById('s1-done').classList.remove('show');
+    runStep2();
+  }, 5500);
+}
+
+// ══════════ STEP 2: Fill Description ══════════
+function runStep2() {
+  activate(1);
+  setTimeout(() => {
+    ['s2-f1','s2-v1'].forEach(id => document.getElementById(id).classList.add('show'));
+    document.getElementById('s2-f1').classList.add('active');
+    typeText(document.getElementById('s2-t1'), 'Tech App', 80, () => {
+      document.getElementById('s2-c1').style.display = 'none';
+      document.getElementById('s2-f1').classList.remove('active');
+    });
+  }, 300);
+  setTimeout(() => {
+    ['s2-f2','s2-v2'].forEach(id => document.getElementById(id).classList.add('show'));
+  }, 1100);
+  setTimeout(() => {
+    ['s2-f3','s2-v3','s2-dollar','s2-lbl'].forEach(id => document.getElementById(id).classList.add('show'));
+    document.getElementById('s2-f3').classList.add('active');
+    typeText(document.getElementById('s2-t3'), '100 000', 90, () => {
+      document.getElementById('s2-c3').style.display = 'none';
+      document.getElementById('s2-f3').classList.remove('active');
+    });
+  }, 1700);
+  setTimeout(() => {
+    ['s2-dlbl','s2-f4','s2-v4'].forEach(id => document.getElementById(id).classList.add('show'));
+    document.getElementById('s2-f4').classList.add('active');
+    typeText(document.getElementById('s2-t4'), 'Please, enter the description of your\nproject here', 40, () => {
+      document.getElementById('s2-c4').style.display = 'none';
+    });
+  }, 2800);
+  show('s2-btn', 4200);
+  setTimeout(() => {
+    ['s2-f1','s2-v1','s2-f2','s2-v2','s2-f3','s2-v3','s2-dollar','s2-lbl','s2-dlbl','s2-f4','s2-v4','s2-btn'].forEach(id => hide(id));
+    document.getElementById('s2-f1').classList.remove('active');
+    document.getElementById('s2-f3').classList.remove('active');
+    document.getElementById('s2-f4').classList.remove('active');
+    document.getElementById('s2-t1').textContent = '';
+    document.getElementById('s2-t3').textContent = '';
+    document.getElementById('s2-t4').textContent = '';
+    ['s2-c1','s2-c3','s2-c4'].forEach(id => document.getElementById(id).style.display = '');
+    runStep3();
+  }, 5500);
+}
+
+// ══════════ STEP 3: Financial Goal ══════════
+function runStep3() {
+  activate(2);
+  setTimeout(() => {
+    const el = document.getElementById('s3-success');
+    el.style.opacity = '1';
+    el.style.transition = 'opacity 0.5s ease';
+  }, 200);
+  show('s3-lbl1', 600);
+  const chips = ['c1','c2','c3','c4'];
+  chips.forEach((id, i) => {
+    setTimeout(() => {
+      document.getElementById(id).classList.add('show');
+      if (i === 2) setTimeout(() => document.getElementById(id).classList.add('selected'), 250);
+    }, 900 + i * 150);
+  });
+  show('s3-lbl2', 1800);
+  setTimeout(() => {
+    ['s3-f1','s3-v1','s3-dollar'].forEach(id => document.getElementById(id).classList.add('show'));
+    typeText(document.getElementById('s3-t1'), '11,000', 80, () => {
+      document.getElementById('s3-c1').style.display = 'none';
+    });
+  }, 2200);
+  show('s3-btn', 3200);
+  setTimeout(() => {
+    document.getElementById('s3-success').style.opacity = '0';
+    ['s3-lbl1','s3-lbl2','s3-f1','s3-v1','s3-dollar','s3-btn'].forEach(id => hide(id));
+    chips.forEach(id => { document.getElementById(id).classList.remove('show','selected'); });
+    document.getElementById('s3-t1').textContent = '';
+    document.getElementById('s3-c1').style.display = '';
+    runStep4();
+  }, 5500);
+}
+
+// ══════════ STEP 4: Publish ══════════
+function runStep4() {
+  activate(3);
+  setTimeout(() => {
+    document.getElementById('s4-success').style.transition = 'opacity 0.5s ease';
+    document.getElementById('s4-success').style.opacity = '1';
+  }, 300);
+  setTimeout(() => {
+    document.getElementById('s4-lbl1').style.transition = 'opacity 0.4s';
+    document.getElementById('s4-lbl1').style.opacity = '1';
+    ['c4a','c4b','c4c','c4d'].forEach((id, i) => {
+      setTimeout(() => document.getElementById(id).classList.add('show'), i * 100);
+    });
+  }, 700);
+  setTimeout(() => {
+    ['s4-lbl2','s4-f1','s4-v1','s4-d1'].forEach(id => {
+      const el = document.getElementById(id);
+      el.style.transition = 'opacity 0.4s';
+      el.style.opacity = '1';
+    });
+  }, 1200);
+  setTimeout(() => {
+    const btn = document.getElementById('s4-btn');
+    btn.style.transition = 'opacity 0.4s';
+    btn.style.opacity = '1';
+    let on = true;
+    const gi = setInterval(() => {
+      btn.style.boxShadow = on
+        ? '0 0 24px rgba(255,167,23,0.5), 0 0 60px rgba(255,167,23,0.15)'
+        : '0 0 8px rgba(255,167,23,0.2)';
+      on = !on;
+    }, 700);
+    setTimeout(() => { clearInterval(gi); btn.style.boxShadow = ''; }, 2800);
+  }, 1600);
+  setTimeout(() => {
+    document.getElementById('s4-success').style.opacity = '0';
+    document.getElementById('s4-lbl1').style.opacity = '0';
+    document.getElementById('s4-lbl2').style.opacity = '0';
+    document.getElementById('s4-f1').style.opacity = '0';
+    document.getElementById('s4-v1').style.opacity = '0';
+    document.getElementById('s4-d1').style.opacity = '0';
+    document.getElementById('s4-btn').style.opacity = '0';
+    ['c4a','c4b','c4c','c4d'].forEach(id => document.getElementById(id).classList.remove('show'));
+    runStep1();
+  }, 5000);
+}
+
+// ── Start ──
+setTimeout(runStep1, 600);
+</script>
+</body>
+</html>
