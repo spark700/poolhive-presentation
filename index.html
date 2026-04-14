@@ -171,10 +171,6 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
   pointer-events:none}
 
 .cta-hero{text-align:center}
-/* Letter spans for CTA wordmark stagger animation */
-#cta-wordmark span{display:inline-block;will-change:transform,opacity,filter}
-/* Initial states hidden (JS will animate them in) */
-.cta-hero #cta-tl,.cta-hero #cta-line,.cta-hero #cta-tagline,.cta-hero #cta-dots,.cta-hero #cta-scan-txt,.cta-hero #cta-qr{will-change:transform,opacity,filter}
 .cta-tagline{font-family:var(--fd);font-size:clamp(2rem,4.5vw,3.8rem);font-weight:300;line-height:1.1;letter-spacing:-.02em;margin-top:clamp(40px,6vh,80px)}
 .cta-tagline b{font-weight:700;color:var(--gold);position:relative}
 .cta-tagline b::after{content:'';position:absolute;left:0;bottom:-4px;width:100%;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-l));border-radius:1px;box-shadow:0 0 12px rgba(222,167,82,.4)}
@@ -458,20 +454,20 @@ html:has(body.cursor-idle){cursor:none!important}
 <!-- S7 CTA -->
 <section class="s" id="cta">
   <div class="s__in cta-hero" id="fc">
-    <span class="tl" id="cta-tl">Endless Possibilities</span>
-    <div class="logo-row logo-glow active" id="cta-logo" style="justify-content:center">
-      <span class="td" id="cta-wordmark"><span>P</span><span>O</span><span>O</span><span>L</span><span>H</span><span>I</span><span>V</span><span>E</span></span>
-      <img src="ЛОГО_ПАТЧ_без_кола_Монтажна_область_1.png" alt="PH" id="cta-patch">
+    <span class="tl">Endless Possibilities</span>
+    <div class="logo-row logo-glow active" style="justify-content:center">
+      <span class="td">POOLHIVE</span>
+      <img src="ЛОГО_ПАТЧ_без_кола_Монтажна_область_1.png" alt="PH">
     </div>
-    <div class="logo-line" id="cta-line"></div>
-    <p class="cta-tagline" id="cta-tagline"><b>Скоро</b> у твоєму смартфоні</p>
-    <div class="cta-dots" id="cta-dots"><i></i><i></i><i></i></div>
+    <div class="logo-line"></div>
+    <p class="cta-tagline"><b>Скоро</b> у твоєму смартфоні</p>
+    <div class="cta-dots"><i></i><i></i><i></i></div>
     <div class="cta-scan">
-      <div class="cta-scan-txt" id="cta-scan-txt">
+      <div class="cta-scan-txt">
         <span class="k">Відскануй, щоб дізнатися більше</span>
         <span class="v">poolhiveapp.com</span>
       </div>
-      <div class="cta-qr-frame" id="cta-qr">
+      <div class="cta-qr-frame">
         <span class="c-br tr"></span><span class="c-br bl"></span>
         <span class="qr-ripple a"></span><span class="qr-ripple b"></span><span class="qr-ripple c"></span>
         <img src="qr_code_poolhive.svg" alt="QR — poolhiveapp.com">
@@ -859,41 +855,7 @@ ScrollTrigger.create({
 gsap.from('#close-t',{scrollTrigger:{trigger:'#close',start:'top 55%',toggleActions:'play none none reverse'},y:50,opacity:0,duration:1.2,ease:'power3.out'});
 /* Fade out bottom-right QR when close section phone enlarges */
 gsap.to('.ui-br',{opacity:0,duration:1.2,ease:'power2.inOut',scrollTrigger:{trigger:'#close',start:'top 70%',end:'top 20%',scrub:true}});
-/* CTA — cinematic sequential reveal */
-var ctaChars=document.querySelectorAll('#cta-wordmark span');
-/* Set initial hidden states */
-gsap.set('#cta-tl',{opacity:0,y:14,filter:'blur(4px)'});
-gsap.set(ctaChars,{opacity:0,yPercent:60,filter:'blur(12px)',scale:.94});
-gsap.set('#cta-patch',{opacity:0,scale:.5,rotation:-18,filter:'blur(6px)'});
-gsap.set('#cta-line',{scaleX:0,transformOrigin:'center'});
-gsap.set('#cta-tagline',{opacity:0,y:20,filter:'blur(5px)'});
-gsap.set('#cta-dots',{opacity:0});
-gsap.set('#cta-dots i',{scale:0,opacity:0});
-gsap.set('#cta-scan-txt',{opacity:0,x:30,filter:'blur(4px)'});
-gsap.set('#cta-qr',{opacity:0,scale:.8,filter:'blur(10px)'});
-
-var ctaTL=gsap.timeline({scrollTrigger:{trigger:'#cta',start:'top 65%',toggleActions:'play none none reverse'},defaults:{ease:'power3.out'}});
-ctaTL
-  /* 0.0s — Kicker whisper */
-  .to('#cta-tl',{opacity:1,y:0,filter:'blur(0)',duration:.7},0)
-  /* 0.35s — Patch flies in from behind with rotation settle (bouncy) */
-  .to('#cta-patch',{opacity:1,scale:1,rotation:0,filter:'blur(0)',duration:1.2,ease:'back.out(1.6)'},0.35)
-  /* 0.5s — Wordmark letters stagger from center with blur/scale */
-  .to(ctaChars,{opacity:1,yPercent:0,filter:'blur(0)',scale:1,duration:1.1,ease:'power4.out',stagger:{each:.04,from:'center'}},0.5)
-  /* 1.25s — Gold line draws out from center */
-  .to('#cta-line',{scaleX:1,duration:.9,ease:'power4.inOut'},1.25)
-  /* 1.55s — Tagline rises with "Скоро" underline (CSS ::after uses scaleX) */
-  .to('#cta-tagline',{opacity:1,y:0,filter:'blur(0)',duration:1.0},1.55)
-  /* 1.9s — Dots pulse in sequentially */
-  .to('#cta-dots',{opacity:1,duration:.2},1.9)
-  .to('#cta-dots i',{scale:1,opacity:.9,duration:.5,stagger:.12,ease:'back.out(2.2)'},1.95)
-  /* 2.4s — Scan text slides in from right (invitation feel) */
-  .to('#cta-scan-txt',{opacity:1,x:0,filter:'blur(0)',duration:.9,ease:'power3.out'},2.4)
-  /* 2.65s — QR scales in with blur→focus (like camera focus) + brief bloom */
-  .to('#cta-qr',{opacity:1,scale:1,filter:'blur(0)',duration:1.2,ease:'back.out(1.3)'},2.65)
-  /* Brief bloom flash on QR */
-  .to('#cta-qr',{boxShadow:'0 0 60px rgba(222,167,82,.5)',duration:.4,ease:'power2.out'},3.6)
-  .to('#cta-qr',{boxShadow:'0 0 0px rgba(222,167,82,0)',duration:1.0,ease:'power2.out'},4.0);
+gsap.from('#fc',{scrollTrigger:{trigger:'#cta',start:'top 60%',toggleActions:'play none none reverse'},y:50,opacity:0,scale:.96,duration:1.1,ease:'power3.out'});
 
 /* ═══════════════════════════════════════════
    THREE.JS — iPHONE (r128, script tag)
