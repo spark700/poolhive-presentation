@@ -148,19 +148,14 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 .how-wrap{display:flex;align-items:flex-start;gap:clamp(40px,5vw,80px);width:100%;max-width:1100px;padding-left:clamp(0px, calc(25vw - 260px), 320px)}
 .how-left{flex:1;max-width:580px}
 .how-right{flex:0 0 50%} /* phone canvas occupies right half */
-.step{padding:22px 0;border-bottom:1px solid var(--w15);opacity:.15;transform:translateX(-8px);will-change:opacity,transform;transition:padding .5s var(--ease)}
-.step__head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px;transition:gap .5s var(--ease),margin-bottom .5s var(--ease)}
-.step__n{font-family:var(--fd);font-size:.9rem;font-weight:800;color:var(--gold);min-width:26px;transition:font-size .5s var(--ease)}
-.step__t{font-family:var(--fd);font-size:1.15rem;font-weight:600;letter-spacing:-.01em;line-height:1.2;transition:font-size .5s var(--ease)}
-.step__d{font-size:.9rem;font-weight:400;color:var(--w);line-height:1.55;padding-left:42px;transition:font-size .5s var(--ease),padding-left .5s var(--ease)}
-.step__screen{display:none;font-size:.7rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);opacity:.5;padding-left:42px;margin-top:6px;transition:font-size .5s var(--ease),padding-left .5s var(--ease)}
-/* Active step grows significantly for readability */
-.step.on{padding:42px 0}
-.step.on .step__head{gap:24px;margin-bottom:18px}
-.step.on .step__n{font-size:1.45rem;min-width:38px}
-.step.on .step__t{font-size:2.35rem}
-.step.on .step__d{font-size:1.3rem;padding-left:62px;line-height:1.5}
-.step.on .step__screen{font-size:.95rem;padding-left:62px;margin-top:12px}
+/* Steps — continuous size scaling via --step-t (0=far, 1=active) set by JS */
+.step{--step-t:0;padding:calc(18px + 24px * var(--step-t)) 0;border-bottom:1px solid var(--w15);transform:translateX(calc(-8px * (1 - var(--step-t))));will-change:opacity,transform;color:#fff;text-shadow:0 0 12px rgba(255,255,255,.05)}
+.step__head{display:flex;align-items:baseline;gap:calc(14px + 10px * var(--step-t));margin-bottom:calc(6px + 12px * var(--step-t))}
+.step__n{font-family:var(--fd);font-size:calc(.8rem + .65rem * var(--step-t));font-weight:800;color:var(--gold);min-width:calc(22px + 16px * var(--step-t))}
+.step__t{font-family:var(--fd);font-size:calc(1rem + 1.35rem * var(--step-t));font-weight:600;letter-spacing:-.01em;line-height:1.2;color:#fff}
+.step__d{font-size:calc(.8rem + .5rem * var(--step-t));font-weight:400;color:rgba(255,255,255,.95);line-height:1.55;padding-left:calc(36px + 26px * var(--step-t))}
+.step__screen{display:block;font-size:calc(.65rem + .3rem * var(--step-t));font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);opacity:0;padding-left:calc(36px + 26px * var(--step-t));margin-top:calc(4px + 8px * var(--step-t))}
+.step.on .step__screen{opacity:1}
 .step .step__screen{display:block;opacity:0;transition:none}
 .step.on .step__screen{opacity:1}
 
@@ -840,13 +835,13 @@ ScrollTrigger.create({
     for(var i=0;i<4;i++){
       var center=i+0.5; // center of each step zone
       var dist=Math.abs(p-center);
-      /* Smooth bell curve: 1 at center, 0.15 at edges */
-      var t=Math.max(0,1-dist*1.2);
+      /* Distance-based t: active=1, adjacent≈0.5, far≈0.15 (no zero — keeps all readable) */
+      var t=Math.max(0.12,1-dist*0.45);
       t=t*t*(3-2*t); // smoothstep
-      var opacity=0.42+0.58*t;
-      var tx=-8*(1-t);
+      /* All steps clearly visible; active fully visible */
+      var opacity=0.62+0.38*t;
       stepEls[i].style.opacity=opacity;
-      stepEls[i].style.transform='translateX('+tx+'px)';
+      stepEls[i].style.setProperty('--step-t',t.toFixed(3));
       /* Track which step is most active */
       if(t>0.5){
         activeIdx=i;
