@@ -88,8 +88,8 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
   100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}
 }
 /* Wordmark — warm gradient, weight 700, tight-but-breathing tracking */
-.reveal-wordmark{font-family:var(--fd);font-size:clamp(2.8rem,10vw,7.5rem);font-weight:700;letter-spacing:-.035em;line-height:.88;display:flex;justify-content:center;gap:0;font-feature-settings:"kern" 1,"liga" 1}
-.reveal-wordmark span{display:inline-block;will-change:transform,opacity,filter;background:linear-gradient(180deg,#fff 0%,#f2e2c2 60%,#dea752 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.reveal-wordmark{font-family:var(--fd);font-size:clamp(2.8rem,10vw,7.5rem);font-weight:700;letter-spacing:-.035em;line-height:.88;display:flex;justify-content:center;gap:0;font-feature-settings:"kern" 1,"liga" 1;text-shadow:none;filter:none}
+.reveal-wordmark span{display:inline-block;will-change:transform,opacity,filter;color:#fff;text-shadow:none;filter:none}
 /* Gold line — draws from center via clip-path */
 .reveal-line{height:1px;width:clamp(140px,22vw,280px);background:linear-gradient(90deg,transparent,var(--gold) 30%,var(--gold-l) 50%,var(--gold) 70%,transparent);margin:clamp(22px,3vh,32px) auto clamp(10px,1.4vh,16px);box-shadow:0 0 14px rgba(222,167,82,.5);clip-path:inset(0 100% 0 0);transition:box-shadow .3s}
 /* Center dot on line */
@@ -107,7 +107,8 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 .hero-kicker{display:inline-flex;align-items:center;gap:14px;font-family:var(--fb);font-weight:500;font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:rgba(222,167,82,.42);margin-bottom:34px;will-change:transform,opacity}
 .hero-kicker-rule{width:56px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);transform-origin:left;transform:scaleX(0)}
 .hero-h1{font-family:var(--fd);font-weight:400;font-size:clamp(3.6rem,7vw,6.4rem);line-height:1.05;letter-spacing:-.035em;color:rgba(255,255,255,.9)}
-.hero-h1 .hero-block{display:inline;will-change:transform,opacity,filter}
+.hero-h1 .hero-block{display:inline-block;vertical-align:top;will-change:transform,opacity,filter}
+.hero-h1 .hero-gold{vertical-align:top}
 .hero-gold{display:inline-block;font-weight:700;font-style:normal;position:relative;color:var(--gold);padding:0 .04em;letter-spacing:-.02em}
 .hero-gold span{display:inline-block;will-change:transform,opacity,filter;color:var(--gold);transition:opacity .8s ease}
 .hero-h2{margin-top:89px;font-family:var(--fd);font-weight:300;font-size:clamp(2rem,3.6vw,3rem);line-height:1.35;letter-spacing:-.01em;color:rgba(255,255,255,.5);will-change:transform,opacity,filter}
@@ -149,12 +150,12 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 .how-left{flex:1;max-width:580px}
 .how-right{flex:0 0 50%} /* phone canvas occupies right half */
 /* Steps — fixed height, content scales HORIZONTALLY from left (no vertical motion) */
-.step{--step-t:0;min-height:150px;display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid var(--w15);will-change:opacity;color:#fff;padding:12px 0;text-shadow:0 0 12px rgba(255,255,255,.05);overflow:hidden}
-.step__head{display:flex;align-items:baseline;gap:18px;margin-bottom:12px;transform-origin:left center;transform:scale(calc(.45 + .55 * var(--step-t)))}
+.step{--step-t:0;min-height:150px;display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid var(--w15);will-change:opacity;color:#fff;padding:12px 0;text-shadow:0 0 12px rgba(255,255,255,.05);overflow:visible}
+.step__head{display:flex;align-items:baseline;gap:18px;margin-bottom:12px;transform-origin:left center;transform:scale(calc(.45 + .85 * var(--step-t)))}
 .step__n{font-family:var(--fd);font-size:1.3rem;font-weight:800;color:var(--gold);min-width:32px}
 .step__t{font-family:var(--fd);font-size:2rem;font-weight:600;letter-spacing:-.01em;line-height:1.15;color:#fff;white-space:nowrap}
-.step__d{font-size:1.15rem;font-weight:400;color:rgba(255,255,255,.95);line-height:1.5;padding-left:50px;transform-origin:left center;transform:scale(calc(.5 + .5 * var(--step-t)))}
-.step__screen{display:block;font-size:.85rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);opacity:0;padding-left:50px;margin-top:8px;transform-origin:left center;transform:scale(calc(.5 + .5 * var(--step-t)))}
+.step__d{font-size:1.15rem;font-weight:400;color:rgba(255,255,255,.95);line-height:1.5;padding-left:50px;transform-origin:left center;transform:scale(calc(.5 + .75 * var(--step-t)))}
+.step__screen{display:block;font-size:.85rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);opacity:0;padding-left:50px;margin-top:8px;transform-origin:left center;transform:scale(calc(.5 + .75 * var(--step-t)))}
 .step.on .step__screen{opacity:1}
 .step .step__screen{display:block;opacity:0;transition:none}
 .step.on .step__screen{opacity:1}
@@ -171,6 +172,32 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 #close::before{content:'';position:absolute;inset:0;z-index:3;
   background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(5,5,8,.34) 0%,rgba(5,5,8,.2) 55%,transparent 100%);
   pointer-events:none}
+
+/* close typography — editorial headline with internal size hierarchy.
+   Gold accents monumental, thin parts tighter — creates rhythm, not a flat wall of text. */
+#close .s__in{max-width:640px}
+#close .th{
+  font-size:clamp(2.6rem,4.8vw,4.4rem);
+  font-weight:300;
+  line-height:.98;
+  letter-spacing:-0.03em;
+  color:rgba(255,255,255,.96);
+  text-shadow:0 2px 40px rgba(0,0,0,.55),0 0 1px rgba(0,0,0,.3);
+}
+#close .th b{
+  font-weight:700;
+  letter-spacing:-0.045em;
+  font-size:clamp(4.2rem,8.2vw,7.6rem);
+  line-height:.9;
+  display:inline-block;
+  vertical-align:baseline;
+}
+#close .th b.gold{
+  background:linear-gradient(180deg,#f6d89a 0%,var(--gold) 60%,#c8924a 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  text-shadow:none;
+}
 
 .cta-hero{text-align:center}
 .cta-tagline{font-family:var(--fd);font-size:clamp(2.8rem,6vw,5.2rem);font-weight:300;line-height:1.08;letter-spacing:-.02em;margin-top:clamp(40px,6vh,80px)}
@@ -415,7 +442,7 @@ html:has(body.cursor-idle){cursor:none!important}
 
 <!-- S5 HOW IT WORKS — steps left (sticky), phone right -->
 <section id="how" style="position:relative;min-height:200vh;padding:0 clamp(24px,5vw,60px)">
-  <div class="how-wrap" style="position:sticky;top:0;min-height:100vh;display:flex;align-items:center">
+  <div class="how-wrap" style="position:fixed;top:0;left:0;right:0;height:100vh;display:flex;align-items:center;visibility:hidden;z-index:2">
     <div class="how-left">
       <span class="tl" id="how-label">Як це працює</span>
       <div style="height:8px"></div>
@@ -423,22 +450,18 @@ html:has(body.cursor-idle){cursor:none!important}
         <div class="step on" data-step="0">
           <div class="step__head"><span class="step__n">01</span><span class="step__t"><span class="gold">Завантаж</span> своє відео</span></div>
           <div class="step__d">Зніми коротке відео про свою ідею, проєкт або збір коштів</div>
-          <div class="step__screen">Екран: завантаження файлу →</div>
         </div>
         <div class="step" data-step="1">
           <div class="step__head"><span class="step__n">02</span><span class="step__t"><span class="gold">Заповни</span> опис</span></div>
           <div class="step__d">Розкажи деталі: мета, терміни, команда, що вже зроблено</div>
-          <div class="step__screen">Екран: форма опису →</div>
         </div>
         <div class="step" data-step="2">
           <div class="step__head"><span class="step__n">03</span><span class="step__t"><span class="gold">Встанови</span> фінансову ціль</span></div>
           <div class="step__d">Вкажи суму, яка потрібна для реалізації твоєї ідеї</div>
-          <div class="step__screen">Екран: вибір суми →</div>
         </div>
         <div class="step" data-step="3">
           <div class="step__head"><span class="step__n">04</span><span class="step__t"><span class="gold">Опублікуй</span> своє відео</span></div>
           <div class="step__d">Натисни «Опублікувати» і спільнота тебе знайде</div>
-          <div class="step__screen">Екран: публікація ✓</div>
         </div>
       </div>
     </div>
@@ -448,8 +471,8 @@ html:has(body.cursor-idle){cursor:none!important}
 
 <!-- S6 CLOSE -->
 <section class="s" id="close">
-  <div class="s__in" style="text-align:left;max-width:520px;margin-left:calc(25vw - 260px);margin-right:auto">
-    <p class="th" id="close-t">І вже <b class="gold">скоро</b>, твою ідею<br><b class="gold">підтримають</b></p>
+  <div class="s__in" style="text-align:left;max-width:520px;margin-left:clamp(48px,6vw,120px);margin-right:auto">
+    <p class="th" id="close-t">І вже <b class="gold">скоро</b>,<br>твою ідею<br><b class="gold">підтримають</b></p>
   </div>
 </section>
 
@@ -630,6 +653,17 @@ heroTL
   /* Gold underlines stagger */
   .call(function(){document.getElementById('he1').classList.add('on');},null,2.5)
   .call(function(){document.getElementById('he2').classList.add('on');},null,2.8);
+
+/* HERO exit — Jakub-style polish: opacity + translateY + blur, staggered tightly,
+   custom ease-in cubic-bezier for natural departure. Hero is pinned so motion is clearly visible. */
+var heroExitTL=gsap.timeline({scrollTrigger:{trigger:'#hero',start:'top top',end:'+=80%',scrub:1.2,pin:true,pinSpacing:true}});
+var heroLine2=[].slice.call(hw1Chars).concat([heroBlocks[1]]).concat([].slice.call(hw2Chars));
+var exitEase='power3.in';
+var exitDur=1.1;
+heroExitTL
+  .fromTo(heroBlocks[0],{y:0,opacity:1,filter:'blur(0px)'},{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0)
+  .fromTo(heroLine2,{y:0,opacity:1,filter:'blur(0px)'},{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0.18)
+  .fromTo('#h2',{y:0,opacity:1,filter:'blur(0px)'},{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0.36);
 
 /* Ember sparks drift up from gold words */
 var heroEmberInt=null;
@@ -816,7 +850,21 @@ ScrollTrigger.create({trigger:'#usp',start:'top 55%',
   onLeaveBack:function(){document.getElementById('usp-u').classList.remove('on')}});
 
 /* HOW — scroll-linked horizontal slide: block moves left→right as user scrolls into section */
-gsap.fromTo('.how-left',{x:-200,opacity:0},{x:0,opacity:1,ease:'none',scrollTrigger:{trigger:'#how',start:'top bottom',end:'top 40%',scrub:1}});
+/* how-wrap is position:fixed — toggle visibility only while section is in viewport */
+(function(){
+  var hw=document.querySelector('#how .how-wrap');
+  if(!hw) return;
+  ScrollTrigger.create({
+    trigger:'#how',
+    start:'top bottom',
+    end:'bottom top',
+    onToggle:function(self){ hw.style.visibility=self.isActive?'visible':'hidden'; }
+  });
+})();
+gsap.fromTo('.how-left',{x:-200,opacity:0},{x:0,opacity:1,ease:'none',scrollTrigger:{trigger:'#how',start:'top 40%',end:'top top',scrub:1}});
+/* Slide back out to the left right after step 4 peak.
+   fromTo with immediateRender:false — avoids conflict with entry tween's init state (which sets x:-200) */
+gsap.fromTo('.how-left',{x:0,opacity:1,scale:1},{x:-200,opacity:0,scale:0.6,transformOrigin:'left center',ease:'none',immediateRender:false,scrollTrigger:{trigger:'#close',start:'top bottom',end:'center center',scrub:1.5}});
 gsap.from('#how-label',{scrollTrigger:{trigger:'#how',start:'top 70%',toggleActions:'play none none reverse'},x:-24,opacity:0,duration:.5,delay:.1});
 
 var stepEls=document.querySelectorAll('.step');
@@ -826,34 +874,37 @@ function setStep(n){if(n!==screenStep){screenStep=n;screenTime=0;}}
 /* Steps — continuous interpolation, no dead zones.
    Each step fades in as scroll approaches its center, fades out as scroll leaves.
    At any scroll position something is always changing. */
+function updateStepsByProgress(progress){
+  var p=progress*4;
+  var activeIdx=Math.min(3,Math.max(0,Math.floor(p)));
+  for(var i=0;i<4;i++){
+    var center=i+0.5;
+    var dist=Math.abs(p-center);
+    var t=Math.max(0.05,1-dist*0.65);
+    t=t*t*(3-2*t);
+    /* Last step: hold at peak after its center — no abrupt shrink at end of #how.
+       Smooth scale-down is handled by the exit tween instead. */
+    if(i===3 && p>3.5) t=1;
+    var opacity=0.25+0.75*t;
+    stepEls[i].style.opacity=opacity;
+    stepEls[i].style.setProperty('--step-t',t.toFixed(3));
+    if(t>0.5){
+      activeIdx=i;
+      if(!stepEls[i].classList.contains('on'))stepEls[i].classList.add('on');
+    }else{
+      stepEls[i].classList.remove('on');
+    }
+  }
+  setStep(activeIdx);
+}
+/* Initial render before first scroll — prevents uniform-size flash at entry */
+updateStepsByProgress(0);
 ScrollTrigger.create({
   trigger:'#how',
   start:'top top',
   end:'bottom bottom',
-  onUpdate:function(self){
-    var p=self.progress*4; // 0..4 continuous
-    /* Default to nearest step by progress — prevents resetting to step 0 at edges */
-    var activeIdx=Math.min(3,Math.max(0,Math.floor(p)));
-    for(var i=0;i<4;i++){
-      var center=i+0.5; // center of each step zone
-      var dist=Math.abs(p-center);
-      /* Distance-based t: active=1, adjacent≈0.35, far≈0.05 (strong hierarchy) */
-      var t=Math.max(0.05,1-dist*0.65);
-      t=t*t*(3-2*t); // smoothstep
-      /* Active bright, others readable but clearly secondary */
-      var opacity=0.55+0.45*t;
-      stepEls[i].style.opacity=opacity;
-      stepEls[i].style.setProperty('--step-t',t.toFixed(3));
-      /* Track which step is most active */
-      if(t>0.5){
-        activeIdx=i;
-        if(!stepEls[i].classList.contains('on'))stepEls[i].classList.add('on');
-      }else{
-        stepEls[i].classList.remove('on');
-      }
-    }
-    setStep(activeIdx);
-  }
+  onUpdate:function(self){ updateStepsByProgress(self.progress); },
+  onRefresh:function(self){ updateStepsByProgress(self.progress); }
 });
 
 gsap.from('#close-t',{scrollTrigger:{trigger:'#close',start:'top 55%',toggleActions:'play none none reverse'},y:50,opacity:0,duration:1.2,ease:'power3.out'});
