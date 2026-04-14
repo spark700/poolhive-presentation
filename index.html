@@ -148,13 +148,13 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 .how-wrap{display:flex;align-items:flex-start;gap:clamp(40px,5vw,80px);width:100%;max-width:1100px;padding-left:clamp(0px, calc(25vw - 260px), 320px)}
 .how-left{flex:1;max-width:580px}
 .how-right{flex:0 0 50%} /* phone canvas occupies right half */
-/* Steps — continuous size scaling via --step-t (0=far, 1=active) set by JS */
-.step{--step-t:0;padding:calc(18px + 24px * var(--step-t)) 0;border-bottom:1px solid var(--w15);transform:translateX(calc(-8px * (1 - var(--step-t))));will-change:opacity,transform;color:#fff;text-shadow:0 0 12px rgba(255,255,255,.05)}
-.step__head{display:flex;align-items:baseline;gap:calc(14px + 10px * var(--step-t));margin-bottom:calc(6px + 12px * var(--step-t))}
-.step__n{font-family:var(--fd);font-size:calc(.8rem + .65rem * var(--step-t));font-weight:800;color:var(--gold);min-width:calc(22px + 16px * var(--step-t))}
-.step__t{font-family:var(--fd);font-size:calc(1rem + 1.35rem * var(--step-t));font-weight:600;letter-spacing:-.01em;line-height:1.2;color:#fff}
-.step__d{font-size:calc(.8rem + .5rem * var(--step-t));font-weight:400;color:rgba(255,255,255,.95);line-height:1.55;padding-left:calc(36px + 26px * var(--step-t))}
-.step__screen{display:block;font-size:calc(.65rem + .3rem * var(--step-t));font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);opacity:0;padding-left:calc(36px + 26px * var(--step-t));margin-top:calc(4px + 8px * var(--step-t))}
+/* Steps — strong size hierarchy via --step-t (0=far smaller, 1=active huge) */
+.step{--step-t:0;padding:calc(12px + 32px * var(--step-t)) 0;border-bottom:1px solid var(--w15);transform:translateX(calc(-8px * (1 - var(--step-t))));will-change:opacity,transform;color:#fff;text-shadow:0 0 12px rgba(255,255,255,.05)}
+.step__head{display:flex;align-items:baseline;gap:calc(10px + 16px * var(--step-t));margin-bottom:calc(4px + 14px * var(--step-t))}
+.step__n{font-family:var(--fd);font-size:calc(.7rem + .85rem * var(--step-t));font-weight:800;color:var(--gold);min-width:calc(18px + 22px * var(--step-t))}
+.step__t{font-family:var(--fd);font-size:calc(.75rem + 1.85rem * var(--step-t));font-weight:600;letter-spacing:-.01em;line-height:1.15;color:#fff}
+.step__d{font-size:calc(.7rem + .8rem * var(--step-t));font-weight:400;color:rgba(255,255,255,.95);line-height:1.5;padding-left:calc(28px + 38px * var(--step-t))}
+.step__screen{display:block;font-size:calc(.55rem + .45rem * var(--step-t));font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);opacity:0;padding-left:calc(28px + 38px * var(--step-t));margin-top:calc(3px + 10px * var(--step-t))}
 .step.on .step__screen{opacity:1}
 .step .step__screen{display:block;opacity:0;transition:none}
 .step.on .step__screen{opacity:1}
@@ -835,11 +835,11 @@ ScrollTrigger.create({
     for(var i=0;i<4;i++){
       var center=i+0.5; // center of each step zone
       var dist=Math.abs(p-center);
-      /* Distance-based t: active=1, adjacent≈0.5, far≈0.15 (no zero — keeps all readable) */
-      var t=Math.max(0.12,1-dist*0.45);
+      /* Distance-based t: active=1, adjacent≈0.35, far≈0.05 (strong hierarchy) */
+      var t=Math.max(0.05,1-dist*0.65);
       t=t*t*(3-2*t); // smoothstep
-      /* All steps clearly visible; active fully visible */
-      var opacity=0.62+0.38*t;
+      /* Active bright, others readable but clearly secondary */
+      var opacity=0.55+0.45*t;
       stepEls[i].style.opacity=opacity;
       stepEls[i].style.setProperty('--step-t',t.toFixed(3));
       /* Track which step is most active */
