@@ -239,7 +239,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 #phoneCanvas.visible{opacity:1;transition:opacity .35s ease}
 
 /* scroll hint */
-.scroll-hint{position:fixed;bottom:36px;left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:hintIn 1s 1.5s forwards}
+.scroll-hint{display:none!important;position:fixed;bottom:36px;left:50%;transform:translateX(-50%);z-index:100;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:hintIn 1s 1.5s forwards}
 .scroll-hint span{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--w50)}
 .scroll-hint i{width:20px;height:32px;border:2px solid var(--w15);border-radius:10px;position:relative}
 .scroll-hint i::after{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:3px;height:8px;background:var(--gold);border-radius:2px;animation:scrollDot 1.8s infinite}
@@ -253,8 +253,19 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 .logo-glow.active::after{opacity:1}
 
 
+/* Intro gate — full-screen black cover with single START button */
+html.intro-locked,html.intro-locked body{overflow:hidden!important;height:100vh}
+html.intro-locked .scroll-hint,html.intro-locked .ui,html.intro-locked .ui-tl,html.intro-locked .ui-tr,html.intro-locked .ui-bl,html.intro-locked .ui-br{display:none!important}
+#introGate{position:fixed;inset:0;z-index:10000;background:#050505;display:flex;align-items:center;justify-content:center;transition:opacity 1.6s cubic-bezier(.4,0,.2,1),visibility 1.6s linear}
+#introGate.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#introStart{appearance:none;background:transparent;border:1px solid rgba(222,167,82,.45);color:var(--gold);font-family:var(--fb);font-size:14px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;padding:22px 56px;border-radius:100px;cursor:pointer;display:inline-flex;align-items:center;gap:16px;transition:background .3s ease,border-color .3s ease,transform .3s ease,box-shadow .3s ease;box-shadow:0 0 0 0 rgba(222,167,82,0)}
+#introStart:hover{background:rgba(222,167,82,.08);border-color:rgba(222,167,82,.8);transform:scale(1.02);box-shadow:0 0 40px rgba(222,167,82,.25)}
+#introStart:active{transform:scale(.98)}
+#introStart svg{width:14px;height:14px;fill:var(--gold)}
+#introStart span{line-height:1}
+
 /* autoplay */
-.ap-btn{position:fixed;bottom:36px;left:50%;transform:translateX(-50%);z-index:2000;
+.ap-btn{display:none!important;position:fixed;bottom:36px;left:50%;transform:translateX(-50%);z-index:2000;
   background:rgba(222,167,82,.12);border:1px solid rgba(222,167,82,.35);color:var(--gold);
   font-family:var(--fb);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
   padding:10px 28px 10px 24px;border-radius:100px;cursor:pointer;
@@ -386,6 +397,14 @@ html:has(body.cursor-idle){cursor:none!important}
 <div class="scroll-hint" id="scrollHint"><span>Scroll</span><i></i></div>
 <div class="ap-overlay" id="apOverlay"></div>
 <button class="ap-btn" id="apBtn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>Autoplay</button>
+
+<!-- Intro gate — full-screen cover, single START button. Click → fade out + begin autoplay -->
+<div id="introGate" aria-hidden="false">
+  <button id="introStart" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="6,3 20,12 6,21"/></svg>
+    <span>START</span>
+  </button>
+</div>
 
 <!-- S1 HERO -->
 <section class="s" id="hero">
@@ -638,32 +657,39 @@ gsap.set(heroBlocks,{opacity:0,y:22,filter:'blur(8px)'});
 gsap.set([hw1Chars,hw2Chars],{opacity:0,yPercent:60,filter:'blur(14px)'});
 gsap.set('#h2',{opacity:0,y:26,filter:'blur(8px)'});
 
-var heroTL=gsap.timeline({scrollTrigger:{trigger:'#hero',start:'top 95%'},defaults:{ease:'expo.out'}});
+/* No scrollTrigger — intro gate controls play() manually; scrollTrigger with default toggleActions would un-pause the timeline before START is clicked */
+var heroTL=gsap.timeline({defaults:{ease:'expo.out'},paused:true});
 heroTL
   /* Block 1: "Щодня, мільйони людей" */
-  .to(heroBlocks[0],{opacity:1,y:0,filter:'blur(0px)',duration:1.4},0.2)
+  .to(heroBlocks[0],{opacity:1,y:0,filter:'blur(0px)',duration:1.4},0)
   /* Dream word letters */
-  .to(hw1Chars,{opacity:1,yPercent:0,filter:'blur(0px)',duration:1.4,stagger:{each:.028,from:'start'}},0.55)
+  .to(hw1Chars,{opacity:1,yPercent:0,filter:'blur(0px)',duration:1.4,stagger:{each:.028,from:'start'}},0.35)
   /* Block 2: "про щось" */
-  .to(heroBlocks[1],{opacity:1,y:0,filter:'blur(0px)',duration:1.2},0.95)
+  .to(heroBlocks[1],{opacity:1,y:0,filter:'blur(0px)',duration:1.2},0.75)
   /* Big word letters */
-  .to(hw2Chars,{opacity:1,yPercent:0,filter:'blur(0px)',duration:1.4,stagger:{each:.028,from:'start'}},1.25)
+  .to(hw2Chars,{opacity:1,yPercent:0,filter:'blur(0px)',duration:1.4,stagger:{each:.028,from:'start'}},1.05)
   /* h2 exhale */
-  .to('#h2',{opacity:1,y:0,filter:'blur(0px)',duration:1.4},1.9)
+  .to('#h2',{opacity:1,y:0,filter:'blur(0px)',duration:1.4},1.7)
   /* Gold underlines stagger */
-  .call(function(){document.getElementById('he1').classList.add('on');},null,2.5)
-  .call(function(){document.getElementById('he2').classList.add('on');},null,2.8);
+  .call(function(){document.getElementById('he1').classList.add('on');},null,2.3)
+  .call(function(){document.getElementById('he2').classList.add('on');},null,2.6);
 
-/* HERO exit — Jakub-style polish: opacity + translateY + blur, staggered tightly,
-   custom ease-in cubic-bezier for natural departure. Hero is pinned so motion is clearly visible. */
-var heroExitTL=gsap.timeline({scrollTrigger:{trigger:'#hero',start:'top top',end:'+=80%',scrub:1.2,pin:true,pinSpacing:true}});
+/* HERO exit — create pin-reserving timeline immediately at load (no tweens yet) so pinSpacer
+   adds 80vh to document height BEFORE buildPhoneTL runs. Otherwise sfrac denominators will mismatch.
+   Tweens are added later in dismissIntro so their opacity:1 FROM state doesn't override hidden initial state. */
 var heroLine2=[].slice.call(hw1Chars).concat([heroBlocks[1]]).concat([].slice.call(hw2Chars));
 var exitEase='power3.in';
 var exitDur=1.1;
-heroExitTL
-  .fromTo(heroBlocks[0],{y:0,opacity:1,filter:'blur(0px)'},{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0)
-  .fromTo(heroLine2,{y:0,opacity:1,filter:'blur(0px)'},{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0.18)
-  .fromTo('#h2',{y:0,opacity:1,filter:'blur(0px)'},{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0.36);
+var heroExitTL=gsap.timeline({scrollTrigger:{trigger:'#hero',start:'top top',end:'+=80%',scrub:1.2,pin:true,pinSpacing:true}});
+var heroExitBuilt=false;
+function buildHeroExit(){
+  if(heroExitBuilt)return;
+  heroExitBuilt=true;
+  heroExitTL
+    .to(heroBlocks[0],{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0)
+    .to(heroLine2,{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0.18)
+    .to('#h2',{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0.36);
+}
 
 /* Ember sparks drift up from gold words */
 var heroEmberInt=null;
@@ -2410,8 +2436,33 @@ window.addEventListener('resize',function(){
   }
 
   btn.addEventListener('click',startAutoplay);
+
+  /* Intro gate — lock scroll until START clicked, then unlock + start autoplay */
+  document.documentElement.classList.add('intro-locked');
+  var introGate=document.getElementById('introGate');
+  var introStart=document.getElementById('introStart');
+  function dismissIntro(){
+    if(!introGate||introGate.classList.contains('hidden'))return;
+    /* Step 1: hide START button, hold dark */
+    if(introStart)introStart.style.opacity='0';
+    gsap.delayedCall(1.8,function(){
+      /* Step 2: begin gate fade (1.6s) AND hero entry simultaneously — text emerges synchronously
+         with black dissolving, not after a pause. */
+      introGate.classList.add('hidden');
+      document.documentElement.classList.remove('intro-locked');
+      window.scrollTo(0,0);
+      ScrollTrigger.refresh();
+      if(typeof heroTL!=='undefined')heroTL.play(0);
+      /* heroExitTL pin already present from load → phoneTL sfrac is already correct.
+         Only need to add the actual exit tweens now. */
+      gsap.delayedCall(3.3,function(){ if(typeof buildHeroExit==='function')buildHeroExit(); });
+      gsap.delayedCall(3.5,startAutoplay);
+    });
+  }
+  if(introStart){introStart.addEventListener('click',dismissIntro);}
+
   /* Auto-start autoplay if URL has ?autoplay=1 — desktop only (for video rendering) */
-  if(location.search.indexOf('autoplay=1')>=0&&!IS_MOBILE){setTimeout(startAutoplay,400);}
+  if(location.search.indexOf('autoplay=1')>=0&&!IS_MOBILE){dismissIntro();setTimeout(startAutoplay,400);}
 
   /* Click/scroll during autoplay stops it */
   window.addEventListener('wheel',function(){if(playing)stopAutoplay();},{passive:true});
