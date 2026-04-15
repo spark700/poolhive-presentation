@@ -2415,26 +2415,24 @@ window.addEventListener('resize',function(){
       /* Hero — "Щодня, мільйони людей мріють про щось велике"
          Measured: hold=X produces ~X+2.2s static time (startAutoplay/runCycle delays
          add 2.2s before first waypoint begins). Target ~4s static → hold=1.8. */
-      {y:0,                hold:1.8,dur:0},
-      /* Hero2 — "Але не всі мають можливість втілити це в життя"
-         Measured: hold maps almost 1:1 to static dwell (heroTL2 finishes ~0.3s into hold
-         since scrollTrigger fires mid-scroll). Target ~4s static → hold=4.0. */
-      {y:centerY('hero2'), hold:4.0,dur:2.8},
+      {y:0,                hold:1.5,dur:0},
+      /* Hero2 — message slide, keep comfortable dwell */
+      {y:centerY('hero2'), hold:3.2,dur:2.6},
       /* Reveal — logo wow */
-      {y:centerY('reveal'),hold:4.5,dur:3.6},
+      {y:centerY('reveal'),hold:3.5,dur:3.2},
       /* What — platform + phone enters */
-      {y:centerY('what'),  hold:6,  dur:4.0},
+      {y:centerY('what'),  hold:4.5,dur:3.4},
       /* USP — key message, then scroll straight into HOW step 0 (no micro-stop) */
-      {y:centerY('usp'),   hold:4.5,dur:3.2},
-      /* How steps — stop at CENTER of each zone (0.125, 0.375, 0.625, 0.875) */
-      {y:howStepY(0.125),  hold:4,  dur:4.6},
-      {y:howStepY(0.375),  hold:4,  dur:3.2},
-      {y:howStepY(0.625),  hold:4,  dur:3.2},
-      {y:howStepY(0.875),  hold:4.5,dur:3.2},
+      {y:centerY('usp'),   hold:3.2,dur:2.8},
+      /* How steps — tempo: brisker, readable */
+      {y:howStepY(0.125),  hold:3.0,dur:3.8},
+      {y:howStepY(0.375),  hold:3.0,dur:2.6},
+      {y:howStepY(0.625),  hold:3.0,dur:2.6},
+      {y:howStepY(0.875),  hold:3.3,dur:2.6},
       /* Close — emotional */
-      {y:centerY('close'), hold:4,  dur:4.0},
-      /* CTA — final card + QR */
-      {y:centerY('cta'),   hold:8,  dur:3.2},
+      {y:centerY('close'), hold:3.2,dur:3.4},
+      /* CTA — final card + QR (hold stays long, it's the sign-off) */
+      {y:centerY('cta'),   hold:7.0,dur:2.8},
     ];
   }
 
