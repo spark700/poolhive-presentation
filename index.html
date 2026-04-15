@@ -459,7 +459,7 @@ html:has(body.cursor-idle){cursor:none!important}
 
 <!-- S3 WHAT — phone enters, placeholder on screen -->
 <section class="s" id="what" style="min-height:110vh">
-  <div class="s__in" style="max-width:580px;margin-right:auto;margin-left:clamp(24px, calc(18vw - 180px), 180px)">
+  <div class="s__in" style="max-width:580px;margin-right:auto;margin-left:clamp(40px, calc(20vw - 200px), 240px)">
     <div id="what-t">
       <span class="tl">Одна платформа</span>
       <p class="tm"><span class="what-hero-video">Відео</span><span class="what-hero-platform">Платформа</span><span class="what-sub">що <b class="what-emph">об'єднала все</b> в одному місці</span></p>
@@ -2228,7 +2228,7 @@ function buildPhoneTL(){
   var ZEND=Math.PI; /* π = 180° = upside-down portrait */
   var P0={x:PH_RIGHT,y:0,z:-2}, R0={x:.15,y:-.5,z:.05}, S0={x:0,y:0,z:0};           // hidden
   var P1={x:PH_RIGHT,y:0,z:0},  R1={x:.04,y:-.18,z:.01}, S1={x:1,y:1,z:1};           // enter end
-  var P2={x:0.7,y:-.1,z:1.6},   R2={x:.05,y:0,z:Math.PI/2}, S2={x:0.92,y:0.92,z:0.92}; // landscape (90° CCW), smaller + further right to clear hero text
+  var P2={x:0.45,y:-.1,z:1.6},  R2={x:.05,y:0,z:Math.PI/2}, S2={x:0.92,y:0.92,z:0.92}; // landscape (90° CCW), centered-right of frame
   var P4={x:1.15,y:0,z:0.3}, R4={x:0,y:-.08,z:ZEND}, S4={x:0.78,y:0.78,z:0.78};   // how position (upside-down, right + smaller to clear text)
   var R5={x:.03,y:-.04,z:ZEND+.01};                                                     // how sway end
   var P6={x:0.85,y:0.5,z:1.4}, R6={x:0,y:0,z:ZEND},    S6={x:1.55,y:1.55,z:1.55};    // close: slightly left, higher
