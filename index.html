@@ -928,16 +928,14 @@ gsap.timeline({scrollTrigger:{trigger:'#what',start:'top 55%',toggleActions:'pla
   .from('#what .pill',{y:32,opacity:0,filter:'blur(8px)',stagger:0.12,duration:.7},1.1)
   .from('#what-t .tb',{y:20,opacity:0,filter:'blur(6px)',duration:.6},1.65);
 
-/* #what — pinned line-by-line exit (mirrors hero/hero2 pattern).
-   Section pins when its top hits viewport top, scrubs exit over 80vh of scroll,
-   then releases. Each line drifts up + blurs sequentially. */
-gsap.timeline({scrollTrigger:{trigger:'#what',start:'top top',end:'+=80%',scrub:1.2,pin:true,pinSpacing:true}})
-  .to('#what-t .tl',{y:-140,opacity:0,filter:'blur(8px)',ease:'power3.in',duration:1},0)
-  .to('#what-t .what-hero-video',{y:-200,opacity:0,filter:'blur(12px)',ease:'power3.in',duration:1},0.1)
-  .to('#what-t .what-hero-platform',{y:-200,opacity:0,filter:'blur(12px)',ease:'power3.in',duration:1},0.22)
-  .to('#what-t .what-sub',{y:-170,opacity:0,filter:'blur(10px)',ease:'power3.in',duration:1},0.34)
-  .to('#what .pill',{y:-170,opacity:0,filter:'blur(10px)',stagger:0.08,ease:'power3.in',duration:1},0.46)
-  .to('#what-t .tb',{y:-140,opacity:0,filter:'blur(8px)',ease:'power3.in',duration:1},0.72);
+/* #what — line-by-line exit on scroll-away (scrubbed, each line drifts up+blurs one after the other) */
+gsap.timeline({scrollTrigger:{trigger:'#what',start:'bottom 75%',end:'bottom top',scrub:1.2}})
+  .to('#what-t .tl',{y:-80,opacity:0,filter:'blur(8px)',duration:1},0)
+  .to('#what-t .what-hero-video',{y:-120,opacity:0,filter:'blur(10px)',duration:1},0.08)
+  .to('#what-t .what-hero-platform',{y:-120,opacity:0,filter:'blur(10px)',duration:1},0.18)
+  .to('#what-t .what-sub',{y:-100,opacity:0,filter:'blur(8px)',duration:1},0.28)
+  .to('#what .pill',{y:-100,opacity:0,filter:'blur(8px)',stagger:0.06,duration:1},0.38)
+  .to('#what-t .tb',{y:-80,opacity:0,filter:'blur(6px)',duration:1},0.6);
 
 ScrollTrigger.create({trigger:'#usp',start:'top 55%',
   onEnter:function(){gsap.from('#usp .tl',{y:16,opacity:0,duration:.4});gsap.from('.usp',{y:40,opacity:0,duration:1.1,ease:'power3.out',delay:.15});setTimeout(function(){document.getElementById('usp-u').classList.add('on')},700)},
