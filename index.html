@@ -144,17 +144,20 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 .pills{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
 .pill{padding:10px 26px;border:1px solid rgba(222,167,82,.3);border-radius:100px;font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--gold-dim);transition:border-color .3s,box-shadow .3s}
 
-/* #what slide — hero + subhead hierarchy, manual line-break control */
-#what .tl{font-size:clamp(14px,1.1vw,17px);letter-spacing:.18em;margin-bottom:34px}
-#what .tm{font-family:var(--fd);line-height:1;letter-spacing:-.02em;text-wrap:balance}
-#what .tb{font-size:clamp(1.35rem,1.85vw,1.75rem);line-height:1.55;max-width:none;color:var(--w);text-wrap:pretty}
+/* #what slide — poster composition: hero + categories list + tagline */
+#what .tl{font-size:clamp(14px,1.1vw,17px);letter-spacing:.18em;margin-bottom:30px}
+#what .tm{font-family:var(--fd);line-height:1;letter-spacing:-.02em;text-wrap:balance;margin-bottom:clamp(20px,2.6vh,34px)}
 /* HERO word — dominates the frame */
-#what .what-hero-word{display:block;font-size:clamp(2.8rem,5.4vw,4.9rem);font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:-.02em;line-height:.95;margin-bottom:clamp(14px,1.8vh,24px)}
-/* SUBHEAD — smaller, supporting */
-#what .what-sub{display:block;font-size:clamp(1.7rem,2.7vw,2.4rem);font-weight:400;color:var(--w);line-height:1.2;letter-spacing:-.015em}
+#what .what-hero-word{display:block;font-size:clamp(2.8rem,5.4vw,4.9rem);font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:-.02em;line-height:.95;margin-bottom:clamp(10px,1.4vh,18px)}
+/* SUBHEAD — the verb that links hero to categories */
+#what .what-sub{display:block;font-size:clamp(1.5rem,2.3vw,2rem);font-weight:300;color:var(--w);line-height:1.1;letter-spacing:-.01em}
 #what .what-emph{font-weight:600;color:var(--gold);font-style:normal}
-#what .pills{gap:14px;margin-top:48px;perspective:800px}
-#what .pill{padding:20px 38px;font-size:clamp(1.15rem,1.55vw,1.65rem);font-weight:700;letter-spacing:.1em;border:1.5px solid rgba(222,167,82,.55);background:rgba(222,167,82,.13);color:var(--gold-l);box-shadow:0 0 28px rgba(222,167,82,.18),inset 0 0 0 1px rgba(255,210,130,.08);will-change:transform,opacity}
+/* Categories list — three gold beats with accent bullets */
+#what .what-cats{list-style:none;padding:0;margin:0 0 clamp(22px,2.8vh,36px);display:flex;flex-direction:column;gap:clamp(10px,1.3vh,18px);will-change:transform,opacity}
+#what .what-cats li{display:flex;align-items:center;gap:clamp(16px,1.6vw,22px);font-family:var(--fd);font-size:clamp(1.6rem,2.6vw,2.3rem);font-weight:700;color:var(--gold-l);text-transform:uppercase;letter-spacing:-.01em;line-height:1;will-change:transform,opacity}
+#what .what-cats li::before{content:'';width:clamp(10px,.8vw,13px);height:clamp(10px,.8vw,13px);border-radius:50%;background:var(--gold);box-shadow:0 0 14px rgba(222,167,82,.7);flex-shrink:0}
+/* Tail — closing phrase, quiet but present */
+#what .what-tail{font-family:var(--fd);font-size:clamp(1.3rem,1.95vw,1.75rem);font-weight:300;color:rgba(255,255,255,.6);letter-spacing:-.005em;line-height:1.1;margin:0}
 .pill:hover{border-color:rgba(222,167,82,.6);box-shadow:0 0 16px rgba(222,167,82,.1)}
 
 /* steps */
@@ -460,13 +463,13 @@ html:has(body.cursor-idle){cursor:none!important}
   <div class="s__in" style="max-width:560px;margin-right:auto;margin-left:clamp(40px, calc(25vw - 260px), 320px)">
     <div id="what-t">
       <span class="tl">Одна платформа</span>
-      <p class="tm"><span class="what-hero-word">Відео&nbsp;платформа</span><span class="what-sub">що <b class="what-emph">об'єднала все</b><br>в одному місці</span></p>
-      <div class="pills">
-        <span class="pill">Краудфандинг</span>
-        <span class="pill">Благодійність</span>
-        <span class="pill">Освітній контент</span>
-      </div>
-      <p class="tb" style="margin-top:32px">У <b style="color:var(--gold);font-weight:600">відео форматі</b>, як знайома тобі мережа.<br>Але тільки про <b style="color:var(--gold);font-weight:700">круті&nbsp;ідеї</b>.</p>
+      <p class="tm"><span class="what-hero-word">Відео&nbsp;платформа</span><span class="what-sub">що <b class="what-emph">об'єднує</b></span></p>
+      <ul class="what-cats">
+        <li>Краудфандинг</li>
+        <li>Благодійність</li>
+        <li>Освітній контент</li>
+      </ul>
+      <p class="what-tail">все&nbsp;в&nbsp;одному&nbsp;місці</p>
     </div>
   </div>
 </section>
@@ -920,9 +923,10 @@ window.addEventListener('scroll',checkBurstOnScroll,{passive:true});
 gsap.timeline({scrollTrigger:{trigger:'#what',start:'top 50%',toggleActions:'play none none reverse'}})
   .from('#what-t .tl',{y:20,opacity:0,duration:.4})
   .from('#what-t .tm',{y:30,opacity:0,duration:.7,ease:'power3.out'},'-=.15')
-  /* Dramatic pill reveal — each scales up from a compressed state with slight rotation */
-  .from('#what .pill',{scale:0.35,opacity:0,y:32,rotationX:-45,transformOrigin:'center bottom',stagger:0.18,duration:.85,ease:'back.out(1.9)'},'-=.1')
-  .from('#what-t .tb',{y:16,opacity:0,duration:.5},'-=.2');
+  /* Category list — each line slides in from left with bullet pop */
+  .from('#what .what-cats li',{x:-40,opacity:0,stagger:0.14,duration:.6,ease:'power3.out'},'-=.15')
+  .from('#what .what-cats li::before',{scale:0,duration:.4,stagger:0.14,ease:'back.out(2.2)'},'-=.6')
+  .from('#what-t .what-tail',{y:16,opacity:0,duration:.5,ease:'power2.out'},'-=.2');
 
 ScrollTrigger.create({trigger:'#usp',start:'top 55%',
   onEnter:function(){gsap.from('#usp .tl',{y:16,opacity:0,duration:.4});gsap.from('.usp',{y:40,opacity:0,duration:1.1,ease:'power3.out',delay:.15});setTimeout(function(){document.getElementById('usp-u').classList.add('on')},700)},
