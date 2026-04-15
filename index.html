@@ -144,13 +144,15 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 .pills{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
 .pill{padding:10px 26px;border:1px solid rgba(222,167,82,.3);border-radius:100px;font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--gold-dim);transition:border-color .3s,box-shadow .3s}
 
-/* #what slide — larger type for video presentation, manual line-break control */
+/* #what slide — hero + subhead hierarchy, manual line-break control */
 #what .tl{font-size:clamp(14px,1.1vw,17px);letter-spacing:.18em;margin-bottom:34px}
-#what .tm{font-size:clamp(3rem,5.8vw,5.4rem);font-weight:500;line-height:1.06;letter-spacing:-.025em;text-wrap:balance}
+#what .tm{font-family:var(--fd);line-height:1;letter-spacing:-.02em;text-wrap:balance}
 #what .tb{font-size:clamp(1.35rem,1.85vw,1.75rem);line-height:1.55;max-width:none;color:var(--w);text-wrap:pretty}
-/* Key-positioning words — uppercased, maximum visual weight */
-#what .what-hero-word{text-transform:uppercase;font-weight:800;letter-spacing:-.015em}
-#what .what-emph{text-transform:uppercase;font-weight:700;color:var(--w);letter-spacing:-.015em;font-style:normal}
+/* HERO word — dominates the frame */
+#what .what-hero-word{display:block;font-size:clamp(3rem,6.5vw,6rem);font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:-.02em;line-height:.95;margin-bottom:clamp(14px,1.8vh,24px)}
+/* SUBHEAD — smaller, supporting */
+#what .what-sub{display:block;font-size:clamp(1.7rem,2.7vw,2.4rem);font-weight:400;color:var(--w);line-height:1.2;letter-spacing:-.015em}
+#what .what-emph{font-weight:600;color:var(--gold);font-style:normal}
 #what .pills{gap:18px;margin-top:44px;perspective:800px}
 #what .pill{padding:16px 34px;font-size:clamp(1rem,1.25vw,1.3rem);letter-spacing:.09em;will-change:transform,opacity}
 .pill:hover{border-color:rgba(222,167,82,.6);box-shadow:0 0 16px rgba(222,167,82,.1)}
@@ -458,7 +460,7 @@ html:has(body.cursor-idle){cursor:none!important}
   <div class="s__in" style="max-width:640px;margin-right:auto;margin-left:clamp(40px, calc(25vw - 260px), 320px)">
     <div id="what-t">
       <span class="tl">Одна платформа</span>
-      <p class="tm"><span class="gold what-hero-word">Відео&nbsp;платформа</span>, що<br><b class="what-emph">об'єднала</b> все<br>в одному місці</p>
+      <p class="tm"><span class="what-hero-word">Відео&nbsp;платформа</span><span class="what-sub">що <b class="what-emph">об'єднала все</b><br>в одному місці</span></p>
       <div class="pills">
         <span class="pill">Краудфандинг</span>
         <span class="pill">Благодійність</span>
