@@ -147,15 +147,15 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 
 /* steps */
 .how-wrap{display:flex;align-items:flex-start;gap:clamp(40px,5vw,80px);width:100%;max-width:1200px;padding-left:clamp(0px, calc(25vw - 260px), 320px)}
-.how-left{flex:1;max-width:740px}
+.how-left{flex:1;max-width:620px}
 .how-right{flex:0 0 50%} /* phone canvas occupies right half */
 /* Steps — fixed height, content scales HORIZONTALLY from left (no vertical motion) */
 .step{--step-t:0;min-height:190px;display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid var(--w15);will-change:opacity;color:#fff;padding:16px 0;text-shadow:0 0 12px rgba(255,255,255,.05);overflow:visible}
 .step__head{display:flex;align-items:baseline;gap:26px;margin-bottom:16px;transform-origin:left center;transform:scale(calc(.4 + .9 * var(--step-t)))}
-.step__n{font-family:var(--fd);font-size:clamp(1.8rem,3.2vw,2.8rem);font-weight:800;color:var(--gold);min-width:56px;line-height:1}
-.step__t{font-family:var(--fd);font-size:clamp(2.4rem,4.6vw,3.9rem);font-weight:700;letter-spacing:-.02em;line-height:1.08;color:#fff;white-space:nowrap}
-.step__d{font-size:clamp(1.3rem,1.95vw,1.75rem);font-weight:300;color:rgba(255,255,255,.85);line-height:1.45;padding-left:82px;transform-origin:left center;transform:scale(calc(.5 + .75 * var(--step-t)))}
-.step__screen{display:block;font-size:clamp(.9rem,1.2vw,1.05rem);font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);opacity:0;padding-left:82px;margin-top:10px;transform-origin:left center;transform:scale(calc(.5 + .75 * var(--step-t)))}
+.step__n{font-family:var(--fd);font-size:clamp(1.55rem,2.7vw,2.3rem);font-weight:800;color:var(--gold);min-width:48px;line-height:1}
+.step__t{font-family:var(--fd);font-size:clamp(2rem,3.7vw,3.1rem);font-weight:700;letter-spacing:-.02em;line-height:1.08;color:#fff;white-space:nowrap}
+.step__d{font-size:clamp(1.1rem,1.65vw,1.45rem);font-weight:300;color:rgba(255,255,255,.85);line-height:1.45;padding-left:70px;transform-origin:left center;transform:scale(calc(.5 + .75 * var(--step-t)))}
+.step__screen{display:block;font-size:clamp(.85rem,1.15vw,1rem);font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);opacity:0;padding-left:70px;margin-top:10px;transform-origin:left center;transform:scale(calc(.5 + .75 * var(--step-t)))}
 .step.on .step__screen{opacity:1}
 .step .step__screen{display:block;opacity:0;transition:none}
 .step.on .step__screen{opacity:1}
@@ -2208,7 +2208,7 @@ function buildPhoneTL(){
   var P0={x:PH_RIGHT,y:0,z:-2}, R0={x:.15,y:-.5,z:.05}, S0={x:0,y:0,z:0};           // hidden
   var P1={x:PH_RIGHT,y:0,z:0},  R1={x:.04,y:-.18,z:.01}, S1={x:1,y:1,z:1};           // enter end
   var P2={x:0,y:-.1,z:1.6},     R2={x:.05,y:0,z:Math.PI/2}, S2={x:1.13,y:1.13,z:1.13}; // landscape (90° CCW)
-  var P4={x:0.85,y:0,z:0.3}, R4={x:0,y:-.08,z:ZEND}, S4={x:0.9,y:0.9,z:0.9};   // how position (upside-down, left + smaller)
+  var P4={x:1.15,y:0,z:0.3}, R4={x:0,y:-.08,z:ZEND}, S4={x:0.78,y:0.78,z:0.78};   // how position (upside-down, right + smaller to clear text)
   var R5={x:.03,y:-.04,z:ZEND+.01};                                                     // how sway end
   var P6={x:0.85,y:0.5,z:1.4}, R6={x:0,y:0,z:ZEND},    S6={x:1.55,y:1.55,z:1.55};    // close: slightly left, higher
   var P7={x:0,y:-3,z:-1},       R7={x:.1,y:-.3,z:ZEND+.03}, S7={x:.2,y:.2,z:.2};      // exit
