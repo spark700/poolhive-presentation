@@ -1309,7 +1309,7 @@ function drawFeedScreen(t){
   if(ft>feedDrip.nextDrip){
     var add=feedDrip.amounts[Math.floor(Math.random()*feedDrip.amounts.length)];
     feedDrip.raised+=add;
-    feedDrip.floaters.push({text:'+'+feedFmt(add)+' $',x:250+Math.random()*55,y:600+Math.random()*10,birth:t});
+    feedDrip.floaters.push({text:'+'+feedFmt(add)+' ₴',x:250+Math.random()*55,y:600+Math.random()*10,birth:t});
     feedDrip.nextDrip=ft+1+Math.random()*2;
   }
 
@@ -1326,7 +1326,7 @@ function drawFeedScreen(t){
   sx.fillStyle='#fff';sx.font='600 15px Poppins,sans-serif';sx.textAlign='left';
   sx.fillText('Social App',57,626);
   sx.font='500 15px Poppins,sans-serif';sx.textAlign='right';
-  sx.fillText(feedFmt(feedDrip.raised)+'/350,000 $',361,626);
+  sx.fillText(feedFmt(feedDrip.raised)+'/350 000 ₴',361,626);
 
   /* Progress bar */
   sx.fillStyle='#E1E1E1';sx.fillRect(18,645,344,1);
@@ -1429,11 +1429,11 @@ function drawHelenFeed(t){
   /* Helen drip logic */
   if(!helenDrip.started){helenDrip.started=true;helenDrip.startTime=t;helenDrip.raised=37000;helenDrip.likes=180;helenDrip.progWidth=0;helenDrip.floaters=[];}
   var ft=t-helenDrip.startTime;
-  if(ft>helenDrip.nextDrip){var add=helenDrip.amounts[Math.floor(Math.random()*helenDrip.amounts.length)];helenDrip.raised+=add;helenDrip.floaters.push({text:'+'+feedFmt(add)+' $',x:250+Math.random()*55,y:600+Math.random()*10,birth:t});helenDrip.nextDrip=ft+0.3+Math.random()*0.8;}
+  if(ft>helenDrip.nextDrip){var add=helenDrip.amounts[Math.floor(Math.random()*helenDrip.amounts.length)];helenDrip.raised+=add;helenDrip.floaters.push({text:'+'+feedFmt(add)+' ₴',x:250+Math.random()*55,y:600+Math.random()*10,birth:t});helenDrip.nextDrip=ft+0.3+Math.random()*0.8;}
   if(ft>helenDrip.nextLike){helenDrip.likes+=Math.floor(Math.random()*3)+1;helenDrip.nextLike=ft+2+Math.random()*3;}
   helenDrip.progWidth=Math.min(344,(helenDrip.raised/100000)*344);
   sx.fillStyle='#fff';sx.font='600 15px Poppins,sans-serif';sx.textAlign='left';sx.fillText('Tech App',57,626);
-  sx.font='500 15px Poppins,sans-serif';sx.textAlign='right';sx.fillText(feedFmt(helenDrip.raised)+'/100,000 $',361,626);
+  sx.font='500 15px Poppins,sans-serif';sx.textAlign='right';sx.fillText(feedFmt(helenDrip.raised)+'/100 000 ₴',361,626);
   sx.fillStyle='#E1E1E1';sx.fillRect(18,645,344,1);sx.fillStyle='#FFA717';sx.fillRect(18,644,helenDrip.progWidth,2);
   sx.strokeStyle='rgba(255,255,255,0.9)';sx.lineWidth=1.5;sx.beginPath();sx.roundRect(18,658,344,54,10);sx.stroke();
   sx.fillStyle='#fff';sx.font='600 15px Poppins,sans-serif';sx.textAlign='center';sx.fillText('Donate',190,690);
@@ -1669,7 +1669,7 @@ function drawStepDescription(t){
     var t3=typeProgress(Math.max(0,t-1.5),'100 000',0.09);
     sx.fillStyle='#fff';sx.font='400 18px Poppins,sans-serif';sx.fillText(t3,15,32);
     if(t3.length<'100 000'.length)drawCursor(15+sx.measureText(t3).width+2,15,t);
-    sx.font='400 18px Baloo Bhai 2,cursive';sx.fillText('$',305,32);
+    sx.font='400 18px Baloo Bhai 2,cursive';sx.fillText('₴',305,32);
     sx.restore();
   }
 
@@ -1740,7 +1740,7 @@ function drawStepGoal(t){
   }
 
   /* Chips — stagger with scale bounce + fade */
-  var chips=['100$','200$','500$','1k$'];
+  var chips=['100₴','200₴','500₴','1k₴'];
   for(var i=0;i<4;i++){
     var ci=animIn(0.55+i*0.1,0.55,t);
     if(ci.p>0){
@@ -1800,7 +1800,7 @@ function drawStepGoal(t){
     sx.restore();
   }
 
-  /* Typed amount + $ — cursor continues blinking */
+  /* Typed amount + ₴ — cursor continues blinking */
   var a5=animIn(1.35,0.3,t);
   if(a5.p>0){
     sx.save();sx.globalAlpha=a5.e;
@@ -1808,7 +1808,7 @@ function drawStepGoal(t){
     sx.fillStyle='#fff';sx.font='400 17px Poppins,sans-serif';sx.textAlign='left';
     sx.fillText(txt,34,484);
     if(txt.length<'100 000'.length)drawCursor(34+sx.measureText(txt).width+2,470,t);
-    sx.font='400 18px Poppins,sans-serif';sx.textAlign='left';sx.fillText('$',318,484);
+    sx.font='400 18px Poppins,sans-serif';sx.textAlign='left';sx.fillText('₴',318,484);
     sx.restore();
   }
 
@@ -1897,7 +1897,7 @@ function drawStepPublish(t){
     sx.fillText('Tech App',18,30);
     /* Goal */
     sx.fillStyle='rgba(255,255,255,0.5)';sx.font='400 12px Poppins,sans-serif';
-    sx.fillText('Goal: 100,000 $',18,50);
+    sx.fillText('Goal: 100 000 ₴',18,50);
 
     /* Live pulse — stagger fade-in */
     var alp=animIn(1.7,0.4,t);
