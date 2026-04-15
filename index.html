@@ -106,7 +106,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 .hero-wrap{text-align:center;position:relative}
 .hero-kicker{display:inline-flex;align-items:center;gap:14px;font-family:var(--fb);font-weight:500;font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:rgba(222,167,82,.42);margin-bottom:34px;will-change:transform,opacity}
 .hero-kicker-rule{width:56px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);transform-origin:left;transform:scaleX(0)}
-.hero-h1{font-family:var(--fd);font-weight:400;font-size:clamp(3.6rem,7vw,6.4rem);line-height:1.05;letter-spacing:-.035em;color:rgba(255,255,255,.9)}
+.hero-h1{font-family:var(--fd);font-weight:400;font-size:clamp(3.6rem,7vw,6.4rem);line-height:1.05;letter-spacing:-.035em;color:rgba(255,255,255,.9);text-wrap:balance}
 .hero-h1 .hero-block{display:inline-block;vertical-align:top;will-change:transform,opacity,filter}
 .hero-h1 .hero-gold{vertical-align:top}
 .hero-gold{display:inline-block;font-weight:700;font-style:normal;position:relative;color:var(--gold);padding:0 .04em;letter-spacing:-.02em}
@@ -419,7 +419,7 @@ html:has(body.cursor-idle){cursor:none!important}
   <div class="s__in hero-wrap">
     <p class="hero-h1" id="h1">
       <span class="hero-block">Щодня, мільйони людей</span><br>
-      <em class="hero-gold" id="hw1"><span>м</span><span>р</span><span>і</span><span>ю</span><span>т</span><span>ь</span></em><span class="hero-block"> про щось </span><em class="hero-gold" id="hw2"><span>в</span><span>е</span><span>л</span><span>и</span><span>к</span><span>е</span></em>
+      <em class="hero-gold" id="hw1"><span>м</span><span>р</span><span>і</span><span>ю</span><span>т</span><span>ь</span></em>&nbsp;<span class="hero-block">про щось</span>&nbsp;<em class="hero-gold" id="hw2"><span>в</span><span>е</span><span>л</span><span>и</span><span>к</span><span>е</span></em>
     </p>
     <div class="hero-vignette" id="h-vig"></div>
   </div>
@@ -429,8 +429,9 @@ html:has(body.cursor-idle){cursor:none!important}
 <section class="s" id="hero2">
   <div class="s__in hero-wrap">
     <p class="hero-h1" id="h2">
-      <span class="hero-block">Але не всі мають </span><em class="hero-gold" id="hw3"><span>м</span><span>о</span><span>ж</span><span>л</span><span>и</span><span>в</span><span>і</span><span>с</span><span>т</span><span>ь</span></em><br>
-      <span class="hero-block">втілити це в </span><em class="hero-gold" id="hw4"><span>ж</span><span>и</span><span>т</span><span>т</span><span>я</span></em>
+      <span class="hero-block">Але не всі мають</span><br>
+      <em class="hero-gold" id="hw3"><span>м</span><span>о</span><span>ж</span><span>л</span><span>и</span><span>в</span><span>і</span><span>с</span><span>т</span><span>ь</span></em><br>
+      <span class="hero-block">втілити це в</span>&nbsp;<em class="hero-gold" id="hw4"><span>ж</span><span>и</span><span>т</span><span>т</span><span>я</span></em>
     </p>
   </div>
 </section>
