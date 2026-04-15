@@ -683,40 +683,37 @@ gsap.set([hw1Chars,hw2Chars],{opacity:0,yPercent:60,filter:'blur(14px)'});
 gsap.set(hero2Blocks,{opacity:0,y:22,filter:'blur(8px)'});
 gsap.set([hw3Chars,hw4Chars],{opacity:0,yPercent:60,filter:'blur(14px)'});
 
-/* No scrollTrigger — intro gate controls play() manually; scrollTrigger with default toggleActions would un-pause the timeline before START is clicked */
+/* Group arrays for line-by-line animation */
+var heroL1=[heroBlocks[0]];
+var heroL2=[].slice.call(hw1Chars).concat([heroBlocks[1]]).concat([].slice.call(hw2Chars));
+var hero2L1=[hero2Blocks[0]];
+var hero2L2=[].slice.call(hw3Chars);
+var hero2L3=[hero2Blocks[1]].concat([].slice.call(hw4Chars));
+
+/* HERO — line-by-line entry (each line fades/slides in as a whole, no letter stagger) */
 var heroTL=gsap.timeline({defaults:{ease:'expo.out'},paused:true});
 heroTL
-  /* Block 1: "Щодня, мільйони людей" */
-  .to(heroBlocks[0],{opacity:1,y:0,filter:'blur(0px)',duration:1.4},0)
-  /* Dream word letters */
-  .to(hw1Chars,{opacity:1,yPercent:0,filter:'blur(0px)',duration:1.4,stagger:{each:.028,from:'start'}},0.35)
-  /* Block 2: "про щось" */
-  .to(heroBlocks[1],{opacity:1,y:0,filter:'blur(0px)',duration:1.2},0.75)
-  /* Big word letters */
-  .to(hw2Chars,{opacity:1,yPercent:0,filter:'blur(0px)',duration:1.4,stagger:{each:.028,from:'start'}},1.05);
+  /* Line 1: "Щодня, мільйони людей" */
+  .to(heroL1,{opacity:1,y:0,yPercent:0,filter:'blur(0px)',duration:1.1},0)
+  /* Line 2: "мріють про щось велике" — as one unit */
+  .to(heroL2,{opacity:1,y:0,yPercent:0,filter:'blur(0px)',duration:1.1},0.55);
 
-/* HERO2 — mirrors heroTL (same staged reveal), plays when scrolled into view */
+/* HERO2 — three lines, each appears in sequence */
 var heroTL2=gsap.timeline({
   scrollTrigger:{trigger:'#hero2',start:'top 70%',toggleActions:'play none none reset'},
   defaults:{ease:'expo.out'}
 });
 heroTL2
-  /* Line 1 block: "Але не всі мають" */
-  .to(hero2Blocks[0],{opacity:1,y:0,filter:'blur(0px)',duration:1.4},0)
-  /* "можливість" letters */
-  .to(hw3Chars,{opacity:1,yPercent:0,filter:'blur(0px)',duration:1.4,stagger:{each:.028,from:'start'}},0.35)
-  /* Line 2 block: "втілити це в" */
-  .to(hero2Blocks[1],{opacity:1,y:0,filter:'blur(0px)',duration:1.2},0.75)
-  /* "життя" letters */
-  .to(hw4Chars,{opacity:1,yPercent:0,filter:'blur(0px)',duration:1.4,stagger:{each:.028,from:'start'}},1.05);
+  /* Line 1: "Але не всі мають" */
+  .to(hero2L1,{opacity:1,y:0,yPercent:0,filter:'blur(0px)',duration:1.1},0)
+  /* Line 2: "можливість" */
+  .to(hero2L2,{opacity:1,y:0,yPercent:0,filter:'blur(0px)',duration:1.1},0.5)
+  /* Line 3: "втілити це в життя" */
+  .to(hero2L3,{opacity:1,y:0,yPercent:0,filter:'blur(0px)',duration:1.1},1.0);
 
 /* HERO exit — create pin-reserving timeline immediately at load (no tweens yet) so pinSpacer
    adds 80vh to document height BEFORE buildPhoneTL runs. Otherwise sfrac denominators will mismatch.
    Tweens are added later in dismissIntro so their opacity:1 FROM state doesn't override hidden initial state. */
-var heroLine2=[].slice.call(hw1Chars).concat([heroBlocks[1]]).concat([].slice.call(hw2Chars));
-/* hero2 exit groupings — mirror of hero1: line1 = block0+hw3 chars, line2 = block1+hw4 chars */
-var hero2Line1=[hero2Blocks[0]].concat([].slice.call(hw3Chars));
-var hero2Line2=[hero2Blocks[1]].concat([].slice.call(hw4Chars));
 var exitEase='power3.in';
 var exitDur=1.1;
 var heroExitTL=gsap.timeline({scrollTrigger:{trigger:'#hero',start:'top top',end:'+=80%',scrub:1.2,pin:true,pinSpacing:true}});
@@ -725,12 +722,15 @@ var heroExitBuilt=false;
 function buildHeroExit(){
   if(heroExitBuilt)return;
   heroExitBuilt=true;
+  /* Hero: 2 lines exit one after another */
   heroExitTL
-    .to(heroBlocks[0],{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0)
-    .to(heroLine2,{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0.18);
+    .to(heroL1,{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0)
+    .to(heroL2,{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0.22);
+  /* Hero2: 3 lines exit one after another */
   heroExit2TL
-    .to(hero2Line1,{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0)
-    .to(hero2Line2,{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0.18);
+    .to(hero2L1,{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0)
+    .to(hero2L2,{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0.18)
+    .to(hero2L3,{y:-420,opacity:0,filter:'blur(10px)',force3D:true,ease:exitEase,duration:exitDur},0.36);
 }
 
 /* Ember sparks drift up from gold words */
@@ -919,12 +919,23 @@ window.addEventListener('scroll',checkBurstOnScroll,{passive:true});
   idleT=setTimeout(function(){body.classList.add('cursor-idle');},1000);
 })();
 
-gsap.timeline({scrollTrigger:{trigger:'#what',start:'top 50%',toggleActions:'play none none reverse'}})
-  .from('#what-t .tl',{y:20,opacity:0,duration:.4})
-  .from('#what-t .tm',{y:30,opacity:0,duration:.7,ease:'power3.out'},'-=.15')
-  /* Dramatic pill reveal — each scales up from a compressed state with slight rotation */
-  .from('#what .pill',{scale:0.35,opacity:0,y:32,rotationX:-45,transformOrigin:'center bottom',stagger:0.18,duration:.85,ease:'back.out(1.9)'},'-=.1')
-  .from('#what-t .tb',{y:16,opacity:0,duration:.5},'-=.2');
+/* #what — line-by-line entry: kicker → ВІДЕО → ПЛАТФОРМА → subhead → pills (sequenced) → body */
+gsap.timeline({scrollTrigger:{trigger:'#what',start:'top 55%',toggleActions:'play none none reverse'},defaults:{ease:'power3.out'}})
+  .from('#what-t .tl',{y:18,opacity:0,filter:'blur(6px)',duration:.55},0)
+  .from('#what-t .what-hero-video',{y:40,opacity:0,filter:'blur(10px)',duration:.75},0.25)
+  .from('#what-t .what-hero-platform',{y:40,opacity:0,filter:'blur(10px)',duration:.75},0.55)
+  .from('#what-t .what-sub',{y:28,opacity:0,filter:'blur(8px)',duration:.65},0.85)
+  .from('#what .pill',{y:32,opacity:0,filter:'blur(8px)',stagger:0.12,duration:.7},1.1)
+  .from('#what-t .tb',{y:20,opacity:0,filter:'blur(6px)',duration:.6},1.65);
+
+/* #what — line-by-line exit on scroll-away (scrubbed, each line drifts up+blurs one after the other) */
+gsap.timeline({scrollTrigger:{trigger:'#what',start:'bottom 75%',end:'bottom top',scrub:1.2}})
+  .to('#what-t .tl',{y:-80,opacity:0,filter:'blur(8px)',duration:1},0)
+  .to('#what-t .what-hero-video',{y:-120,opacity:0,filter:'blur(10px)',duration:1},0.08)
+  .to('#what-t .what-hero-platform',{y:-120,opacity:0,filter:'blur(10px)',duration:1},0.18)
+  .to('#what-t .what-sub',{y:-100,opacity:0,filter:'blur(8px)',duration:1},0.28)
+  .to('#what .pill',{y:-100,opacity:0,filter:'blur(8px)',stagger:0.06,duration:1},0.38)
+  .to('#what-t .tb',{y:-80,opacity:0,filter:'blur(6px)',duration:1},0.6);
 
 ScrollTrigger.create({trigger:'#usp',start:'top 55%',
   onEnter:function(){gsap.from('#usp .tl',{y:16,opacity:0,duration:.4});gsap.from('.usp',{y:40,opacity:0,duration:1.1,ease:'power3.out',delay:.15});setTimeout(function(){document.getElementById('usp-u').classList.add('on')},700)},
