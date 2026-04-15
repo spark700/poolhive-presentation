@@ -144,10 +144,10 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 .pills{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
 .pill{padding:10px 26px;border:1px solid rgba(222,167,82,.3);border-radius:100px;font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);background:var(--gold-dim);transition:border-color .3s,box-shadow .3s}
 
-/* #what slide — larger type for video presentation */
+/* #what slide — larger type for video presentation, manual line-break control */
 #what .tl{font-size:clamp(14px,1.1vw,17px);letter-spacing:.18em;margin-bottom:34px}
-#what .tm{font-size:clamp(3rem,5.8vw,5.4rem);font-weight:500;line-height:1.12;letter-spacing:-.025em}
-#what .tb{font-size:clamp(1.35rem,1.85vw,1.75rem);line-height:1.5;max-width:26ch;color:var(--w)}
+#what .tm{font-size:clamp(3rem,5.8vw,5.4rem);font-weight:500;line-height:1.06;letter-spacing:-.025em;text-wrap:balance}
+#what .tb{font-size:clamp(1.35rem,1.85vw,1.75rem);line-height:1.55;max-width:none;color:var(--w);text-wrap:pretty}
 #what .pills{gap:16px;margin-top:40px}
 #what .pill{padding:14px 30px;font-size:clamp(.95rem,1.15vw,1.15rem);letter-spacing:.08em}
 .pill:hover{border-color:rgba(222,167,82,.6);box-shadow:0 0 16px rgba(222,167,82,.1)}
@@ -454,13 +454,13 @@ html:has(body.cursor-idle){cursor:none!important}
   <div class="s__in" style="max-width:640px;margin-right:auto;margin-left:clamp(40px, calc(25vw - 260px), 320px)">
     <div id="what-t">
       <span class="tl">Одна платформа</span>
-      <p class="tm"><span class="gold" style="font-weight:700">Платформа</span> що об'єднала все в одному місці</p>
+      <p class="tm"><span class="gold" style="font-weight:700">Платформа</span>, що<br>об'єднала все<br>в одному місці</p>
       <div class="pills">
         <span class="pill">Краудфандинг</span>
         <span class="pill">Благодійність</span>
         <span class="pill">Освітній контент</span>
       </div>
-      <p class="tb" style="margin-top:32px">У <b style="color:var(--gold);font-weight:600">відео форматі</b>, як знайома тобі мережа. Але тільки про <b style="color:var(--gold);font-weight:700">круті</b> ідеї.</p>
+      <p class="tb" style="margin-top:32px">У <b style="color:var(--gold);font-weight:600">відео форматі</b>, як знайома тобі мережа.<br>Але тільки про <b style="color:var(--gold);font-weight:700">круті&nbsp;ідеї</b>.</p>
     </div>
   </div>
 </section>
