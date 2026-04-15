@@ -1388,7 +1388,12 @@ function drawHelenFeed(t){
     var dw=375,dh=768,dar=dw/dh,var_=vw/vh;
     var sw,sh,ssx,ssy;
     if(var_>dar){sw=vh*dar;sh=vh;ssx=(vw-sw)/2;ssy=0;}else{sw=vw;sh=vw/dar;ssx=0;ssy=0;} /* ssy=0: show top (face) */
-    sx.drawImage(uploadedVideo,ssx,ssy,sw,sh,0,-44,dw,dh);
+    /* Slide video downward as the phone enlarges (close section).
+       helenOpacity drives both the fade-in and this shift.
+       -44 (default top) → +80 (lower, clears header area), eased. */
+    var _eo = 1 - Math.pow(1 - helenOpacity, 3);
+    var _vy = -44 + 124 * _eo;
+    sx.drawImage(uploadedVideo,ssx,ssy,sw,sh,0,_vy,dw,dh);
     sx.globalAlpha=_ga;
   }
   sx.fillStyle='#000';sx.fillRect(0,718,375,94);
