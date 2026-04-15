@@ -210,8 +210,8 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 @keyframes ctaDot{0%,100%{opacity:.2;transform:scale(.85)}50%{opacity:1;transform:scale(1.15)}}
 .cta-scan{margin-top:clamp(40px,6vh,70px);display:inline-flex;align-items:center;gap:clamp(20px,3vw,36px)}
 .cta-scan-txt{text-align:right;display:flex;flex-direction:column;gap:6px}
-.cta-scan-txt .k{font-family:var(--fb);font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--w50)}
-.cta-scan-txt .v{font-family:var(--fd);font-size:clamp(1.4rem,2.6vw,2.1rem);font-weight:600;color:var(--w);letter-spacing:-.01em}
+.cta-scan-txt .k{font-family:var(--fb);font-size:clamp(14px,1.15vw,18px);font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);opacity:.9}
+.cta-scan-txt .v{font-family:var(--fd);font-size:clamp(2rem,3.8vw,3.4rem);font-weight:700;color:var(--w);letter-spacing:-.015em;line-height:1}
 .cta-qr-frame{position:relative;padding:18px;border-radius:16px;background:rgba(222,167,82,.05);transition:transform .4s var(--ease);animation:qrPulse 2.8s ease-in-out infinite}
 .cta-qr-frame::before,.cta-qr-frame::after{content:'';position:absolute;width:24px;height:24px;border:2px solid var(--gold)}
 .cta-qr-frame::before{top:-1px;left:-1px;border-right:none;border-bottom:none;border-top-left-radius:10px}
@@ -515,7 +515,7 @@ html:has(body.cursor-idle){cursor:none!important}
     <div class="cta-dots"><i></i><i></i><i></i></div>
     <div class="cta-scan">
       <div class="cta-scan-txt">
-        <span class="k">Відскануй, щоб дізнатися більше</span>
+        <span class="k">Дізнайся більше на сайті</span>
         <span class="v">poolhiveapp.com</span>
       </div>
       <div class="cta-qr-frame">
@@ -2426,7 +2426,7 @@ window.addEventListener('resize',function(){
       /* Close — emotional */
       {y:centerY('close'), hold:4,  dur:4.0},
       /* CTA — final card + QR */
-      {y:centerY('cta'),   hold:5,  dur:3.2},
+      {y:centerY('cta'),   hold:8,  dur:3.2},
     ];
   }
 
