@@ -149,7 +149,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 #what .tm{font-family:var(--fd);line-height:1;letter-spacing:-.02em;text-wrap:balance}
 #what .tb{font-size:clamp(1.35rem,1.85vw,1.75rem);line-height:1.55;max-width:none;color:var(--w);text-wrap:pretty}
 /* HERO word — dominates the frame */
-#what .what-hero-word{display:block;font-size:clamp(3rem,6.5vw,6rem);font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:-.02em;line-height:.95;margin-bottom:clamp(14px,1.8vh,24px)}
+#what .what-hero-word{display:block;font-size:clamp(2.8rem,5.4vw,4.9rem);font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:-.02em;line-height:.95;margin-bottom:clamp(14px,1.8vh,24px)}
 /* SUBHEAD — smaller, supporting */
 #what .what-sub{display:block;font-size:clamp(1.7rem,2.7vw,2.4rem);font-weight:400;color:var(--w);line-height:1.2;letter-spacing:-.015em}
 #what .what-emph{font-weight:600;color:var(--gold);font-style:normal}
@@ -457,7 +457,7 @@ html:has(body.cursor-idle){cursor:none!important}
 
 <!-- S3 WHAT — phone enters, placeholder on screen -->
 <section class="s" id="what" style="min-height:110vh">
-  <div class="s__in" style="max-width:640px;margin-right:auto;margin-left:clamp(40px, calc(25vw - 260px), 320px)">
+  <div class="s__in" style="max-width:560px;margin-right:auto;margin-left:clamp(40px, calc(25vw - 260px), 320px)">
     <div id="what-t">
       <span class="tl">Одна платформа</span>
       <p class="tm"><span class="what-hero-word">Відео&nbsp;платформа</span><span class="what-sub">що <b class="what-emph">об'єднала все</b><br>в одному місці</span></p>
@@ -2226,7 +2226,7 @@ function buildPhoneTL(){
   var ZEND=Math.PI; /* π = 180° = upside-down portrait */
   var P0={x:PH_RIGHT,y:0,z:-2}, R0={x:.15,y:-.5,z:.05}, S0={x:0,y:0,z:0};           // hidden
   var P1={x:PH_RIGHT,y:0,z:0},  R1={x:.04,y:-.18,z:.01}, S1={x:1,y:1,z:1};           // enter end
-  var P2={x:0,y:-.1,z:1.6},     R2={x:.05,y:0,z:Math.PI/2}, S2={x:1.13,y:1.13,z:1.13}; // landscape (90° CCW)
+  var P2={x:0.55,y:-.1,z:1.6},  R2={x:.05,y:0,z:Math.PI/2}, S2={x:1.05,y:1.05,z:1.05}; // landscape (90° CCW), shifted right to clear hero text
   var P4={x:1.15,y:0,z:0.3}, R4={x:0,y:-.08,z:ZEND}, S4={x:0.78,y:0.78,z:0.78};   // how position (upside-down, right + smaller to clear text)
   var R5={x:.03,y:-.04,z:ZEND+.01};                                                     // how sway end
   var P6={x:0.85,y:0.5,z:1.4}, R6={x:0,y:0,z:ZEND},    S6={x:1.55,y:1.55,z:1.55};    // close: slightly left, higher
