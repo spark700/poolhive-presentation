@@ -59,7 +59,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;o
 
 /* Reveal slide — centered hero composition with Fibonacci rhythm */
 .reveal-wrap{text-align:center;display:flex;flex-direction:column;align-items:center;position:relative}
-.reveal-wrap .tl{opacity:.45;font-size:.72rem;letter-spacing:.42em;margin-bottom:0}
+.reveal-wrap .tl{opacity:.7;font-size:clamp(1rem,1.7vw,1.5rem);font-weight:500;letter-spacing:.38em;margin-bottom:0}
 /* Patch container — quieter ambient, no rotating ring */
 .reveal-patch{position:relative;width:clamp(150px,17vw,230px);aspect-ratio:1;display:flex;align-items:center;justify-content:center;margin:clamp(26px,3.6vh,44px) 0 clamp(30px,4.2vh,52px)}
 .reveal-patch::before{content:'';position:absolute;inset:-40%;border-radius:50%;background:radial-gradient(circle,rgba(222,167,82,.22),transparent 60%);animation:revealGlow 4.5s ease-in-out infinite;filter:blur(12px)}
